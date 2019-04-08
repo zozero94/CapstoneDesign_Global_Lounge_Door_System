@@ -5,7 +5,7 @@
 
     <application
             android:allowBackup="true"
-            android:icon="@mipmap/jaeho"
+            android:icon="@mipmap/sejong"
             android:label="@string/app_name"
             android:roundIcon="@mipmap/jaeho"
             android:supportsRtl="true"
