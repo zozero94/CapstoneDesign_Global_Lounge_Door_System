@@ -1,6 +1,7 @@
 package capstonedesign.globalrounge.MainJob.Model
 
 import android.util.Log
+import capstonedesign.globalrounge.MainJob.User
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,7 +19,7 @@ class SejongPermission constructor(callback: RejectionCallback) {
     //Callback Interface
     interface RejectionCallback {
         fun reject(text:String)
-        fun approval(id: String)
+        fun approval(user: User)
     }
 
     //POST 를 보내기위한 Retrofit Interface
@@ -42,8 +43,8 @@ class SejongPermission constructor(callback: RejectionCallback) {
 
     }
 
-    fun requestUserInformation(id: String, pw: String) {
-        val request = sejongPermission.getResult(id, pw, 1)
+    fun requestUserInformation(user: User) {
+        val request = sejongPermission.getResult(user.id, user.pw, 1)
         request.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 val body: String
@@ -56,7 +57,7 @@ class SejongPermission constructor(callback: RejectionCallback) {
                             callback.reject("아이디가 잘못 되었습니다.")
                         }
                     } else {//있는정보
-                        callback.approval(id)
+                        callback.approval(user)
                     }
                 } catch (e: IOException) {
                     e.printStackTrace()

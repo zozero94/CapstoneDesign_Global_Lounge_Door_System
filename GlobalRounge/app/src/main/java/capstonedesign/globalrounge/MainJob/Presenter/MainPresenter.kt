@@ -1,21 +1,32 @@
 package capstonedesign.globalrounge.MainJob.Presenter
 
-import android.util.Log
+import android.content.Context
 import capstonedesign.globalrounge.MainJob.MainMVP
 import capstonedesign.globalrounge.MainJob.Model.MainModel
+import capstonedesign.globalrounge.MainJob.User
 
-class MainPresenter constructor(view: MainMVP.View) :
-    MainMVP.Presenter {
+class MainPresenter : MainMVP.Presenter {
 
 
-    private val view = view
-    private val model = MainModel(this)
+    private lateinit var view:MainMVP.View
+    private lateinit var context:Context
+    private lateinit var model :MainMVP.Model
 
-    override fun loginClicked(id: String, pw: String) {
+
+    override fun init(view: MainMVP.View, context: Context) {
+        this.view = view
+        this.context = context
+        this.model = MainModel(this, context)
+    }
+
+    override fun loginClicked(user: User) {
         when {
-            id == "" -> view.noInformation("아이디를 입력하세요")
-            pw == "" -> view.noInformation("패스워드를 입력하세요")
-            else -> model.requestPermission(id, pw)
+            user.id == "" -> view.noInformation("아이디를 입력하세요")
+            user.pw == "" -> view.noInformation("패스워드를 입력하세요")
+            else -> {
+                model.requestPermission(user) //사용자 확인
+                model.saveUserInfo(user) //
+            }
         }
     }
 
@@ -23,8 +34,28 @@ class MainPresenter constructor(view: MainMVP.View) :
         view.rejectPermission(text)
     }
 
-    override fun approvalPermission(id: String) {
-        Log.e("성공성공","앙 로그인 성공띠~~")
+    override fun approvalPermission(user: User) {
         //TODO 서버로 공개키와 개 젓같은것들을 보내고 인텐트 시작하셈
+        model.saveUserInfo(user)
+        view.startActivity()
+    }
+
+    override fun changeCheckState(isChecked: Boolean) {
+
+        model.checkBoxState = isChecked
+        if (!isChecked) {
+            model.deleteUserInfo()
+        }
+
+
+    }
+
+    override fun checkAutoLogin(): Boolean {
+        val user = model.getUserInfo()
+        if (user.id != "" && user.pw != "") {//자동로그인이 되어있다면
+            model.requestPermission(user)
+            return true
+        }
+        return false
     }
 }
