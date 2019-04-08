@@ -35,8 +35,8 @@ class MainPresenter : MainMVP.Presenter {
      * @param user EditText에 저장된 id,pw를 저장하는 dataClass
      */
     override fun loginClicked(user: User) = when {
-        user.id == "" -> view.noInformation("아이디를 입력하세요")
-        user.pw == "" -> view.noInformation("패스워드를 입력하세요")
+        user.id == "" -> view.alertToast("아이디를 입력하세요")
+        user.pw == "" -> view.alertToast("패스워드를 입력하세요")
         else -> {
             model.requestPermission(user) //사용자 확인
             model.saveUserInfo(user) //정보 저장
@@ -55,7 +55,7 @@ class MainPresenter : MainMVP.Presenter {
      * @param text view로 전송할 text
      */
     override fun rejectPermission(text: String) {
-        view.rejectPermission(text)
+        view.alertToast(text)
     }
 
     /**
@@ -64,7 +64,9 @@ class MainPresenter : MainMVP.Presenter {
      * @param user 로그인 사용자의 dataClass
      */
     override fun approvalPermission(user: User) {
-        //TODO 서버로 공개키와 개 젓같은것들을 보내고 인텐트 시작하셈
+        //TODO 서버로 공개키와 user.id 전송 -> 데이터 有/無 확인 (RX 이용하기)
+        //TODO 허가 : model에 데이터 저장 : model.saveUserInfo(user), 액티비티 실행 : view.startActivity(user)
+        //TODO 거절 : view.alertToast("잘못된 접근입니다.")
         model.saveUserInfo(user)
         view.startActivity(user)
     }
@@ -94,5 +96,14 @@ class MainPresenter : MainMVP.Presenter {
             return true
         }
         return false
+    }
+
+    /**
+     * 로그아웃
+     * sharedPreference에 데이터를 삭제한다
+     * @see view.onActivityResult
+     */
+    override fun logout() {
+        model.deleteUserInfo()
     }
 }

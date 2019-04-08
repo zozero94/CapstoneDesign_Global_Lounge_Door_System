@@ -24,6 +24,9 @@ class MainActivity : AppCompatActivity(), MainMVP.View {
     //뒤로가기 버튼에 사용되는 변수
     private var time: Long = 0
 
+    companion object {
+        const val REQUEST_CODE = 100
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //기본 View Setting
@@ -37,35 +40,42 @@ class MainActivity : AppCompatActivity(), MainMVP.View {
         //Login Button Listener
         binding.loginBtn.setOnClickListener {
 
-            val user = with(User()){
+            val user = User().apply{
                 id = binding.id.text.toString()
                 pw = binding.pw.text.toString()
-                return@with this
             }
 
             presenter.loginClicked(user)
         }
 
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
         //자동 로그인을 체크
         binding.checkBox.isChecked = presenter.checkAutoLogin()
-
         //CheckBox Listener
         binding.checkBox.setOnCheckedChangeListener { _, isChecked ->
             presenter.changeCheckState(isChecked)
         }
-
     }
 
 
-    override fun noInformation(text: String) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        //TODO Logout으로 넘어왓을 때 자동로그인 해제
+        if(requestCode==REQUEST_CODE){
+            binding.id.setText("")
+            binding.pw.setText("")
+            presenter.logout()
+        }
+    }
+
+    override fun alertToast(text: String) {
         makeToast(text)
     }
-
-
-    override fun rejectPermission(text: String) {
-        makeToast(text)
-    }
-
 
     private fun makeToast(text: String) {
         Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
@@ -84,6 +94,7 @@ class MainActivity : AppCompatActivity(), MainMVP.View {
         makeToast("앙 제대로 동작띠")
         val intent = Intent(this,QRActivity::class.java)
         intent.putExtra("user",user)
-        startActivity(intent)
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        startActivityForResult(intent,REQUEST_CODE)
     }
 }

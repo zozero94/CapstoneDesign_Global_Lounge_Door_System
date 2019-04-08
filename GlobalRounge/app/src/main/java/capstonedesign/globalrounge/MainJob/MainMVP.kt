@@ -4,8 +4,7 @@ import android.content.Context
 
 interface MainMVP {
     interface View {
-        fun noInformation(text: String)
-        fun rejectPermission(text: String)
+        fun alertToast(text:String)
         fun startActivity(user: User)
     }
 
@@ -16,6 +15,7 @@ interface MainMVP {
         fun approvalPermission(user: User)
         fun changeCheckState(isChecked:Boolean)
         fun checkAutoLogin() : Boolean
+        fun logout()
     }
 
     interface Model {
