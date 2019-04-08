@@ -1,5 +1,6 @@
 package capstonedesign.globalrounge.MainJob.View
 
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -7,8 +8,10 @@ import android.widget.Toast
 import capstonedesign.globalrounge.MainJob.MainMVP
 import capstonedesign.globalrounge.MainJob.Presenter.MainPresenter
 import capstonedesign.globalrounge.MainJob.User
+import capstonedesign.globalrounge.QRJob.QRActivity
 import capstonedesign.globalrounge.R
 import capstonedesign.globalrounge.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity(), MainMVP.View {
 
@@ -77,7 +80,10 @@ class MainActivity : AppCompatActivity(), MainMVP.View {
         }
     }
 
-    override fun startActivity() {
+    override fun startActivity(user: User) {
         makeToast("앙 제대로 동작띠")
+        val intent = Intent(this,QRActivity::class.java)
+        intent.putExtra("user",user)
+        startActivity(intent)
     }
 }

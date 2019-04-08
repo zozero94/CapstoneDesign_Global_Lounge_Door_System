@@ -11,18 +11,26 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 import java.io.IOException
 
-
-class SejongPermission constructor(callback: RejectionCallback) {
+/**
+ * 세종대학교 인증정보를 우회접근하여 받아오는 class
+ * @param callback
+ * @see MainModel.requestPermission
+ */
+class SejongPermission constructor(callback: LoginCallback) {
     private val sejongPermission: Permission
     private val callback = callback
 
-    //Callback Interface
-    interface RejectionCallback {
+    /**
+     * 우회로그인 결과를 되돌려주는 Callback Interface
+     */
+    interface LoginCallback {
         fun reject(text:String)
         fun approval(user: User)
     }
 
-    //POST 를 보내기위한 Retrofit Interface
+    /**
+     * POST 를 보내기위한 Retrofit Interface
+     */
     private interface Permission {
 
         @POST("https://udream.sejong.ac.kr/main/loginPro.aspx/")
@@ -33,16 +41,22 @@ class SejongPermission constructor(callback: RejectionCallback) {
         }
     }
 
+    /**
+     * retrofit 정보를 초기화하는 생성자
+     */
     init {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(Permission.url) //연결할 url
-            .build()
-
+        val retrofit = with(Retrofit.Builder()){
+            baseUrl(Permission.url)
+            build()
+        }
         sejongPermission = retrofit.create(Permission::class.java)
-
-
     }
 
+    /**
+     * 사용자 정보를 요청하는 구간
+     * @param user
+     * @see MainModel.requestPermission
+     */
     fun requestUserInformation(user: User) {
         val request = sejongPermission.getResult(user.id, user.pw, 1)
         request.enqueue(object : Callback<ResponseBody> {

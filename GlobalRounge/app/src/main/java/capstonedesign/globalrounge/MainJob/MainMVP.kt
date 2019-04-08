@@ -6,7 +6,7 @@ interface MainMVP {
     interface View {
         fun noInformation(text: String)
         fun rejectPermission(text: String)
-        fun startActivity()
+        fun startActivity(user: User)
     }
 
     interface Presenter {
