@@ -33,11 +33,11 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                        android:layout_width="24dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:id="@+id/imageView3"
-                         android:layout_margin="8dp"
-                        android:layout_gravity="center" app:srcCompat="@mipmap/ic_launcher"/>
+                        android:layout_margin="8dp"
+                        android:layout_gravity="center" app:srcCompat="@drawable/user_icon"/>
                 <EditText
                         android:hint="아 이 디"
 
@@ -63,11 +63,11 @@
                     android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/id_block">
 
                 <ImageView
-                        android:layout_width="24dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/imageView4"
                         android:layout_gravity="center"
-                        android:layout_margin="8dp" app:srcCompat="@mipmap/ic_launcher_round"/>
+                        android:layout_margin="8dp" app:srcCompat="@drawable/pw_icon"/>
                 <EditText
                         android:hint="패 스 워 드"
                         android:textColor="@color/black"
@@ -89,28 +89,16 @@
                     app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/pw_block"
                     android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
-                    android:gravity="center">
-                <LinearLayout
-                        android:background="@drawable/auto_login_line"
-                        android:orientation="horizontal"
+                    android:gravity="center" android:id="@+id/login_layout">
+                <CheckBox
+                        android:buttonTint="@color/white"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent" android:gravity="center"
-                        android:layout_margin="8dp" android:id="@+id/checkbox_wrapper">
-                    <CheckBox
-                            android:buttonTint="@color/white"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" android:id="@+id/checkBox" android:gravity="center"
-                            android:textColorLink="@android:color/background_dark"/>
-                    <TextView
-                            android:text="자동로그인"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" android:id="@+id/autologin_text"
-                            android:gravity="center" android:textColorLink="@android:color/background_dark"
-                            android:paddingRight="8dp"
-                            android:textColor="@android:color/background_light"/>
-                </LinearLayout>
+                        android:layout_height="match_parent" android:id="@+id/checkBox" android:gravity="center"
+                        android:textColorLink="@color/white" android:text="자동로그인"
+                        android:background="@drawable/auto_login_line"
+                        android:paddingRight="8dp" android:textColor="@color/white" android:layout_margin="8dp"/>
                 <Button
-                        android:background="@drawable/rounded"
+                        android:background="@drawable/login_btn"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:id="@+id/login_btn" app:layout_constraintEnd_toEndOf="parent"

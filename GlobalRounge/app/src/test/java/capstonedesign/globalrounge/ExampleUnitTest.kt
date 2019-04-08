@@ -1,8 +1,7 @@
 package capstonedesign.globalrounge
 
+import capstonedesign.globalrounge.MainJob.Model.SejongPermission
 import org.junit.Test
-
-import org.junit.Assert.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -12,6 +11,21 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+        SejongPermission(object :
+            SejongPermission.RejectionCallback {
+            override fun approval(id: String) {
+                System.out.println("기모찌이 $id")
+
+            }
+
+            override fun rejectId() {
+                println("아이디 거부")
+            }
+
+            override fun rejectPw() {
+                println("패스워드 거부")
+            }
+
+        }).requestUserInformation("14011038","wodud31")
     }
 }
