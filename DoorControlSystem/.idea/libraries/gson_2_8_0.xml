@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="gson-2.8.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.eclipse/gson-2.8.0.jar!/" />
+      <root url="jar://$USER_HOME$/Jar_file/commons-codec-1.7.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
