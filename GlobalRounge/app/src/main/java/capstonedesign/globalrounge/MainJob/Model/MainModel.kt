@@ -12,10 +12,10 @@ class MainModel constructor(presenter: MainPresenter, context: Context) : MainMV
     //자동로그인에 필요한 변수
     private val preferences = context.getSharedPreferences("auto", 0)
     private val editor = preferences.edit()
-    private var saveCheck = true  //서버 결과에 따른 flag
     override var checkBoxState: Boolean = false //CheckBox의 isClicked
 
 
+    /**************** [ Override Function ] ****************/
     /**
      * 우회 로그인 요청 메소드
      * @see MainPresenter.loginClicked
@@ -23,36 +23,20 @@ class MainModel constructor(presenter: MainPresenter, context: Context) : MainMV
      * @param user sejong udream에 던질 데이터
      */
 
-    override fun requestPermission(user: User) {
+    override fun requestSejongPermission(user: User) {
         SejongPermission(object :
             SejongPermission.LoginCallback {
             override fun approval(user: User) {//성공
+                saveUserInfo(user)
                 presenter.approvalPermission(user)
-                saveCheck = true
             }
 
             override fun reject(text: String) {//실패
                 presenter.rejectPermission(text)
-                saveCheck = false
             }
         }).requestUserInformation(user)
     }
 
-    /**
-     * CheckBox가 체크되어있고 서버에서 허가를 받은경우 저장
-     * @see MainPresenter.loginClicked
-     * @see MainPresenter.approvalPermission
-     * @param user sharedPreference 에 저장할 데이터
-     */
-    override fun saveUserInfo(user: User) {
-        if (checkBoxState and saveCheck) {
-            with(editor) {
-                putString("id", user.id)
-                putString("pw", user.pw)
-                commit()
-            }
-        }
-    }
 
     /**
      * preferences 에 저장되어있는 데이터를 꺼내온다.
@@ -62,8 +46,8 @@ class MainModel constructor(presenter: MainPresenter, context: Context) : MainMV
 
     override fun getUserInfo(): User {
         with(preferences) {
-            val id = getString("id", "")
-            val pw = getString("pw", "")
+            val id = getString("id", "")!!
+            val pw = getString("pw", "")!!
             return User(id, pw)
         }
     }
@@ -77,6 +61,29 @@ class MainModel constructor(presenter: MainPresenter, context: Context) : MainMV
         with(editor) {
             clear()
             commit()
+        }
+    }
+
+    /**
+     * Server로 로그인정보 요청
+     */
+    override fun requestServerPermission(user: User) {
+        //TODO Rx를 사용해서 정보 받아오기
+    }
+
+    /**************** [ Local Function ] ****************/
+    /**
+     * CheckBox가 활성화 상태면 SharedPreference 에 데이터 저장
+     * @see MainModel.requestPermission
+     * @param user sharedPreference 에 저장할 데이터
+     */
+     private fun saveUserInfo(user: User) {
+        if (checkBoxState) {
+            editor.apply {
+                putString("id", user.id)
+                putString("pw", user.pw)
+                commit()
+            }
         }
     }
 }

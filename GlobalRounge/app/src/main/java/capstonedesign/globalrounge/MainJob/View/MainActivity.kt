@@ -28,28 +28,22 @@ class MainActivity : AppCompatActivity(), MainMVP.View {
         const val REQUEST_CODE = 100
     }
 
+    /**************** [ Override Function ] ****************/
     override fun onCreate(savedInstanceState: Bundle?) {
         //기본 View Setting
         super.onCreate(savedInstanceState)
         //데이터바인딩을 통한 XML코드와 연결
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
         //presenter Setting
         presenter.init(this, this)
-
         //Login Button Listener
         binding.loginBtn.setOnClickListener {
-
-            val user = User().apply{
+            val user = User().apply {
                 id = binding.id.text.toString()
                 pw = binding.pw.text.toString()
             }
-
             presenter.loginClicked(user)
         }
-
-
-
     }
 
     override fun onResume() {
@@ -66,7 +60,7 @@ class MainActivity : AppCompatActivity(), MainMVP.View {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         //TODO Logout으로 넘어왓을 때 자동로그인 해제
-        if(requestCode==REQUEST_CODE){
+        if (requestCode == REQUEST_CODE) {
             binding.id.setText("")
             binding.pw.setText("")
             presenter.logout()
@@ -77,9 +71,6 @@ class MainActivity : AppCompatActivity(), MainMVP.View {
         makeToast(text)
     }
 
-    private fun makeToast(text: String) {
-        Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
-    }
 
     override fun onBackPressed() {
         if (System.currentTimeMillis() - time >= 2000) {
@@ -92,9 +83,16 @@ class MainActivity : AppCompatActivity(), MainMVP.View {
 
     override fun startActivity(user: User) {
         makeToast("앙 제대로 동작띠")
-        val intent = Intent(this,QRActivity::class.java)
-        intent.putExtra("user",user)
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-        startActivityForResult(intent,REQUEST_CODE)
+        val intent = Intent(this, QRActivity::class.java).apply {
+            putExtra("user", user)
+            addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        }
+        startActivityForResult(intent, REQUEST_CODE)
+    }
+
+
+    /**************** [ Local Function ] ****************/
+    private fun makeToast(text: String) {
+        Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
     }
 }

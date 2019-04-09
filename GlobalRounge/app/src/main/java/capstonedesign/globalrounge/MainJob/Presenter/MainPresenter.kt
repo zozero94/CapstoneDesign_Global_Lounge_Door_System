@@ -37,15 +37,9 @@ class MainPresenter : MainMVP.Presenter {
     override fun loginClicked(user: User) = when {
         user.id == "" -> view.alertToast("아이디를 입력하세요")
         user.pw == "" -> view.alertToast("패스워드를 입력하세요")
+        //user.id.contains("ad") -> if(user.pw.equal("1234")) model.서버통신  //TODO 관리자 로그인
         else -> {
-            model.requestPermission(user) //사용자 확인
-            model.saveUserInfo(user) //정보 저장
-            /*
-            < QUESTION >
-            TODO presenter에서 호출하기 위해 부득이하게 saveCheck변수를 사용함
-            Model에서 Model 안에있는 함수를 호출해도 되는가? -> MVP
-             */
-
+            model.requestSejongPermission(user) //사용자 확인
         }
     }
 
@@ -67,7 +61,7 @@ class MainPresenter : MainMVP.Presenter {
         //TODO 서버로 공개키와 user.id 전송 -> 데이터 有/無 확인 (RX 이용하기)
         //TODO 허가 : model에 데이터 저장 : model.saveUserInfo(user), 액티비티 실행 : view.startActivity(user)
         //TODO 거절 : view.alertToast("잘못된 접근입니다.")
-        model.saveUserInfo(user)
+        model.requestServerPermission(user)
         view.startActivity(user)
     }
 
@@ -92,7 +86,7 @@ class MainPresenter : MainMVP.Presenter {
     override fun checkAutoLogin(): Boolean {
         val user = model.getUserInfo()
         if (user.id != "" && user.pw != "") {//자동로그인이 되어있다면
-            model.requestPermission(user)
+            model.requestSejongPermission(user)
             return true
         }
         return false

@@ -19,8 +19,8 @@ interface MainMVP {
     }
 
     interface Model {
-        fun requestPermission(user:User)
-        fun saveUserInfo(user: User)
+        fun requestSejongPermission(user:User)
+        fun requestServerPermission(user:User)
         fun getUserInfo():User
         fun deleteUserInfo()
         var checkBoxState : Boolean
