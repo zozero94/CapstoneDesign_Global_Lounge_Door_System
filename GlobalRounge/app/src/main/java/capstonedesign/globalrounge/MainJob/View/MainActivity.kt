@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity(), MainMVP.View {
         makeToast("앙 제대로 동작띠")
         val intent = Intent(this, QRActivity::class.java).apply {
             putExtra("user", user)
-            addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+
         }
         startActivityForResult(intent, REQUEST_CODE)
     }
