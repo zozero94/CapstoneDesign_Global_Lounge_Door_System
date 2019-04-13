@@ -27,20 +27,6 @@ public class Student {
         this.college = college;
     }
 
-    @Override
-    public String toString() {
-        return "Student{" +
-                "studentID='" + studentID + '\'' +
-                ", name='" + name + '\'' +
-                ", gender='" + gender + '\'' +
-                ", nationality='" + nationality + '\'' +
-                ", department='" + department + '\'' +
-                ", college='" + college + '\'' +
-                '}';
-    }
-
-
-
     public String getStudentID() {
         return studentID;
     }
@@ -77,4 +63,17 @@ public class Student {
     public void setCollege(String college) {
         this.college = college;
     }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "studentID='" + studentID + '\'' +
+                ", name='" + name + '\'' +
+                ", gender='" + gender + '\'' +
+                ", nationality='" + nationality + '\'' +
+                ", department='" + department + '\'' +
+                ", college='" + college + '\'' +
+                '}';
+    }
+
 }
