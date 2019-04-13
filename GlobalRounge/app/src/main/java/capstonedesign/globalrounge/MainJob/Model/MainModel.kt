@@ -2,17 +2,23 @@ package capstonedesign.globalrounge.MainJob.Model
 
 import android.content.Context
 import capstonedesign.globalrounge.MainJob.MainMVP
+import capstonedesign.globalrounge.MainJob.Model.ServerPermission.LOGIN
 import capstonedesign.globalrounge.MainJob.Presenter.MainPresenter
 import capstonedesign.globalrounge.MainJob.User
+import com.google.gson.JsonObject
 
 
-class MainModel constructor(presenter: MainPresenter, context: Context) : MainMVP.Model {
+class MainModel constructor(presenter: MainMVP.Presenter, context: Context) : MainMVP.Model {
+
+
     private val presenter = presenter
 
     //자동로그인에 필요한 변수
     private val preferences = context.getSharedPreferences("auto", 0)
     private val editor = preferences.edit()
     override var checkBoxState: Boolean = false //CheckBox의 isClicked
+
+
 
 
     /**************** [ Override Function ] ****************/
@@ -27,7 +33,6 @@ class MainModel constructor(presenter: MainPresenter, context: Context) : MainMV
         SejongPermission(object :
             SejongPermission.LoginCallback {
             override fun approval(user: User) {//성공
-                saveUserInfo(user)
                 presenter.approvalPermission(user)
             }
 
@@ -55,7 +60,7 @@ class MainModel constructor(presenter: MainPresenter, context: Context) : MainMV
     /**
      * preferences 초기화
      * @see MainPresenter.changeCheckState
-     * @see MainPresenter.logout
+     * @see MainPresenter.deletePreference
      */
     override fun deleteUserInfo() {
         with(editor) {
@@ -66,18 +71,33 @@ class MainModel constructor(presenter: MainPresenter, context: Context) : MainMV
 
     /**
      * Server로 로그인정보 요청
+     * @See MainPresenter.approvalPermission
+     * @param user 전송할 이용자 정보
+     * @sample
+     * {
+     * “seqType”:“100”, “data” :
+     *        {“id”:“14011038”, “key”:“publicKey”,“type”:“[0:학생, 1:관리자]”}
+     * }
      */
     override fun requestServerPermission(user: User) {
-        //TODO Rx를 사용해서 정보 받아오기
+        val message = JsonObject().apply {
+            addProperty("seqType", LOGIN)
+            addProperty("data",JsonObject().apply {
+                addProperty("id",user.id)
+                addProperty("key","")//TODO 암호화 키 삽입
+                addProperty("type",user.tag)
+            }.toString())
+        }
+        ServerPermission.socket?.sendData(message.toString()+"\n")
+        //\n을 붙이지 않으면 서버에서 ReadLine으로 읽을 수 없음
     }
 
-    /**************** [ Local Function ] ****************/
     /**
      * CheckBox가 활성화 상태면 SharedPreference 에 데이터 저장
-     * @see MainModel.requestPermission
+     * @see MainModel.requestSejongPermission
      * @param user sharedPreference 에 저장할 데이터
      */
-     private fun saveUserInfo(user: User) {
+     override fun saveUserInfo(user: User) {
         if (checkBoxState) {
             editor.apply {
                 putString("id", user.id)

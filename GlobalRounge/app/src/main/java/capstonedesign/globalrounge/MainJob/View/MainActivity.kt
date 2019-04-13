@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity(), MainMVP.View {
     private lateinit var binding: ActivityMainBinding
 
     //MVP의 Presenter
-    private val presenter = MainPresenter()
+    private lateinit var presenter :MainMVP.Presenter
 
     //뒤로가기 버튼에 사용되는 변수
     private var time: Long = 0
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity(), MainMVP.View {
         //데이터바인딩을 통한 XML코드와 연결
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         //presenter Setting
-        presenter.init(this, this)
+        presenter = MainPresenter(this,this)
         //Login Button Listener
         binding.loginBtn.setOnClickListener {
             val user = User().apply {
@@ -44,6 +44,11 @@ class MainActivity : AppCompatActivity(), MainMVP.View {
             }
             presenter.loginClicked(user)
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        presenter.dispose()
     }
 
     override fun onResume() {
@@ -63,7 +68,7 @@ class MainActivity : AppCompatActivity(), MainMVP.View {
         if (requestCode == REQUEST_CODE) {
             binding.id.setText("")
             binding.pw.setText("")
-            presenter.logout()
+            presenter.deletePreference()
         }
     }
 
@@ -82,7 +87,7 @@ class MainActivity : AppCompatActivity(), MainMVP.View {
     }
 
     override fun startActivity(user: User) {
-        makeToast("앙 제대로 동작띠")
+
         val intent = Intent(this, QRActivity::class.java).apply {
             putExtra("user", user)
         }

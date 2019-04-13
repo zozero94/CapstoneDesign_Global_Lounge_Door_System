@@ -1,27 +1,39 @@
 package capstonedesign.globalrounge.MainJob.Presenter
 
 import android.content.Context
+import capstonedesign.globalrounge.MainJob.ADMIN
 import capstonedesign.globalrounge.MainJob.MainMVP
 import capstonedesign.globalrounge.MainJob.Model.MainModel
+import capstonedesign.globalrounge.MainJob.Model.ServerPermission
+import capstonedesign.globalrounge.MainJob.Model.ServerPermission.LOGIN_ALREADY
+import capstonedesign.globalrounge.MainJob.Model.ServerPermission.LOGIN_NO_DATA
+import capstonedesign.globalrounge.MainJob.Model.ServerPermission.LOGIN_OK
+import capstonedesign.globalrounge.MainJob.STUDENT
 import capstonedesign.globalrounge.MainJob.User
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import moe.codeest.rxsocketclient.SocketSubscriber
+import java.nio.charset.StandardCharsets
 
-class MainPresenter : MainMVP.Presenter {
+
+class MainPresenter constructor(view: MainMVP.View, context: Context) : MainMVP.Presenter {
 
 
-    private lateinit var view: MainMVP.View
-    private lateinit var context: Context
-    private lateinit var model: MainMVP.Model
+    private val view: MainMVP.View = view
+    private val model: MainMVP.Model
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     /**
      * Presenter 초기화 함수
      * @param view MVP의 View
      * @param context MainActivity의 Context
      */
-    override fun init(view: MainMVP.View, context: Context) {
-        this.view = view
-        this.context = context
+    init {
         this.model = MainModel(this, context)
     }
+
 
     /**
      * 로그인 버튼이 눌렸을 때 동작하는 함수
@@ -37,8 +49,15 @@ class MainPresenter : MainMVP.Presenter {
     override fun loginClicked(user: User) = when {
         user.id == "" -> view.alertToast("아이디를 입력하세요")
         user.pw == "" -> view.alertToast("패스워드를 입력하세요")
-        //user.id.contains("ad") -> if(user.pw.equal("1234")) model.서버통신  //TODO 관리자 로그인
+        user.id.contains("admin") -> {
+            if (user.pw == "admin") {
+                user.tag = ADMIN
+                this.approvalPermission(user)
+            } else view.alertToast("잘못된 정보")
+        }
+
         else -> {
+            user.tag = STUDENT
             model.requestSejongPermission(user) //사용자 확인
         }
     }
@@ -54,15 +73,45 @@ class MainPresenter : MainMVP.Presenter {
 
     /**
      * 우회접근에서 승인되었을 때 호출
-     * @see MainModel.requestPermission
+     * Server 로 다시한번 승인을 요청한다.
+     * @see MainModel.requestSejongPermission
+     * @see MainPresenter.loginClicked
      * @param user 로그인 사용자의 dataClass
      */
     override fun approvalPermission(user: User) {
-        //TODO 서버로 공개키와 user.id 전송 -> 데이터 有/無 확인 (RX 이용하기)
-        //TODO 허가 : model에 데이터 저장 : model.saveUserInfo(user), 액티비티 실행 : view.startActivity(user)
-        //TODO 거절 : view.alertToast("잘못된 접근입니다.")
-        model.requestServerPermission(user)
-        view.startActivity(user)
+        ServerPermission.connectSocket()
+        val ref = ServerPermission.socket!!.connect()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : SocketSubscriber() {
+                override fun onConnected() {
+                    view.alertToast("연결띠")
+                    model.requestServerPermission(user)
+                }
+
+                override fun onDisconnected() {
+                    view.alertToast("연결해제띠")
+                }
+
+                override fun onResponse(data: ByteArray) {
+                    val str = String(data, StandardCharsets.UTF_8)
+                    val result = JsonParser().parse(str) as JsonObject
+                    when (result.get("seqType").asInt) {
+                        LOGIN_OK -> {
+                            model.saveUserInfo(user)//체크박스에 따른 자동로그인 저장
+                            view.startActivity(user)//액티비티 시작
+                        }
+                        LOGIN_ALREADY -> {
+                            view.alertToast("이미 로그인 중입니다.")
+                        }
+                        LOGIN_NO_DATA -> {
+                            view.alertToast("서버에 더미데이터가 없습니다.")
+                        }
+                    }
+                }
+            })
+        compositeDisposable.add(ref)
+
+
     }
 
     /**
@@ -97,7 +146,15 @@ class MainPresenter : MainMVP.Presenter {
      * sharedPreference에 데이터를 삭제한다
      * @see view.onActivityResult
      */
-    override fun logout() {
+    override fun deletePreference() {
         model.deleteUserInfo()
+    }
+
+    /**
+     * Rx 참조 제거
+     * @see view.onPause
+     */
+    override fun dispose() {
+        compositeDisposable.clear()
     }
 }

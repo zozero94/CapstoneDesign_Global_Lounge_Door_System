@@ -33,7 +33,7 @@ class SejongPermission constructor(callback: LoginCallback) {
      */
     private interface Permission {
 
-        @POST("https://udream.sejong.ac.kr/main/loginPro.aspx/")
+        @POST(url)
         fun getResult(@Query("rUserid") rUserid: String, @Query("rPW") rPW: String, @Query("pro") pro: Int): Call<ResponseBody>
 
         companion object {
