@@ -1,24 +1,22 @@
-package capstonedesign.globalrounge.MainJob.Model
+package capstonedesign.globalrounge.mainjob.model
 
+import Encryption.Encryption
 import android.content.Context
-import capstonedesign.globalrounge.MainJob.MainMVP
-import capstonedesign.globalrounge.MainJob.Model.ServerPermission.LOGIN
-import capstonedesign.globalrounge.MainJob.Presenter.MainPresenter
-import capstonedesign.globalrounge.MainJob.User
+import capstonedesign.globalrounge.Student
+import capstonedesign.globalrounge.mainjob.MainContract
+import capstonedesign.globalrounge.mainjob.model.ServerPermission.LOGIN
+import capstonedesign.globalrounge.mainjob.presenter.MainPresenter
+import capstonedesign.globalrounge.mainjob.User
 import com.google.gson.JsonObject
 
 
-class MainModel constructor(presenter: MainMVP.Presenter, context: Context) : MainMVP.Model {
+class MainModel(private val presenter: MainContract.Presenter, context: Context) : MainContract.Model {
 
-
-    private val presenter = presenter
 
     //자동로그인에 필요한 변수
     private val preferences = context.getSharedPreferences("auto", 0)
     private val editor = preferences.edit()
     override var checkBoxState: Boolean = false //CheckBox의 isClicked
-
-
 
 
     /**************** [ Override Function ] ****************/
@@ -80,15 +78,17 @@ class MainModel constructor(presenter: MainMVP.Presenter, context: Context) : Ma
      * }
      */
     override fun requestServerPermission(user: User) {
+        Encryption.newKey()
+
         val message = JsonObject().apply {
             addProperty("seqType", LOGIN)
-            addProperty("data",JsonObject().apply {
-                addProperty("id",user.id)
-                addProperty("key","")//TODO 암호화 키 삽입
-                addProperty("type",user.tag)
+            addProperty("data", JsonObject().apply {
+                addProperty("id", user.id)
+                addProperty("key", Encryption.strPublicKey)//TODO 암호화 키 삽입
+                addProperty("type", user.tag)
             }.toString())
         }
-        ServerPermission.socket?.sendData(message.toString()+"\n")
+        ServerPermission.socket?.sendData(message.toString() + "\n")
         //\n을 붙이지 않으면 서버에서 ReadLine으로 읽을 수 없음
     }
 
@@ -97,7 +97,7 @@ class MainModel constructor(presenter: MainMVP.Presenter, context: Context) : Ma
      * @see MainModel.requestSejongPermission
      * @param user sharedPreference 에 저장할 데이터
      */
-     override fun saveUserInfo(user: User) {
+    override fun saveUserInfo(user: User) {
         if (checkBoxState) {
             editor.apply {
                 putString("id", user.id)

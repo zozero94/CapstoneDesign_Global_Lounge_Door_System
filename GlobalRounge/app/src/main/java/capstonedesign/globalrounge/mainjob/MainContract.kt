@@ -1,11 +1,11 @@
-package capstonedesign.globalrounge.MainJob
+package capstonedesign.globalrounge.mainjob
 
-import moe.codeest.rxsocketclient.SocketClient
+import capstonedesign.globalrounge.Student
 
-interface MainMVP {
+interface MainContract {
     interface View {
         fun alertToast(text:String)
-        fun startActivity(user: User)
+        fun startActivity(student: Student)
     }
 
     interface Presenter {

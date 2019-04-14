@@ -1,15 +1,17 @@
-package capstonedesign.globalrounge.MainJob.Presenter
+package capstonedesign.globalrounge.mainjob.presenter
 
+import Encryption.Encryption
 import android.content.Context
-import capstonedesign.globalrounge.MainJob.ADMIN
-import capstonedesign.globalrounge.MainJob.MainMVP
-import capstonedesign.globalrounge.MainJob.Model.MainModel
-import capstonedesign.globalrounge.MainJob.Model.ServerPermission
-import capstonedesign.globalrounge.MainJob.Model.ServerPermission.LOGIN_ALREADY
-import capstonedesign.globalrounge.MainJob.Model.ServerPermission.LOGIN_NO_DATA
-import capstonedesign.globalrounge.MainJob.Model.ServerPermission.LOGIN_OK
-import capstonedesign.globalrounge.MainJob.STUDENT
-import capstonedesign.globalrounge.MainJob.User
+import android.util.Log
+import capstonedesign.globalrounge.mainjob.ADMIN
+import capstonedesign.globalrounge.mainjob.MainContract
+import capstonedesign.globalrounge.mainjob.model.MainModel
+import capstonedesign.globalrounge.mainjob.model.ServerPermission
+import capstonedesign.globalrounge.mainjob.model.ServerPermission.LOGIN_ALREADY
+import capstonedesign.globalrounge.mainjob.model.ServerPermission.LOGIN_NO_DATA
+import capstonedesign.globalrounge.mainjob.model.ServerPermission.LOGIN_OK
+import capstonedesign.globalrounge.mainjob.STUDENT
+import capstonedesign.globalrounge.mainjob.User
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -18,11 +20,9 @@ import moe.codeest.rxsocketclient.SocketSubscriber
 import java.nio.charset.StandardCharsets
 
 
-class MainPresenter constructor(view: MainMVP.View, context: Context) : MainMVP.Presenter {
+class MainPresenter (private val view: MainContract.View, context: Context) : MainContract.Presenter {
 
-
-    private val view: MainMVP.View = view
-    private val model: MainMVP.Model
+    private val model: MainContract.Model
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     /**
@@ -97,8 +97,9 @@ class MainPresenter constructor(view: MainMVP.View, context: Context) : MainMVP.
                     val result = JsonParser().parse(str) as JsonObject
                     when (result.get("seqType").asInt) {
                         LOGIN_OK -> {
+                            val stu = Encryption.getDecodedString(result.get("data").asString)!!
                             model.saveUserInfo(user)//체크박스에 따른 자동로그인 저장
-                            view.startActivity(user)//액티비티 시작
+                            view.startActivity(stu)//액티비티 시작
                         }
                         LOGIN_ALREADY -> {
                             view.alertToast("이미 로그인 중입니다.")

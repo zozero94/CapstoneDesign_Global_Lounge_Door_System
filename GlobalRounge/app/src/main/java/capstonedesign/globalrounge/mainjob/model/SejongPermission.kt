@@ -1,7 +1,7 @@
-package capstonedesign.globalrounge.MainJob.Model
+package capstonedesign.globalrounge.mainjob.model
 
 import android.util.Log
-import capstonedesign.globalrounge.MainJob.User
+import capstonedesign.globalrounge.mainjob.User
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback

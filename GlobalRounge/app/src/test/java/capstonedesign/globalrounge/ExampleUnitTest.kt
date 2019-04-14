@@ -1,7 +1,8 @@
 package capstonedesign.globalrounge
 
-import capstonedesign.globalrounge.MainJob.Model.SejongPermission
+import Encryption.Encryption
 import org.junit.Test
+import java.nio.ByteOrder
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -11,6 +12,8 @@ import org.junit.Test
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
+
+
 
     }
 }
