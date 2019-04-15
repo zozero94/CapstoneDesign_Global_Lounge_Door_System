@@ -1,10 +1,11 @@
 package capstonedesign.globalrounge.qrjob
 
-interface QrContract{
-    interface View{
+interface QrContract {
+    interface View {
 
     }
-    interface Presenter{
+
+    interface Presenter {
 
     }
 }

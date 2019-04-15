@@ -5,15 +5,15 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import capstonedesign.globalrounge.mainjob.MainActivity.Companion.REQUEST_CODE
 import capstonedesign.globalrounge.R
-import capstonedesign.globalrounge.model.Student
 import capstonedesign.globalrounge.databinding.ActivityQrBinding
+import capstonedesign.globalrounge.mainjob.MainActivity.Companion.REQUEST_CODE
+import capstonedesign.globalrounge.model.Student
 
 /**
  * 미완성 더미 액티비티
  */
-class QrActivity : AppCompatActivity(),QrContract.View {
+class QrActivity : AppCompatActivity(), QrContract.View {
 
     //데이터바인딩 변수
     private lateinit var binding: ActivityQrBinding

@@ -13,8 +13,7 @@ import java.io.IOException
 
 /**
  * 세종대학교 인증정보를 우회접근하여 받아오는 class
- * @param callback
- * @see requestPermission
+ * @see capstonedesign.globalrounge.mainjob.MainPresenter.requestSejongPermission
  */
 object SejongPermission {
     private val sejongPermission: Permission
@@ -24,7 +23,7 @@ object SejongPermission {
      * 우회로그인 결과를 되돌려주는 Callback Interface
      */
     interface LoginCallback {
-        fun reject(text:String)
+        fun reject(text: String)
         fun approval(user: User)
     }
 
@@ -45,7 +44,7 @@ object SejongPermission {
      * retrofit 정보를 초기화하는 생성자
      */
     init {
-        val retrofit = with(Retrofit.Builder()){
+        val retrofit = with(Retrofit.Builder()) {
             baseUrl(Permission.url)
             build()
         }
@@ -54,10 +53,12 @@ object SejongPermission {
 
     /**
      * 사용자 정보를 요청하는 구간
-     * @param user
-     * @see requestPermission
+     * @param user : 입력된 사용자 정보
+     * @param callback : 응답값에 따른 콜백
+     * @see capstonedesign.globalrounge.mainjob.MainPresenter.requestSejongPermission
+     *
      */
-    fun requestUserInformation(user: User, callback:LoginCallback) {
+    fun requestUserInformation(user: User, callback: LoginCallback) {
         val request = sejongPermission.getResult(user.id, user.pw, 1)
         request.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {

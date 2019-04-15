@@ -5,11 +5,11 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
+import capstonedesign.globalrounge.R
+import capstonedesign.globalrounge.databinding.ActivityMainBinding
+import capstonedesign.globalrounge.model.Student
 import capstonedesign.globalrounge.model.User
 import capstonedesign.globalrounge.qrjob.QrActivity
-import capstonedesign.globalrounge.R
-import capstonedesign.globalrounge.model.Student
-import capstonedesign.globalrounge.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity(), MainContract.View {
@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     override fun startActivity(student: Student) {
         startActivityForResult(
-            QrActivity.getIntent(this@MainActivity,student),
+            QrActivity.getIntent(this@MainActivity, student),
             REQUEST_CODE
         )
     }

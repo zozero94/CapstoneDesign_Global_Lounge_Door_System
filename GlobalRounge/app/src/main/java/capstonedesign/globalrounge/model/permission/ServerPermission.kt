@@ -1,8 +1,8 @@
 package capstonedesign.globalrounge.model.permission
 
 import Encryption.Encryption
-import capstonedesign.globalrounge.model.User
 import capstonedesign.globalrounge.mainjob.MainPresenter
+import capstonedesign.globalrounge.model.User
 import com.google.gson.JsonObject
 import moe.codeest.rxsocketclient.RxSocketClient
 import moe.codeest.rxsocketclient.SocketClient
@@ -10,6 +10,11 @@ import moe.codeest.rxsocketclient.meta.SocketConfig
 import moe.codeest.rxsocketclient.meta.ThreadStrategy
 import java.nio.charset.Charset
 
+/**
+ * 서버로부터 인증정보를 받아오는 클래스
+ * 1차인증 후 2차인증 실행
+ * @see MainPresenter.approvalPermission
+ */
 object ServerPermission {
     private const val ip = "223.195.38.105"
     private const val port = 5050
@@ -20,6 +25,10 @@ object ServerPermission {
     const val LOGIN_NO_DATA = 103
 
     var socket: SocketClient? = null
+    /**
+     * 서버와 연결하는 함수
+     * @see MainPresenter.approvalPermission
+     */
     fun connectSocket() {
         socket = RxSocketClient.create(
             SocketConfig.Builder()
@@ -31,6 +40,7 @@ object ServerPermission {
                 .build()
         )
     }
+
     /**
      * Server로 로그인정보 요청
      * @See MainPresenter.approvalPermission
@@ -47,11 +57,11 @@ object ServerPermission {
             addProperty("seqType", LOGIN)
             addProperty("data", JsonObject().apply {
                 addProperty("id", user.id)
-                addProperty("key", Encryption.strPublicKey)//TODO 암호화 키 삽입
+                addProperty("key", Encryption.strPublicKey)
                 addProperty("type", user.tag)
             }.toString())
         }
-        ServerPermission.socket?.sendData(message.toString() + "\n")
+        socket?.sendData(message.toString() + "\n")
         //\n을 붙이지 않으면 서버에서 ReadLine으로 읽을 수 없음
     }
 

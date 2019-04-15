@@ -23,20 +23,19 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
 
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
+
     init {
         SharedData.setSharedPreferences(context)
     }
-
+    /**************** [ Override Function ] ****************/
     /**
      * 로그인 버튼이 눌렸을 때 동작하는 함수
      * Id, Pw의 상태를 내부적으로 확인
-     *
-     * Model에게 우회 로그인 접근
-     * @see MainModel.requestPermission
-     * 자동로그인을 위한 정보 저장
-     * @see MainModel.saveUserInfo
-     *
-     * @param user EditText에 저장된 id,pw를 저장하는 dataClass
+     * 일반 사용자 로그인
+     * @see requestSejongPermission : sejong 로그인 시도*
+     * 관리자 로그인
+     * @see approvalPermission : sejong 로그인 허가
+     * @param user : 로그인 할 유저정보
      */
     override fun loginClicked(user: User) = when {
         user.id == "" -> view.alertToast("아이디를 입력하세요")
@@ -47,30 +46,95 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
                 this.approvalPermission(user)
             } else view.alertToast("잘못된 정보")
         }
-
         else -> {
             user.tag = STUDENT
-            requestSejongPermission(user)
+            this.requestSejongPermission(user)
+        }
+    }
+
+
+    /**
+     * checkBox의 상태가 변하였을때 호출되는 함수
+     * @see capstonedesign.globalrounge.mainjob.MainActivity.onCreate
+     *
+     * 자동로그인 체크가 안되있을 시
+     * @see SharedData.deleteUserInfo
+     *
+     * @param isChecked checkBox 체크여부
+     */
+    override fun changeCheckState(isChecked: Boolean) {
+        SharedData.checkBoxState = isChecked
+        if (!isChecked) {
+            SharedData.deleteUserInfo()
         }
     }
 
     /**
-     * 우회접근에서 거절되었을 때 호출
-     * @see MainModel.requestPermission
-     * @param text view로 전송할 text
+     * 앱 실행시 자동로그인 check 여부 판단
+     * @see capstonedesign.globalrounge.mainjob.MainActivity.onCreate
+     * @see SharedData.getUserInfo
+     *
+     * 자동로그인이 되어있는 경우
+     * @see requestSejongPermission
+     *
+     * @return Boolean
      */
-    override fun rejectPermission(text: String) {
-        view.alertToast(text)
+    override fun checkAutoLogin(): Boolean {
+        val user = SharedData.getUserInfo()
+        if (user.id != "" && user.pw != "") {//자동로그인이 되어있다면
+            requestSejongPermission(user)
+            return true
+        }
+        return false
+    }
+
+    /**
+     * 로그아웃 버튼 클릭시
+     * sharedPreference 에 데이터를 삭제한다
+     * @see capstonedesign.globalrounge.mainjob.MainActivity.onActivityResult
+     */
+    override fun deletePreference() {
+        SharedData.deleteUserInfo()
+    }
+
+    /**
+     * 서버와의 통신 종료
+     * @see capstonedesign.globalrounge.mainjob.MainActivity.onPause
+     */
+    override fun dispose() {
+        compositeDisposable.clear()
+    }
+    /**************** [ Local Function ] ****************/
+    /**
+     * 세종대학교의 인증을 얻어오는 함수
+     *
+     * 인증 성공시
+     * @see approvalPermission
+     * 인증 실패시
+     * @see rejectPermission
+     *
+     * @param user : 요청할 사용자 정보
+     */
+    private fun requestSejongPermission(user: User) {
+        SejongPermission.requestUserInformation(user, object : SejongPermission.LoginCallback {
+            override fun approval(user: User) {
+                approvalPermission(user)
+            }
+
+            override fun reject(text: String) {
+                rejectPermission(text)
+            }
+        })
     }
 
     /**
      * 우회접근에서 승인되었을 때 호출
      * Server 로 다시한번 승인을 요청한다.
      * @see requestSejongPermission
-     * @see MainPresenter.loginClicked
-     * @param user 로그인 사용자의 dataClass
+
+     * @param user 학교인증에서 넘어온 사용자 정보
      */
-    override fun approvalPermission(user: User) {
+    private fun approvalPermission(user: User) {
         ServerPermission.connectSocket()
         val ref = ServerPermission.socket!!.connect()
             .observeOn(AndroidSchedulers.mainThread())
@@ -103,68 +167,14 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
                 }
             })
         compositeDisposable.add(ref)
-
-
     }
 
     /**
-     * checkBox의 상태가 변하였을때 호출되는 함수
-     * @see view.onCreate
-     * @param isChecked checkBox 체크여부
+     * 우회접근에서 거절되었을 때 호출
+     * @see requestSejongPermission
+     * @param text : 사용자에게 알릴 Text
      */
-    override fun changeCheckState(isChecked: Boolean) {
-        SharedData.checkBoxState = isChecked
-        if (!isChecked) {
-            SharedData.deleteUserInfo()
-        }
+    private fun rejectPermission(text: String) {
+        view.alertToast(text)
     }
-
-    /**
-     * 자동로그인 check 여부
-     * 앱 실행시 자동로그인을 체크한다
-     * @see view.onCreate
-     * @return Boolean
-     */
-    override fun checkAutoLogin(): Boolean {
-        val user = SharedData.getUserInfo()
-        if (user.id != "" && user.pw != "") {//자동로그인이 되어있다면
-            requestSejongPermission(user)
-            return true
-        }
-        return false
-    }
-
-    /**
-     * 로그아웃
-     * sharedPreference에 데이터를 삭제한다
-     * @see view.onActivityResult
-     */
-    override fun deletePreference() {
-        SharedData.deleteUserInfo()
-    }
-
-    /**
-     * Rx 참조 제거
-     * @see view.onPause
-     */
-    override fun dispose() {
-        compositeDisposable.clear()
-    }
-
-    /**
-     * 세종대학교의 인증을 얻어오는 함수
-     *
-     */
-    private fun requestSejongPermission(user: User) {
-        SejongPermission.requestUserInformation(user, object : SejongPermission.LoginCallback {
-            override fun approval(user: User) {
-                approvalPermission(user)
-            }
-
-            override fun reject(text: String) {
-                rejectPermission(text)
-            }
-        })
-    }
-
 }
