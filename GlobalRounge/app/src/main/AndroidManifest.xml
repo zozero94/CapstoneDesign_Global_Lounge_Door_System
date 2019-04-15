@@ -17,7 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".qrjob.QrActivity" android:launchMode="singleTop"></activity>
+        <activity android:name=".qrjob.view.QrActivity" android:launchMode="singleTop"></activity>
     </application>
 
 </manifest>

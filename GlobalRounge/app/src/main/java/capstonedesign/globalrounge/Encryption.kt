@@ -27,7 +27,7 @@ object Encryption {
     }
 
     fun getEncodedString(info: Student, publicKey: String): String? {
-        var encodedInfo: String? = null
+
         val key: PublicKey
 
         bKey = Base64.decode(publicKey.toByteArray(), 0)
@@ -35,7 +35,7 @@ object Encryption {
         key = KeyFactory.getInstance("RSA").generatePublic(pKeySpec)
 
         cipher.init(Cipher.ENCRYPT_MODE, key)
-        encodedInfo = Gson().toJson(info)
+        var encodedInfo = Gson().toJson(info)
 
         val strToByte = encodedInfo!!.toByteArray()
         val size = strToByte.size / 52 // size % 52 == 0 size <<6  else size +1 <<6

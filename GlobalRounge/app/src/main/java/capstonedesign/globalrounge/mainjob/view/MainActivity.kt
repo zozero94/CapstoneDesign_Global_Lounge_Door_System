@@ -8,7 +8,7 @@ import android.widget.Toast
 import capstonedesign.globalrounge.mainjob.MainContract
 import capstonedesign.globalrounge.mainjob.presenter.MainPresenter
 import capstonedesign.globalrounge.mainjob.User
-import capstonedesign.globalrounge.qrjob.QrActivity
+import capstonedesign.globalrounge.qrjob.view.QrActivity
 import capstonedesign.globalrounge.R
 import capstonedesign.globalrounge.Student
 import capstonedesign.globalrounge.databinding.ActivityMainBinding

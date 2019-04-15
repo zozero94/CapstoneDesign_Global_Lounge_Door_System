@@ -7,7 +7,7 @@ import moe.codeest.rxsocketclient.meta.ThreadStrategy
 import java.nio.charset.Charset
 
 object ServerPermission {
-    private const val ip = "192.168.0.7"
+    private const val ip = "223.195.38.105"
     private const val port = 5050
 
     const val LOGIN = 100

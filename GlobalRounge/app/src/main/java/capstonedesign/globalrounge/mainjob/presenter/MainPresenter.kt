@@ -89,7 +89,7 @@ class MainPresenter (private val view: MainContract.View, context: Context) : Ma
                 }
 
                 override fun onDisconnected() {
-                    view.alertToast("연결해제띠")
+                    view.alertToast("연결이 원활하지 않습니다.")
                 }
 
                 override fun onResponse(data: ByteArray) {
