@@ -1,7 +1,7 @@
-package capstonedesign.globalrounge.mainjob.model
+package capstonedesign.globalrounge.model.permission
 
 import android.util.Log
-import capstonedesign.globalrounge.mainjob.User
+import capstonedesign.globalrounge.model.User
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -14,11 +14,11 @@ import java.io.IOException
 /**
  * 세종대학교 인증정보를 우회접근하여 받아오는 class
  * @param callback
- * @see MainModel.requestPermission
+ * @see requestPermission
  */
-class SejongPermission constructor(callback: LoginCallback) {
+object SejongPermission {
     private val sejongPermission: Permission
-    private val callback = callback
+
 
     /**
      * 우회로그인 결과를 되돌려주는 Callback Interface
@@ -55,9 +55,9 @@ class SejongPermission constructor(callback: LoginCallback) {
     /**
      * 사용자 정보를 요청하는 구간
      * @param user
-     * @see MainModel.requestPermission
+     * @see requestPermission
      */
-    fun requestUserInformation(user: User) {
+    fun requestUserInformation(user: User, callback:LoginCallback) {
         val request = sejongPermission.getResult(user.id, user.pw, 1)
         request.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {

@@ -1,16 +1,14 @@
-package capstonedesign.globalrounge.mainjob.view
+package capstonedesign.globalrounge.mainjob
 
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
-import capstonedesign.globalrounge.mainjob.MainContract
-import capstonedesign.globalrounge.mainjob.presenter.MainPresenter
-import capstonedesign.globalrounge.mainjob.User
-import capstonedesign.globalrounge.qrjob.view.QrActivity
+import capstonedesign.globalrounge.model.User
+import capstonedesign.globalrounge.qrjob.QrActivity
 import capstonedesign.globalrounge.R
-import capstonedesign.globalrounge.Student
+import capstonedesign.globalrounge.model.Student
 import capstonedesign.globalrounge.databinding.ActivityMainBinding
 
 
@@ -89,7 +87,10 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     override fun startActivity(student: Student) {
-        startActivityForResult(QrActivity.getIntent(this@MainActivity,student), REQUEST_CODE)
+        startActivityForResult(
+            QrActivity.getIntent(this@MainActivity,student),
+            REQUEST_CODE
+        )
     }
 
 

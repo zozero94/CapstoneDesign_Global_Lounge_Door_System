@@ -1,7 +1,7 @@
 package Encryption
 
 import android.util.Base64
-import capstonedesign.globalrounge.Student
+import capstonedesign.globalrounge.model.Student
 import com.google.gson.Gson
 import java.nio.charset.StandardCharsets
 import java.security.*

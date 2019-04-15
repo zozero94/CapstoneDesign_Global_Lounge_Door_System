@@ -1,4 +1,4 @@
-package capstonedesign.globalrounge.mainjob
+package capstonedesign.globalrounge.model
 
 import java.io.Serializable
 
