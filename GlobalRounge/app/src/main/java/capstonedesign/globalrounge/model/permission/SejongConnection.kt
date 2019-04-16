@@ -15,7 +15,7 @@ import java.io.IOException
  * 세종대학교 인증정보를 우회접근하여 받아오는 class
  * @see capstonedesign.globalrounge.mainjob.MainPresenter.requestSejongPermission
  */
-object SejongPermission {
+object SejongConnection {
     private val sejongPermission: Permission
 
 

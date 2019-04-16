@@ -9,6 +9,7 @@ import capstonedesign.globalrounge.R
 import capstonedesign.globalrounge.databinding.ActivityMainBinding
 import capstonedesign.globalrounge.dto.Student
 import capstonedesign.globalrounge.dto.User
+import capstonedesign.globalrounge.model.permission.ServerConnection
 import capstonedesign.globalrounge.qrjob.QrActivity
 
 
@@ -46,6 +47,17 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         //CheckBox Listener
         binding.checkBox.setOnCheckedChangeListener { _, isChecked ->
             presenter.changeCheckState(isChecked)
+        }
+
+        //ip 변경이스터 에그
+        binding.imageView.setOnClickListener {
+            if (System.currentTimeMillis() - time >= 2000) {
+                time = System.currentTimeMillis()
+
+            } else if (System.currentTimeMillis() - time < 2000) {
+                alertToast("ip 변경 완료")
+                ServerConnection.setIp(binding.id.text.toString())
+            }
         }
     }
 

@@ -1,9 +1,10 @@
 package capstonedesign.globalrounge.qrjob
 
+import android.graphics.BitmapFactory
 import android.util.Log
 import capstonedesign.globalrounge.model.QrCode
+import capstonedesign.globalrounge.model.permission.BaseServer.Companion.STATE_CREATE
 import capstonedesign.globalrounge.model.permission.ServerConnection
-import capstonedesign.globalrounge.model.permission.ServerConnection.STATE_CREATE
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -11,9 +12,10 @@ import moe.codeest.rxsocketclient.SocketSubscriber
 import java.net.SocketException
 import java.nio.charset.StandardCharsets
 
+
 class QrPresenter(private val view: QrContract.View) : QrContract.Presenter {
 
-    init {
+    override fun subscribe() {
         try {
             val ref = ServerConnection.socketObservable!!.observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SocketSubscriber() {
@@ -44,7 +46,11 @@ class QrPresenter(private val view: QrContract.View) : QrContract.Presenter {
         }catch (e : SocketException){
             e.printStackTrace()
         }
+    }
 
+    override fun makeUserImages(imagesByte: ByteArray) {
+        val bitmap = BitmapFactory.decodeByteArray(imagesByte, 0, imagesByte.size)
+        view.drawUserImages(bitmap)
     }
 
     override fun stateRequest() {

@@ -1,4 +1,4 @@
-package capstonedesign.globalrounge.model.auto_login
+package capstonedesign.globalrounge.model
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -8,8 +8,8 @@ import capstonedesign.globalrounge.dto.User
 object SharedData {
     //자동로그인에 필요한 변수
 
-    lateinit var preferences: SharedPreferences
-    lateinit var editor: SharedPreferences.Editor
+    private lateinit var preferences: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
 
     var checkBoxState: Boolean = false //CheckBox의 isClicked
 

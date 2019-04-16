@@ -10,6 +10,9 @@ object QrCode {
     private val writer = MultiFormatWriter()
     private val encoder = BarcodeEncoder()
 
+    /**
+     * QR코드를 생성한다
+     */
     fun makeQrCode(data: String): Bitmap {
         val matrix: BitMatrix = writer.encode(data, BarcodeFormat.QR_CODE, 500, 500)
         return encoder.createBitmap(matrix)

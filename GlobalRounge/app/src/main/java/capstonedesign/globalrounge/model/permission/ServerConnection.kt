@@ -1,19 +1,17 @@
 package capstonedesign.globalrounge.model.permission
 
 import Encryption.Encryption
-import capstonedesign.globalrounge.mainjob.MainPresenter
 import capstonedesign.globalrounge.dto.User
+import capstonedesign.globalrounge.mainjob.MainPresenter
 import com.google.gson.JsonObject
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import io.reactivex.observables.ConnectableObservable
 import moe.codeest.rxsocketclient.RxSocketClient
 import moe.codeest.rxsocketclient.SocketClient
 import moe.codeest.rxsocketclient.meta.DataWrapper
 import moe.codeest.rxsocketclient.meta.SocketConfig
 import moe.codeest.rxsocketclient.meta.ThreadStrategy
-import java.net.SocketException
 import java.nio.charset.Charset
 
 /**
@@ -21,21 +19,7 @@ import java.nio.charset.Charset
  * 1차인증 후 2차인증 실행
  * @see MainPresenter.approvalPermission
  */
-object ServerConnection{
-    private const val ip = "219.250.232.170"
-    private const val port = 5050
-
-
-    const val LOGIN = 100
-    const val LOGIN_OK = 101
-    const val LOGIN_ALREADY = 102
-    const val LOGIN_NO_DATA = 103
-
-    const val STATE_REQ = 200
-    const val STATE_DEL = 201
-    const val STATE_CREATE = 202
-
-    const val LOGOUT = 500
+object ServerConnection : BaseServer(){
 
     var socketObservable: Observable<DataWrapper>? = null
     private var socket : SocketClient?=null
@@ -53,13 +37,14 @@ object ServerConnection{
      * @see MainPresenter.approvalPermission
      */
     fun connectSocket() {
+
         socket = RxSocketClient.create(
             SocketConfig.Builder()
                 .setIp(ip)
                 .setPort(port)
                 .setCharset(Charset.defaultCharset())
                 .setThreadStrategy(ThreadStrategy.ASYNC)
-                .setTimeout(30 * 1000)
+                .setTimeout(2 * 1000)
                 .build()
         )
         socketObservable = socket!!.connect()
@@ -77,7 +62,6 @@ object ServerConnection{
      * }
      */
     fun requestServerPermission(user: User) {
-        Encryption.newKey()
         val message = JsonObject().apply {
             addProperty("seqType", LOGIN)
             addProperty("data", JsonObject().apply {
@@ -91,22 +75,36 @@ object ServerConnection{
         //\n을 붙이지 않으면 서버에서 ReadLine으로 읽을 수 없음
     }
 
+    /**
+     * 서버로 사용자 상태 on을 요청
+     * @see capstonedesign.globalrounge.qrjob.QrPresenter.stateRequest
+     */
     fun sendStateOn(){
         val data = JsonObject()
         data.addProperty("seqType", STATE_REQ)
         socket!!.sendData(data.toString()+"\n")
 
     }
+
+    /**
+     * 서버로 사용자 상태 off를 요청
+     * @see capstonedesign.globalrounge.qrjob.QrPresenter.stateDelete
+     */
     fun sendStateOff(){
         val data = JsonObject()
         data.addProperty("seqType", STATE_DEL)
         socket!!.sendData(data.toString()+"\n")
     }
 
+    /**
+     * 사용자 로그아웃을 요청
+     * @see capstonedesign.globalrounge.qrjob.QrPresenter.logout
+     */
     fun logout(){
         val data = JsonObject()
         data.addProperty("seqType", LOGOUT)
         socket!!.sendData(data.toString()+"\n")
     }
+
 
 }

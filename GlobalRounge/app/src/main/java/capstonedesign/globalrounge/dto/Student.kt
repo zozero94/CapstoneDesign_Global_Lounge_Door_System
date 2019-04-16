@@ -11,5 +11,6 @@ data class Student(
     val gender: String,
     val nationality: String,
     val department: String,
-    val college: String
+    val college: String,
+    val images:ByteArray
 ) : Serializable

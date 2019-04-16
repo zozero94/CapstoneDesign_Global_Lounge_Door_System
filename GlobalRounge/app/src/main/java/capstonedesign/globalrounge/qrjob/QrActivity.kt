@@ -23,9 +23,13 @@ class QrActivity : AppCompatActivity(), QrContract.View {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_qr)
 
+
+
         val student = intent.getSerializableExtra(EXTRA_USER) as Student
         binding.user = student
 
+        presenter.subscribe()
+        presenter.makeUserImages(student.images)
         binding.logout.setOnClickListener {
             setResult(REQUEST_CODE)
             finish()
@@ -64,6 +68,9 @@ class QrActivity : AppCompatActivity(), QrContract.View {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 
+    override fun drawUserImages(bitmap: Bitmap) {
+        binding.userImage.setImageBitmap(bitmap)
+    }
 
     companion object {
         private const val EXTRA_USER = "EXTRA_USER"

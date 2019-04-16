@@ -2,19 +2,23 @@ package capstonedesign.globalrounge.mainjob
 
 import Encryption.Encryption
 import android.content.Context
+import android.util.Log
 import capstonedesign.globalrounge.dto.ADMIN
 import capstonedesign.globalrounge.dto.STUDENT
 import capstonedesign.globalrounge.dto.User
-import capstonedesign.globalrounge.model.auto_login.SharedData
-import capstonedesign.globalrounge.model.permission.SejongPermission
+import capstonedesign.globalrounge.model.SharedData
+import capstonedesign.globalrounge.model.permission.BaseServer.Companion.LOGIN_ALREADY
+import capstonedesign.globalrounge.model.permission.BaseServer.Companion.LOGIN_NO_DATA
+import capstonedesign.globalrounge.model.permission.BaseServer.Companion.LOGIN_OK
+import capstonedesign.globalrounge.model.permission.SejongConnection
 import capstonedesign.globalrounge.model.permission.ServerConnection
-import capstonedesign.globalrounge.model.permission.ServerConnection.LOGIN_ALREADY
-import capstonedesign.globalrounge.model.permission.ServerConnection.LOGIN_NO_DATA
-import capstonedesign.globalrounge.model.permission.ServerConnection.LOGIN_OK
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import com.google.gson.JsonSyntaxException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import moe.codeest.rxsocketclient.SocketSubscriber
+import java.lang.ClassCastException
+import java.lang.Exception
 import java.nio.charset.StandardCharsets
 
 
@@ -115,7 +119,7 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
      * @param user : 요청할 사용자 정보
      */
     private fun requestSejongPermission(user: User) {
-        SejongPermission.requestUserInformation(user, object : SejongPermission.LoginCallback {
+        SejongConnection.requestUserInformation(user, object : SejongConnection.LoginCallback {
             override fun approval(user: User) {
                 approvalPermission(user)
             }
@@ -140,6 +144,7 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : SocketSubscriber() {
                 override fun onConnected() {
+                    Encryption.newKey()
                     ServerConnection.requestServerPermission(user)
                 }
 
@@ -149,19 +154,25 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
 
                 override fun onResponse(data: ByteArray) {
                     val str = String(data, StandardCharsets.UTF_8)
-                    val result = JsonParser().parse(str) as JsonObject
-                    when (result.get("seqType").asInt) {
-                        LOGIN_OK -> {
-                            val stu = Encryption.getDecodedString(result.get("data").asString)!!
-                            SharedData.saveUserInfo(user)//체크박스에 따른 자동로그인 저장
-                            view.startActivity(stu)//액티비티 시작
+                    try {
+                        val result = JsonParser().parse(str) as JsonObject
+                        when (result.get("seqType").asInt) {
+                            LOGIN_OK -> {
+                                val stu = Encryption.getDecodedString(result.get("data").asString)!!
+                                SharedData.saveUserInfo(user)//체크박스에 따른 자동로그인 저장
+                                view.startActivity(stu)//액티비티 시작
+                            }
+                            LOGIN_ALREADY -> {
+                                view.alertToast("이미 로그인 중입니다.")
+                            }
+                            LOGIN_NO_DATA -> {
+                                view.alertToast("서버에 더미데이터가 없습니다.")
+                            }
                         }
-                        LOGIN_ALREADY -> {
-                            view.alertToast("이미 로그인 중입니다.")
-                        }
-                        LOGIN_NO_DATA -> {
-                            view.alertToast("서버에 더미데이터가 없습니다.")
-                        }
+                    }catch (e : JsonSyntaxException){
+                        Log.d("데이터",str)
+                    }catch (e : ClassCastException){
+                        Log.d("데이터",str)
                     }
                 }
             })
