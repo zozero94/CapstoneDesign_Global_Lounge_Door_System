@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="user" type="capstonedesign.globalrounge.dto.Student"/>
+    </data>
     <android.support.constraint.ConstraintLayout
             android:background="@drawable/background"
             android:layout_width="match_parent"
@@ -26,7 +29,7 @@
 
             <ImageView
                     android:layout_width="128dp"
-                    android:layout_height="128dp" app:srcCompat="@color/black"
+                    android:layout_height="128dp"
                     android:id="@+id/qr" app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="8dp" android:layout_marginTop="64dp"
@@ -40,19 +43,43 @@
                     app:layout_constraintTop_toBottomOf="@+id/qr" app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="8dp" android:padding="32dp">
+                    android:layout_marginEnd="8dp" android:padding="16dp">
                 <ImageView
 
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" tools:srcCompat="@tools:sample/avatars"
                         android:id="@+id/user_image" android:layout_weight="6" android:layout_margin="8dp"
-                        android:padding="8dp"/>
-                <android.support.v7.widget.RecyclerView
+                        android:padding="32dp"/>
+                <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" android:layout_weight="6" android:id="@+id/user_info"
-                        android:padding="32dp"
-
-                />
+                        android:layout_height="match_parent" android:layout_weight="6">
+                    <TextView
+                            android:text="@{user.name}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" android:id="@+id/user_name"
+                            android:layout_margin="8dp"
+                            android:hint="이 름"
+                            android:paddingLeft="8dp" android:paddingRight="8dp"/>
+                    <TextView
+                            android:text="@{user.studentID}"
+                            android:hint="학 번"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" android:id="@+id/user_id"
+                            android:layout_margin="8dp" android:paddingLeft="8dp" android:paddingRight="8dp"/>
+                    <TextView
+                            android:text="@{user.department}"
+                            android:hint="학 과"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" android:id="@+id/user_major"
+                            android:layout_margin="8dp" android:paddingLeft="8dp" android:paddingRight="8dp"/>
+                    <TextView
+                            android:text="@{user.college}"
+                            android:hint="단 과 대 학"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" android:id="@+id/user_collage"
+                            android:layout_margin="8dp" android:paddingLeft="8dp" android:paddingRight="8dp"/>
+                </LinearLayout>
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>
         <ImageView

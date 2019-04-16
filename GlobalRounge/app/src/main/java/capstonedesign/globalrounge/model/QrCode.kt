@@ -1,0 +1,19 @@
+package capstonedesign.globalrounge.model
+
+import android.graphics.Bitmap
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.common.BitMatrix
+import com.journeyapps.barcodescanner.BarcodeEncoder
+
+object QrCode {
+    private val writer = MultiFormatWriter()
+    private val encoder = BarcodeEncoder()
+
+    fun makeQrCode(data: String): Bitmap {
+        val matrix: BitMatrix = writer.encode(data, BarcodeFormat.QR_CODE, 500, 500)
+        return encoder.createBitmap(matrix)
+
+    }
+
+}

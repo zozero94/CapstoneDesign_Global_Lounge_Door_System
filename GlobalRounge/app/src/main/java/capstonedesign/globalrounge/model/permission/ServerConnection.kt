@@ -2,12 +2,18 @@ package capstonedesign.globalrounge.model.permission
 
 import Encryption.Encryption
 import capstonedesign.globalrounge.mainjob.MainPresenter
-import capstonedesign.globalrounge.model.User
+import capstonedesign.globalrounge.dto.User
 import com.google.gson.JsonObject
+import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.observables.ConnectableObservable
 import moe.codeest.rxsocketclient.RxSocketClient
 import moe.codeest.rxsocketclient.SocketClient
+import moe.codeest.rxsocketclient.meta.DataWrapper
 import moe.codeest.rxsocketclient.meta.SocketConfig
 import moe.codeest.rxsocketclient.meta.ThreadStrategy
+import java.net.SocketException
 import java.nio.charset.Charset
 
 /**
@@ -15,16 +21,33 @@ import java.nio.charset.Charset
  * 1차인증 후 2차인증 실행
  * @see MainPresenter.approvalPermission
  */
-object ServerPermission {
-    private const val ip = "223.195.38.105"
+object ServerConnection{
+    private const val ip = "219.250.232.170"
     private const val port = 5050
+
 
     const val LOGIN = 100
     const val LOGIN_OK = 101
     const val LOGIN_ALREADY = 102
     const val LOGIN_NO_DATA = 103
 
-    var socket: SocketClient? = null
+    const val STATE_REQ = 200
+    const val STATE_DEL = 201
+    const val STATE_CREATE = 202
+
+    const val LOGOUT = 500
+
+    var socketObservable: Observable<DataWrapper>? = null
+    private var socket : SocketClient?=null
+
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
+
+    fun addDisposable(disposable: Disposable){
+        compositeDisposable.add(disposable)
+    }
+    fun clearDisposable(){
+        compositeDisposable.clear()
+    }
     /**
      * 서버와 연결하는 함수
      * @see MainPresenter.approvalPermission
@@ -39,6 +62,8 @@ object ServerPermission {
                 .setTimeout(30 * 1000)
                 .build()
         )
+        socketObservable = socket!!.connect()
+
     }
 
     /**
@@ -61,8 +86,27 @@ object ServerPermission {
                 addProperty("type", user.tag)
             }.toString())
         }
-        socket?.sendData(message.toString() + "\n")
+
+        socket!!.sendData(message.toString() + "\n")
         //\n을 붙이지 않으면 서버에서 ReadLine으로 읽을 수 없음
+    }
+
+    fun sendStateOn(){
+        val data = JsonObject()
+        data.addProperty("seqType", STATE_REQ)
+        socket!!.sendData(data.toString()+"\n")
+
+    }
+    fun sendStateOff(){
+        val data = JsonObject()
+        data.addProperty("seqType", STATE_DEL)
+        socket!!.sendData(data.toString()+"\n")
+    }
+
+    fun logout(){
+        val data = JsonObject()
+        data.addProperty("seqType", LOGOUT)
+        socket!!.sendData(data.toString()+"\n")
     }
 
 }

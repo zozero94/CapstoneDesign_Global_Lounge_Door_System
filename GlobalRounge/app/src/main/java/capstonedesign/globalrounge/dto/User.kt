@@ -1,4 +1,4 @@
-package capstonedesign.globalrounge.model
+package capstonedesign.globalrounge.dto
 
 import java.io.Serializable
 

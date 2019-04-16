@@ -4,7 +4,7 @@ import Encryption.Encryption.getDecodedString
 import Encryption.Encryption.getEncodedString
 import Encryption.Encryption.newKey
 import android.util.Base64
-import capstonedesign.globalrounge.model.Student
+import capstonedesign.globalrounge.dto.Student
 import com.google.gson.Gson
 import java.nio.charset.StandardCharsets
 import java.security.*
@@ -30,7 +30,7 @@ object Encryption {
      * 새로운 키 생성 함수
      *
      * 서버로 인증 요청하기 전 키 생성
-     * @see capstonedesign.globalrounge.model.permission.ServerPermission.requestServerPermission
+     * @see capstonedesign.globalrounge.model.permission.ServerConnection.requestServerPermission
      */
     fun newKey() {
 
@@ -102,7 +102,7 @@ object Encryption {
             val appendString = String(cipher.doFinal(temp), StandardCharsets.UTF_8)
             str.append(appendString)
         }
-
+        keyPair=null
         return Gson().fromJson<Any>(str.toString(), Student::class.java) as Student
     }
 

@@ -1,7 +1,7 @@
 package capstonedesign.globalrounge.model.permission
 
 import android.util.Log
-import capstonedesign.globalrounge.model.User
+import capstonedesign.globalrounge.dto.User
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback

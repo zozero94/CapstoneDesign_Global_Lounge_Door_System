@@ -3,16 +3,16 @@ package capstonedesign.globalrounge.qrjob
 import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
 import capstonedesign.globalrounge.R
 import capstonedesign.globalrounge.databinding.ActivityQrBinding
 import capstonedesign.globalrounge.mainjob.MainActivity.Companion.REQUEST_CODE
-import capstonedesign.globalrounge.model.Student
+import capstonedesign.globalrounge.dto.Student
 
-/**
- * 미완성 더미 액티비티
- */
+
 class QrActivity : AppCompatActivity(), QrContract.View {
 
     //데이터바인딩 변수
@@ -23,9 +23,8 @@ class QrActivity : AppCompatActivity(), QrContract.View {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_qr)
 
-
         val student = intent.getSerializableExtra(EXTRA_USER) as Student
-        //binding.textView.text = "id : ${student.studentID} \n name : ${student.name}"
+        binding.user = student
 
         binding.logout.setOnClickListener {
             setResult(REQUEST_CODE)
@@ -34,9 +33,37 @@ class QrActivity : AppCompatActivity(), QrContract.View {
 
     }
 
+    override fun makeQrCode(bitmap: Bitmap) {
+        binding.qr.setImageBitmap(bitmap)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.stateRequest()
+    }
+
+
+    override fun onPause() {
+        super.onPause()
+        presenter.stateDelete()
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.logout()
+        Thread.sleep(500)
+        presenter.dispose()
+    }
+
     override fun onBackPressed() {
         finishAffinity()
     }
+
+    override fun alertToast(text: String) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+    }
+
 
     companion object {
         private const val EXTRA_USER = "EXTRA_USER"

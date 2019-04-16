@@ -3,7 +3,7 @@ package capstonedesign.globalrounge.model.auto_login
 import android.content.Context
 import android.content.SharedPreferences
 import capstonedesign.globalrounge.mainjob.MainPresenter
-import capstonedesign.globalrounge.model.User
+import capstonedesign.globalrounge.dto.User
 
 object SharedData {
     //자동로그인에 필요한 변수

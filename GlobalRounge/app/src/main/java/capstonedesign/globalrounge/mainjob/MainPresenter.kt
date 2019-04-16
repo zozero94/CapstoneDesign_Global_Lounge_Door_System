@@ -2,19 +2,18 @@ package capstonedesign.globalrounge.mainjob
 
 import Encryption.Encryption
 import android.content.Context
-import capstonedesign.globalrounge.model.ADMIN
-import capstonedesign.globalrounge.model.STUDENT
-import capstonedesign.globalrounge.model.User
+import capstonedesign.globalrounge.dto.ADMIN
+import capstonedesign.globalrounge.dto.STUDENT
+import capstonedesign.globalrounge.dto.User
 import capstonedesign.globalrounge.model.auto_login.SharedData
 import capstonedesign.globalrounge.model.permission.SejongPermission
-import capstonedesign.globalrounge.model.permission.ServerPermission
-import capstonedesign.globalrounge.model.permission.ServerPermission.LOGIN_ALREADY
-import capstonedesign.globalrounge.model.permission.ServerPermission.LOGIN_NO_DATA
-import capstonedesign.globalrounge.model.permission.ServerPermission.LOGIN_OK
+import capstonedesign.globalrounge.model.permission.ServerConnection
+import capstonedesign.globalrounge.model.permission.ServerConnection.LOGIN_ALREADY
+import capstonedesign.globalrounge.model.permission.ServerConnection.LOGIN_NO_DATA
+import capstonedesign.globalrounge.model.permission.ServerConnection.LOGIN_OK
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import moe.codeest.rxsocketclient.SocketSubscriber
 import java.nio.charset.StandardCharsets
 
@@ -22,7 +21,7 @@ import java.nio.charset.StandardCharsets
 class MainPresenter(private val view: MainContract.View, context: Context) : MainContract.Presenter {
 
 
-    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
+
 
     init {
         SharedData.setSharedPreferences(context)
@@ -102,7 +101,7 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
      * @see capstonedesign.globalrounge.mainjob.MainActivity.onPause
      */
     override fun dispose() {
-        compositeDisposable.clear()
+        ServerConnection.clearDisposable()
     }
     /**************** [ Local Function ] ****************/
     /**
@@ -135,13 +134,13 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
      * @param user 학교인증에서 넘어온 사용자 정보
      */
     private fun approvalPermission(user: User) {
-        ServerPermission.connectSocket()
-        val ref = ServerPermission.socket!!.connect()
+        ServerConnection.connectSocket()
+
+        val ref = ServerConnection.socketObservable!!
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : SocketSubscriber() {
                 override fun onConnected() {
-                    view.alertToast("연결띠")
-                    ServerPermission.requestServerPermission(user)
+                    ServerConnection.requestServerPermission(user)
                 }
 
                 override fun onDisconnected() {
@@ -166,7 +165,7 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
                     }
                 }
             })
-        compositeDisposable.add(ref)
+        ServerConnection.addDisposable(ref)
     }
 
     /**

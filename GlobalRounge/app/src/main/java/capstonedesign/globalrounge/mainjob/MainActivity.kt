@@ -7,8 +7,8 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import capstonedesign.globalrounge.R
 import capstonedesign.globalrounge.databinding.ActivityMainBinding
-import capstonedesign.globalrounge.model.Student
-import capstonedesign.globalrounge.model.User
+import capstonedesign.globalrounge.dto.Student
+import capstonedesign.globalrounge.dto.User
 import capstonedesign.globalrounge.qrjob.QrActivity
 
 
@@ -49,10 +49,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        presenter.dispose()
-    }
+
 
     override fun onResume() {
         super.onResume()
@@ -64,7 +61,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        //TODO Logout으로 넘어왓을 때 자동로그인 해제
         if (requestCode == REQUEST_CODE) {
             binding.id.setText("")
             binding.pw.setText("")
@@ -73,14 +69,14 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     override fun alertToast(text: String) {
-        makeToast(text)
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 
 
     override fun onBackPressed() {
         if (System.currentTimeMillis() - time >= 2000) {
             time = System.currentTimeMillis()
-            makeToast("뒤로 버튼을 한번 더 누르면 종료합니다.")
+            alertToast("뒤로 버튼을 한번 더 누르면 종료합니다.")
         } else if (System.currentTimeMillis() - time < 2000) {
             finishAffinity()
         }
@@ -94,8 +90,4 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
 
-    /**************** [ Local Function ] ****************/
-    private fun makeToast(text: String) {
-        Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
-    }
 }

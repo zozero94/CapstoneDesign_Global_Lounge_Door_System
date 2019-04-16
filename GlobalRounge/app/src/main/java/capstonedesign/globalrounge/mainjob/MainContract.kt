@@ -1,7 +1,7 @@
 package capstonedesign.globalrounge.mainjob
 
-import capstonedesign.globalrounge.model.Student
-import capstonedesign.globalrounge.model.User
+import capstonedesign.globalrounge.dto.Student
+import capstonedesign.globalrounge.dto.User
 
 interface MainContract {
     interface View {
