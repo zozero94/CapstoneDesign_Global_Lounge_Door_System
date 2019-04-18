@@ -1,6 +1,8 @@
-package Model;
+package model;
 
-public class Student {
+import java.io.Serializable;
+
+public class Student implements Serializable {
 
 
     private String studentID;
@@ -9,6 +11,7 @@ public class Student {
     private String nationality;
     private String department;
     private String college;
+    private byte[] images;
 
     public Student() {
         this.studentID = null;
@@ -17,7 +20,14 @@ public class Student {
         this.nationality = null;
         this.department = null;
     }
-
+    public Student(ServerStudent student) {
+        this.studentID = student.getStudentID();
+        this.name = student.getName();
+        this.gender = student.getGender();
+        this.nationality = student.getNationality();
+        this.department = student.getDepartment();
+        this.college = student.getCollege();
+    }
     public Student(String studentID, String name, String gender, String nationality, String department, String college) {
         this.studentID = studentID;
         this.name = name;
@@ -62,6 +72,12 @@ public class Student {
     }
     public void setCollege(String college) {
         this.college = college;
+    }
+    public byte[] getImages() {
+        return images;
+    }
+    public void setImages(byte[] images) {
+        this.images = images;
     }
 
     @Override

@@ -1,5 +1,5 @@
-package Encryption;
-import Model.Student;
+package encryption;
+import model.Student;
 
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
@@ -22,7 +22,9 @@ import javax.crypto.NoSuchPaddingException;
 import com.google.gson.Gson;
 import org.apache.commons.codec.binary.Base64;
 
-public class RSAencoded {
+public class RsaManager {
+
+    private static RsaManager rsaManager= null;
     private PublicKey publicKey;
     private PrivateKey privateKey;
     private Cipher cipher;
@@ -37,13 +39,18 @@ public class RSAencoded {
 
     private Gson gson;
 
-    public RSAencoded() {
+    public static synchronized RsaManager getInstance(){
+        if(rsaManager == null) rsaManager = new RsaManager();
+        return rsaManager;
+     }
+
+    private RsaManager() {
         try {
             publicKey = null;
             privateKey = null;
             secureRandom = new SecureRandom();
             keyFactory = KeyFactory.getInstance("RSA");
-            cipher = Cipher.getInstance("RSA");
+            cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             gson = new Gson();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -107,16 +114,12 @@ public class RSAencoded {
 
             byte[] decoded = Base64.decodeBase64(data.getBytes());
             byte[] temp = new byte[64];
-            System.out.println("decode");
             for(int i = 0; i < (decoded.length/64); i++){
                 System.arraycopy(decoded, (i<<6), temp,0,64);
                 String s = new String(cipher.doFinal(temp), "UTF-8");
-                System.out.println(s);
                 str.append(s);
             }
-            System.out.println(str.toString());
             info = gson.fromJson(str.toString(), Student.class);
-            System.out.println(info.toString());
         } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
         } catch (BadPaddingException e) {
@@ -128,6 +131,16 @@ public class RSAencoded {
         }
     }
 
+    public void setPrivateKey(String key){
+        try {
+            byte[] bKey = Base64.decodeBase64(key.getBytes());
+            PKCS8EncodedKeySpec pKeySpec = new PKCS8EncodedKeySpec(bKey);
+            this.privateKey = keyFactory.generatePrivate(pKeySpec);
+        }catch (InvalidKeySpecException e){
+            e.printStackTrace();
+        }
+
+    }
     public String getStrPublicKey() {
         return strPublicKey;
     }
