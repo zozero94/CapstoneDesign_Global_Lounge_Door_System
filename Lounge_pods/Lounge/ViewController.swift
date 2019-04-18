@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftSocket
 
 class ViewController: UIViewController {
     @IBOutlet var idTextField: UITextField!
