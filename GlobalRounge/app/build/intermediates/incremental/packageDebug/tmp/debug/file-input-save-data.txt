@@ -1,0 +1,11 @@
+#Internal package file, do not edit.
+#Thu Apr 18 15:01:24 KST 2019
+1.base=C\:\\Users\\USER\\Desktop\\git\\CapstoneDesign\\GlobalRounge\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\out
+0.baseType=DIRECTORY
+1.baseType=DIRECTORY
+count=2
+1.set=DEX
+0.path=classes.dex
+0.set=DEX
+0.base=C\:\\Users\\USER\\Desktop\\git\\CapstoneDesign\\GlobalRounge\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\out
+1.path=classes.dex
