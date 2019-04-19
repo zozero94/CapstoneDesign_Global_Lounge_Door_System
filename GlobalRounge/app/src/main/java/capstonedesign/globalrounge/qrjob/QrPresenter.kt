@@ -1,12 +1,14 @@
 package capstonedesign.globalrounge.qrjob
 
 import android.graphics.BitmapFactory
+import android.util.Base64
 import android.util.Log
 import capstonedesign.globalrounge.model.QrCode
 import capstonedesign.globalrounge.model.permission.BaseServer.Companion.STATE_CREATE
 import capstonedesign.globalrounge.model.permission.ServerConnection
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import com.google.gson.JsonSyntaxException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import moe.codeest.rxsocketclient.SocketSubscriber
 import java.net.SocketException
@@ -17,6 +19,7 @@ class QrPresenter(private val view: QrContract.View) : QrContract.Presenter {
 
     override fun subscribe() {
         try {
+            var buffer =""
             val ref = ServerConnection.socketObservable!!.observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SocketSubscriber() {
                     override fun onConnected() {
@@ -24,13 +27,13 @@ class QrPresenter(private val view: QrContract.View) : QrContract.Presenter {
                     }
 
                     override fun onDisconnected() {
-                        Log.d("기모띄", "onDisConnect")
+
                     }
 
                     override fun onResponse(data: ByteArray) {
                         val str = String(data, StandardCharsets.UTF_8)
-                        val result = JsonParser().parse(str) as JsonObject
                         try {
+                            val result = JsonParser().parse(str) as JsonObject
                             when (result.get("seqType").asInt) {
                                 STATE_CREATE -> {
                                     val bitmap = QrCode.makeQrCode(result.get("qr").asString)
@@ -39,6 +42,13 @@ class QrPresenter(private val view: QrContract.View) : QrContract.Presenter {
                             }
                         } catch (e: IllegalStateException) {
                             e.printStackTrace()
+                        }catch (e: JsonSyntaxException){
+                            buffer +=str
+                            if(buffer[buffer.length-1] =='\n'){
+                                val realImage = Base64.decode(buffer,Base64.DEFAULT)
+                                makeUserImages(realImage)
+                                buffer=""
+                            }
                         }
                     }
                 })
@@ -48,7 +58,7 @@ class QrPresenter(private val view: QrContract.View) : QrContract.Presenter {
         }
     }
 
-    override fun makeUserImages(imagesByte: ByteArray) {
+    fun makeUserImages(imagesByte: ByteArray) {
         val bitmap = BitmapFactory.decodeByteArray(imagesByte, 0, imagesByte.size)
         view.drawUserImages(bitmap)
     }

@@ -11,7 +11,6 @@ interface QrContract {
 
     interface Presenter {
         fun subscribe()
-        fun makeUserImages(imagesByte:ByteArray)
         fun stateRequest()
         fun dispose()
         fun stateDelete()

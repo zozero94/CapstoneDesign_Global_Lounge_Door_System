@@ -49,11 +49,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" tools:srcCompat="@tools:sample/avatars"
                         android:id="@+id/user_image" android:layout_weight="6" android:layout_margin="8dp"
-                        android:padding="32dp"/>
+                        android:padding="32dp" android:scaleType="center" android:adjustViewBounds="true"
+                        android:cropToPadding="true"/>
                 <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" android:layout_weight="6">
+                        android:layout_height="match_parent" android:layout_weight="6"
+                        android:paddingTop="32dp">
                     <TextView
                             android:text="@{user.name}"
                             android:layout_width="match_parent"

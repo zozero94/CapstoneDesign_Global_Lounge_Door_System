@@ -29,7 +29,6 @@ class QrActivity : AppCompatActivity(), QrContract.View {
         binding.user = student
 
         presenter.subscribe()
-        presenter.makeUserImages(student.images)
         binding.logout.setOnClickListener {
             setResult(REQUEST_CODE)
             finish()
