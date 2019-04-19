@@ -7,6 +7,7 @@ interface MainContract {
     interface View {
         fun alertToast(text: String)
         fun startActivity(student: Student)
+        fun updateUserInfo(user: User)
     }
 
     interface Presenter {

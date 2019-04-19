@@ -62,6 +62,10 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
 
+    override fun updateUserInfo(user: User) {
+        binding.id.setText(user.id)
+        binding.pw.setText(user.pw)
+    }
 
     override fun onResume() {
         super.onResume()

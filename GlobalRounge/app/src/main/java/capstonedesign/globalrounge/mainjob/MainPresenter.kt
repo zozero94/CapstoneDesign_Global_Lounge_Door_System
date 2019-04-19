@@ -85,6 +85,7 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
     override fun checkAutoLogin(): Boolean {
         val user = SharedData.getUserInfo()
         if (user.id != "" && user.pw != "") {//자동로그인이 되어있다면
+            view.updateUserInfo(user)
             requestSejongPermission(user)
             return true
         }
