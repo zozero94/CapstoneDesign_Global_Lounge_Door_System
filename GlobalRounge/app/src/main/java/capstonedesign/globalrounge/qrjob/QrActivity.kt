@@ -9,8 +9,8 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import capstonedesign.globalrounge.R
 import capstonedesign.globalrounge.databinding.ActivityQrBinding
-import capstonedesign.globalrounge.mainjob.MainActivity.Companion.REQUEST_CODE
 import capstonedesign.globalrounge.dto.Student
+import capstonedesign.globalrounge.mainjob.MainActivity.Companion.REQUEST_CODE
 
 
 class QrActivity : AppCompatActivity(), QrContract.View {
@@ -23,10 +23,7 @@ class QrActivity : AppCompatActivity(), QrContract.View {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_qr)
 
-
-
-        val student = intent.getSerializableExtra(EXTRA_USER) as Student
-        binding.user = student
+        (intent.getSerializableExtra(EXTRA_USER) as Student).let { binding.user = it }
 
         presenter.subscribe()
         binding.logout.setOnClickListener {
@@ -37,6 +34,11 @@ class QrActivity : AppCompatActivity(), QrContract.View {
     }
 
     override fun makeQrCode(bitmap: Bitmap) {
+        // TODO Bitmap Glide 만들기
+//        Glide.with(this)
+//            .load(bitmap)
+//            .asBitmap()
+//            .into(binding.qr)
         binding.qr.setImageBitmap(bitmap)
     }
 

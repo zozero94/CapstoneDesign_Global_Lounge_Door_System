@@ -80,10 +80,10 @@ object ServerConnection : BaseServer(){
      * @see capstonedesign.globalrounge.qrjob.QrPresenter.stateRequest
      */
     fun sendStateOn(){
-        val data = JsonObject()
-        data.addProperty("seqType", STATE_REQ)
-        socket!!.sendData(data.toString()+"\n")
-
+        with(JsonObject()){
+            addProperty("seqType", STATE_REQ)
+            socket!!.sendData(this.toString()+"\n")
+        }
     }
 
     /**
@@ -91,9 +91,10 @@ object ServerConnection : BaseServer(){
      * @see capstonedesign.globalrounge.qrjob.QrPresenter.stateDelete
      */
     fun sendStateOff(){
-        val data = JsonObject()
-        data.addProperty("seqType", STATE_DEL)
-        socket!!.sendData(data.toString()+"\n")
+        with(JsonObject()){
+            addProperty("seqType", STATE_DEL)
+            socket!!.sendData(this.toString()+"\n")
+        }
     }
 
     /**
@@ -101,9 +102,10 @@ object ServerConnection : BaseServer(){
      * @see capstonedesign.globalrounge.qrjob.QrPresenter.logout
      */
     fun logout(){
-        val data = JsonObject()
-        data.addProperty("seqType", LOGOUT)
-        socket!!.sendData(data.toString()+"\n")
+        with(JsonObject()){
+            addProperty("seqType", LOGOUT)
+            socket!!.sendData(this.toString()+"\n")
+        }
     }
 
 

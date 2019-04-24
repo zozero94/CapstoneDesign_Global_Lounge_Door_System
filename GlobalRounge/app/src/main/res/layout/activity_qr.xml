@@ -27,60 +27,84 @@
                 app:layout_constraintBottom_toTopOf="@+id/imageView2" app:layout_constraintHorizontal_bias="0.496">
 
 
-            <ImageView
+            <FrameLayout
                     android:layout_width="128dp"
                     android:layout_height="128dp"
-                    android:id="@+id/qr" app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="8dp" android:layout_marginTop="64dp"
-                    app:layout_constraintTop_toTopOf="parent"
-            />
+                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+                    app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                    android:layout_marginTop="32dp" app:layout_constraintTop_toTopOf="parent"
+                    android:id="@+id/frameLayout" app:layout_constraintHorizontal_bias="0.497"
+                    android:background="@drawable/image_background" android:padding="4dp">
+
+                <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/qr"
+                        tools:layout_editor_absoluteY="80dp"
+                        tools:layout_editor_absoluteX="259dp" android:layout_gravity="center"/>
+            </FrameLayout>
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="0dp"
-                    android:layout_height="257dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toBottomOf="@+id/qr" app:layout_constraintStart_toStartOf="parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="8dp" android:padding="16dp">
-                <ImageView
-
+                    android:layout_marginEnd="8dp" android:padding="16dp" android:id="@+id/linearLayout"
+                    android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/frameLayout">
+                <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" tools:srcCompat="@tools:sample/avatars"
-                        android:id="@+id/user_image" android:layout_weight="6" android:layout_margin="8dp"
-                        android:padding="32dp" android:scaleType="center" android:adjustViewBounds="true"
-                        android:cropToPadding="true"/>
+                        android:layout_height="wrap_content" android:layout_weight="4"
+                        android:background="@drawable/image_background"
+                        android:padding="4dp" android:layout_marginBottom="40dp" android:layout_marginTop="40dp"
+                        android:layout_marginLeft="16dp" android:layout_marginRight="16dp">
+
+                    <ImageView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" tools:srcCompat="@tools:sample/avatars"
+                            android:id="@+id/user_image" android:layout_weight="4"
+                            android:scaleType="fitCenter" android:adjustViewBounds="false"
+                            android:cropToPadding="true"
+                    />
+                </FrameLayout>
                 <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" android:layout_weight="6"
-                        android:paddingTop="32dp">
+                        android:layout_height="wrap_content" android:layout_weight="4"
+                        android:paddingTop="16dp">
                     <TextView
-                            android:text="@{user.name}"
+                            android:text="@{@string/user_name(user.name)}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" android:id="@+id/user_name"
                             android:layout_margin="8dp"
                             android:hint="이 름"
-                            android:paddingLeft="8dp" android:paddingRight="8dp"/>
+                            android:background="@drawable/image_background" android:textSize="10sp"
+                            android:padding="8dp" android:singleLine="true"/>
                     <TextView
-                            android:text="@{user.studentID}"
+                            android:text="@{@string/user_id(user.studentID)}"
                             android:hint="학 번"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" android:id="@+id/user_id"
-                            android:layout_margin="8dp" android:paddingLeft="8dp" android:paddingRight="8dp"/>
+                            android:layout_margin="8dp"
+                            android:background="@drawable/image_background" android:textSize="10sp"
+                            android:padding="8dp" android:singleLine="true"/>
                     <TextView
-                            android:text="@{user.department}"
+                            android:text="@{@string/user_department(user.department)}"
                             android:hint="학 과"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" android:id="@+id/user_major"
-                            android:layout_margin="8dp" android:paddingLeft="8dp" android:paddingRight="8dp"/>
+                            android:layout_margin="8dp"
+                            android:background="@drawable/image_background" android:textSize="10sp"
+                            android:padding="8dp" android:singleLine="true"/>
                     <TextView
-                            android:text="@{user.college}"
+                            android:text="@{@string/user_college(user.college)}"
                             android:hint="단 과 대 학"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" android:id="@+id/user_collage"
-                            android:layout_margin="8dp" android:paddingLeft="8dp" android:paddingRight="8dp"/>
+                            android:layout_margin="8dp"
+                            android:background="@drawable/image_background" android:textSize="10sp"
+                            android:padding="8dp"/>
                 </LinearLayout>
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>
@@ -97,8 +121,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/logout" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp" app:layout_constraintTop_toTopOf="parent" android:background="@null"
+                android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent" android:background="@null"
                 android:textColor="@color/white"
-                android:fontFamily="sans-serif-black"/>
+                android:fontFamily="sans-serif-black" android:textAlignment="center" android:padding="8dp"/>
     </android.support.constraint.ConstraintLayout>
 </layout>

@@ -44,11 +44,10 @@ object SejongConnection {
      * retrofit 정보를 초기화하는 생성자
      */
     init {
-        val retrofit = with(Retrofit.Builder()) {
+        sejongPermission = with(Retrofit.Builder()) {
             baseUrl(Permission.url)
             build()
-        }
-        sejongPermission = retrofit.create(Permission::class.java)
+        }.create(Permission::class.java)
     }
 
     /**
@@ -59,31 +58,29 @@ object SejongConnection {
      *
      */
     fun requestUserInformation(user: User, callback: LoginCallback) {
-        val request = sejongPermission.getResult(user.id, user.pw, 1)
-        request.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                val body: String
-                try {
-                    body = response.body()!!.string()
-                    if (body.contains("alert")) {//없는정보
-                        if (body.contains("패스워드")) {
-                            callback.reject("패스워드가 잘못 되었습니다.")
-                        } else if (body.contains("아이디")) {
-                            callback.reject("아이디가 잘못 되었습니다.")
+        sejongPermission.getResult(user.id, user.pw, 1)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+
+                    response.body()!!.string().let {
+                        if (it.contains("alert")) {//없는정보
+                            if (it.contains("패스워드")) {
+                                callback.reject("패스워드가 잘못 되었습니다.")
+                            } else if (it.contains("아이디")) {
+                                callback.reject("아이디가 잘못 되었습니다.")
+                            }
+                        } else {//있는정보
+                            callback.approval(user)
                         }
-                    } else {//있는정보
-                        callback.approval(user)
                     }
-                } catch (e: IOException) {
-                    e.printStackTrace()
+
+
                 }
 
-            }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.e("RequestPermission Error", "무언가 잘못되었군")
-            }
-        })
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.e("RequestPermission Error", "무언가 잘못되었군")
+                }
+            })
 
     }
 

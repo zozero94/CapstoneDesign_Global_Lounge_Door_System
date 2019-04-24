@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">GlobalRounge</string>
+    <string name="user_name">이름 : %s</string>
+    <string name="user_id">학번 : %s</string>
+    <string name="user_department">학과 : %s</string>
+    <string name="user_college">단과대학 : %s</string>
 </resources>

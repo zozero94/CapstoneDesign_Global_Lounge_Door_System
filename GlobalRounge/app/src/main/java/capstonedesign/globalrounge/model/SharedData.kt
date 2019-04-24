@@ -2,8 +2,8 @@ package capstonedesign.globalrounge.model
 
 import android.content.Context
 import android.content.SharedPreferences
-import capstonedesign.globalrounge.mainjob.MainPresenter
 import capstonedesign.globalrounge.dto.User
+import capstonedesign.globalrounge.mainjob.MainPresenter
 
 object SharedData {
     //자동로그인에 필요한 변수
@@ -13,7 +13,7 @@ object SharedData {
 
     var checkBoxState: Boolean = false //CheckBox의 isClicked
 
-    fun setSharedPreferences(context: Context) {
+    fun setSharedPreferences(context: Context){
         preferences = context.getSharedPreferences("auto", 0)
         editor = preferences.edit()
     }
@@ -24,13 +24,11 @@ object SharedData {
      * @return User() : 저장되어있는 사용자 데이터 반환
      */
 
-    fun getUserInfo(): User {
+    fun getUserInfo(): User =
         with(preferences) {
-            val id = getString("id", "")!!
-            val pw = getString("pw", "")!!
-            return User(id, pw)
+            return User(getString("id", "")!!, getString("pw", "")!!)
         }
-    }
+
 
     /**
      * preferences 초기화

@@ -13,10 +13,7 @@ object QrCode {
     /**
      * QR코드를 생성한다
      */
-    fun makeQrCode(data: String): Bitmap {
-        val matrix: BitMatrix = writer.encode(data, BarcodeFormat.QR_CODE, 500, 500)
-        return encoder.createBitmap(matrix)
-
-    }
+    fun makeQrCode(data: String): Bitmap =
+        writer.encode(data, BarcodeFormat.QR_CODE, 500, 500).let { encoder.createBitmap(it) }
 
 }
