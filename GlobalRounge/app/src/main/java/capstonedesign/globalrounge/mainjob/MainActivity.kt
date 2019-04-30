@@ -38,11 +38,10 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         presenter = MainPresenter(this, this)
         //Login Button Listener
         binding.loginBtn.setOnClickListener {
-            val user = User(
+            User(
                 id = binding.id.text.toString(),
                 pw = binding.pw.text.toString()
-            )
-            presenter.loginClicked(user)
+            ).apply { presenter.loginClicked(this) }
         }
         //CheckBox Listener
         binding.checkBox.setOnCheckedChangeListener { _, isChecked ->
