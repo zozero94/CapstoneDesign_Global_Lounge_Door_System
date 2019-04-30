@@ -9,7 +9,6 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.POST
 import retrofit2.http.Query
-import java.io.IOException
 
 /**
  * 세종대학교 인증정보를 우회접근하여 받아오는 class
@@ -17,7 +16,6 @@ import java.io.IOException
  */
 object SejongConnection {
     private val sejongPermission: Permission
-
 
     /**
      * 우회로그인 결과를 되돌려주는 Callback Interface

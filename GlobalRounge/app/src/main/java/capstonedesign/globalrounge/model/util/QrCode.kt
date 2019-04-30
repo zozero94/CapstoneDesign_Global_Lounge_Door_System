@@ -3,7 +3,6 @@ package capstonedesign.globalrounge.model
 import android.graphics.Bitmap
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
-import com.google.zxing.common.BitMatrix
 import com.journeyapps.barcodescanner.BarcodeEncoder
 
 object QrCode {

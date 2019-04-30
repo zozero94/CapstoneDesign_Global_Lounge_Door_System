@@ -49,11 +49,12 @@ object Encryption {
 
         val key: PublicKey
 
-        val bKey = Base64.decode(publicKey.toByteArray(), 0)
-        val pKeySpec = X509EncodedKeySpec(bKey)
-        key = KeyFactory.getInstance("RSA").generatePublic(pKeySpec)
+        Base64.decode(publicKey.toByteArray(), 0).apply {
+            key = KeyFactory.getInstance("RSA").generatePublic(X509EncodedKeySpec(this))
+        }
 
         cipher.init(Cipher.ENCRYPT_MODE, key)
+
         var encodedInfo = Gson().toJson(info)
 
         val strToByte = encodedInfo!!.toByteArray()
@@ -82,15 +83,15 @@ object Encryption {
     /**
      * 암호화 데이터 복호화 함수
      *
-     * 서버에서 받아온 개인정보를 복호화 할 때 쓰인다.
+     * 서버에서 받아온 정보를 복호화 할 때 쓰인다.
      * @see capstonedesign.globalrounge.mainjob.MainPresenter.approvalPermission
      *
      * @param data : 암호화된 데이터
      *
-     * @return Student : 복호화된 개인정보를 Student data Class 에 담아 리턴
+     * @return String : 복호화된 정보를 String으로 리턴
      * @see Student
      */
-    fun getDecodedString(data: String): Student? {
+    fun getDecodedString(data: String): String? {
         val str = StringBuilder()
 
         cipher.init(Cipher.DECRYPT_MODE, keyPair!!.private)
@@ -103,7 +104,7 @@ object Encryption {
             str.append(appendString)
         }
         keyPair=null
-        return Gson().fromJson<Any>(str.toString(), Student::class.java) as Student
+        return str.toString()
     }
 
 }

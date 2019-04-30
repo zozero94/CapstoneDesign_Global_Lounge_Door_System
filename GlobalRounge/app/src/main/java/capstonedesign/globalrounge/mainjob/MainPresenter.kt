@@ -2,35 +2,33 @@ package capstonedesign.globalrounge.mainjob
 
 import Encryption.Encryption
 import android.content.Context
-import android.util.Log
 import capstonedesign.globalrounge.dto.ADMIN
 import capstonedesign.globalrounge.dto.STUDENT
+import capstonedesign.globalrounge.dto.Student
 import capstonedesign.globalrounge.dto.User
-import capstonedesign.globalrounge.model.SharedData
+import capstonedesign.globalrounge.model.AutoLogin
 import capstonedesign.globalrounge.model.permission.BaseServer.Companion.LOGIN_ALREADY
 import capstonedesign.globalrounge.model.permission.BaseServer.Companion.LOGIN_NO_DATA
 import capstonedesign.globalrounge.model.permission.BaseServer.Companion.LOGIN_OK
 import capstonedesign.globalrounge.model.permission.SejongConnection
 import capstonedesign.globalrounge.model.permission.ServerConnection
+import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import com.google.gson.JsonSyntaxException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import moe.codeest.rxsocketclient.SocketSubscriber
-import java.lang.Exception
 import java.nio.charset.StandardCharsets
-
 
 class MainPresenter(private val view: MainContract.View, context: Context) : MainContract.Presenter {
     init {
-        SharedData.setSharedPreferences(context)
+        AutoLogin.setSharedPreferences(context)
     }
     /**************** [ Override Function ] ****************/
     /**
      * 로그인 버튼이 눌렸을 때 동작하는 함수
      * Id, Pw의 상태를 내부적으로 확인
      * 일반 사용자 로그인
-     * @see requestSejongPermission : sejong 로그인 시도*
+     * @see requestSejongPermission : sejong 로그인 시도
      * 관리자 로그인
      * @see approvalPermission : sejong 로그인 허가
      * @param user : 로그인 할 유저정보
@@ -56,21 +54,21 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
      * @see capstonedesign.globalrounge.mainjob.MainActivity.onCreate
      *
      * 자동로그인 체크가 안되있을 시
-     * @see SharedData.deleteUserInfo
+     * @see AutoLogin.deleteUserInfo
      *
      * @param isChecked checkBox 체크여부
      */
     override fun changeCheckState(isChecked: Boolean) {
-        SharedData.checkBoxState = isChecked
+        AutoLogin.checkBoxState = isChecked
         if (!isChecked) {
-            SharedData.deleteUserInfo()
+            AutoLogin.deleteUserInfo()
         }
     }
 
     /**
      * 앱 실행시 자동로그인 check 여부 판단
      * @see capstonedesign.globalrounge.mainjob.MainActivity.onCreate
-     * @see SharedData.getUserInfo
+     * @see AutoLogin.getUserInfo
      *
      * 자동로그인이 되어있는 경우
      * @see requestSejongPermission
@@ -78,7 +76,7 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
      * @return Boolean
      */
     override fun checkAutoLogin(): Boolean {
-        SharedData.getUserInfo().let {
+        AutoLogin.getUserInfo().let {
             if (it.id != "" && it.pw != "") {//자동로그인이 되어있다면
                 view.updateUserInfo(it)
                 requestSejongPermission(it)
@@ -94,7 +92,7 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
      * @see capstonedesign.globalrounge.mainjob.MainActivity.onActivityResult
      */
     override fun deletePreference() {
-        SharedData.deleteUserInfo()
+        AutoLogin.deleteUserInfo()
     }
 
     /**
@@ -116,6 +114,7 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
      * @param user : 요청할 사용자 정보
      */
     private fun requestSejongPermission(user: User) {
+
         SejongConnection.requestUserInformation(user, object : SejongConnection.LoginCallback {
             override fun approval(user: User) {
                 approvalPermission(user)
@@ -139,6 +138,7 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
 
         val ref = ServerConnection.socketObservable!!
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnError { t->view.alertToast("에러띠!${t.printStackTrace()}") }//TODO 추가된 socketCloseException
             .subscribe(object : SocketSubscriber() {
                 override fun onConnected() {
                     Encryption.newKey()
@@ -155,9 +155,9 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
                         (JsonParser().parse(str) as JsonObject).let { jsonObject ->
                             when (jsonObject.get("seqType").asInt) {
                                 LOGIN_OK -> {
-                                    Encryption.getDecodedString(jsonObject.get("data").asString).let { student ->
-                                        SharedData.saveUserInfo(user)//체크박스에 따른 자동로그인 저장
-                                        view.startActivity(student!!)//액티비티 시작
+                                    Encryption.getDecodedString(jsonObject.get("data").asString).let { string ->
+                                        AutoLogin.saveUserInfo(user)//체크박스에 따른 자동로그인 저장
+                                        (Gson().fromJson<Any>(string, Student::class.java) as Student).let { view.startActivity(it) }
                                     }
                                 }
                                 LOGIN_ALREADY -> {

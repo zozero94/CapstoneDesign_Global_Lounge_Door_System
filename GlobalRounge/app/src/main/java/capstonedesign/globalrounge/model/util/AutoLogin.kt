@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import capstonedesign.globalrounge.dto.User
 import capstonedesign.globalrounge.mainjob.MainPresenter
 
-object SharedData {
+object AutoLogin {
     //자동로그인에 필요한 변수
 
     private lateinit var preferences: SharedPreferences
