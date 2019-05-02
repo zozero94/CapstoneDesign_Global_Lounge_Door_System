@@ -1,7 +1,7 @@
 package capstonedesign.globalrounge.model.permission
 
 open class BaseServer {
-    internal var ip = "219.250.232.170"
+    internal var ip = "192.168.0.7"
     internal val port = 5050
 
     companion object{
@@ -15,6 +15,8 @@ open class BaseServer {
         const val STATE_CREATE = 202
 
         const val LOGOUT = 500
+
+        const val CLIENT = 600
     }
     /**
      * 이스터에그를 위한 함수

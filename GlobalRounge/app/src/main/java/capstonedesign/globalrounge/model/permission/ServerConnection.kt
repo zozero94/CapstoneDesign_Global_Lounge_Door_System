@@ -108,5 +108,15 @@ object ServerConnection : BaseServer(){
         }
     }
 
+    /**
+     * 맨 처음 접속시 서버에 클라이언트를 알려주기 위함
+     * @see capstonedesign.globalrounge.mainjob.MainPresenter.approvalPermission
+     */
+    fun startConnect(){
+        with(JsonObject()){
+            addProperty("seqType", CLIENT)
+            socket!!.sendData(this.toString()+"\n")
+        }
+    }
 
 }

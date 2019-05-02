@@ -142,7 +142,9 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
             .subscribe(object : SocketSubscriber() {
                 override fun onConnected() {
                     Encryption.newKey()
+                    ServerConnection.startConnect()
                     ServerConnection.requestServerPermission(user)
+
                 }
 
                 override fun onDisconnected() {

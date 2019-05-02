@@ -43,11 +43,7 @@ class QrPresenter(private val view: QrContract.View) : QrContract.Presenter {
                     } catch (e: JsonSyntaxException) {
                         buffer += str
                         if (buffer[buffer.length - 1] == '\n') {
-                            Base64.decode(buffer, Base64.DEFAULT).let {
-                                makeUserImages(it)
-                            }
-                            //TODO Glide 써보자 -> View로 ByteArray보내서 View에서 생성
-                            //view.drawUserImages(realImage)
+                            makeUserImages(Base64.decode(buffer, Base64.DEFAULT))
                             buffer = ""
                         }
                     }
@@ -61,7 +57,6 @@ class QrPresenter(private val view: QrContract.View) : QrContract.Presenter {
 
 
     fun makeUserImages(imagesByte: ByteArray) {
-        //TODO Glide 써보자 -> View로 ByteArray보내서 View에서 생성
         BitmapFactory.decodeByteArray(imagesByte, 0, imagesByte.size)?.let {
             view.drawUserImages(it)
         }

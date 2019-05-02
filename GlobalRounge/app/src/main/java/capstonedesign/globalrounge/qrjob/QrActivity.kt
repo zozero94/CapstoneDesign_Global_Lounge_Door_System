@@ -34,11 +34,7 @@ class QrActivity : AppCompatActivity(), QrContract.View {
     }
 
     override fun makeQrCode(bitmap: Bitmap) {
-        // TODO Bitmap Glide 만들기
-//        Glide.with(this)
-//            .load(bitmap)
-//            .asBitmap()
-//            .into(binding.qr)
+
         binding.qr.setImageBitmap(bitmap)
     }
 
