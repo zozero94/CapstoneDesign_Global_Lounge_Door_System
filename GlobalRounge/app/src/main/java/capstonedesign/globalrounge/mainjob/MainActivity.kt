@@ -4,6 +4,8 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import capstonedesign.globalrounge.R
 import capstonedesign.globalrounge.databinding.ActivityMainBinding
@@ -20,6 +22,8 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     //MVP의 Presenter
     private lateinit var presenter: MainContract.Presenter
+
+    private var loadingThread: Thread? = null
 
     //뒤로가기 버튼에 사용되는 변수
     private var time: Long = 0
@@ -73,6 +77,25 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     }
 
+    override fun loadingStart() {
+        loadingThread =
+            Thread(Runnable {
+                AnimationUtils.loadAnimation(this, R.anim.rotate_anim).apply {
+                    binding.loading.startAnimation(this)
+                }
+            })
+        loadingThread!!.start()
+        binding.loading.visibility = View.VISIBLE
+
+    }
+
+    override fun loadingDestroy() {
+        if ((loadingThread?.isInterrupted == false)) {
+            loadingThread!!.interrupt()
+            binding.loading.clearAnimation()
+            binding.loading.visibility = View.INVISIBLE
+        }
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

@@ -15,26 +15,31 @@ import capstonedesign.globalrounge.mainjob.MainActivity.Companion.REQUEST_CODE
 
 class QrActivity : AppCompatActivity(), QrContract.View {
 
+
     //데이터바인딩 변수
     private lateinit var binding: ActivityQrBinding
     private val presenter = QrPresenter(this)
+    init {
+        presenter.subscribe()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_qr)
 
         (intent.getSerializableExtra(EXTRA_USER) as Student).let { binding.user = it }
 
-        presenter.subscribe()
+
         binding.logout.setOnClickListener {
             setResult(REQUEST_CODE)
+            presenter.logout()
             finish()
         }
 
     }
 
     override fun makeQrCode(bitmap: Bitmap) {
-
         binding.qr.setImageBitmap(bitmap)
     }
 
@@ -52,8 +57,6 @@ class QrActivity : AppCompatActivity(), QrContract.View {
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.logout()
-        Thread.sleep(500)
         presenter.dispose()
     }
 

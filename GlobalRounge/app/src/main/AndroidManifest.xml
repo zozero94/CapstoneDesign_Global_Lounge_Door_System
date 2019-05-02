@@ -10,7 +10,7 @@
             android:roundIcon="@mipmap/sejong"
             android:supportsRtl="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".mainjob.MainActivity">
+        <activity android:name=".mainjob.MainActivity" android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

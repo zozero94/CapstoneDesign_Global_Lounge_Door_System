@@ -19,6 +19,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import moe.codeest.rxsocketclient.SocketSubscriber
 import java.nio.charset.StandardCharsets
 
+
 class MainPresenter(private val view: MainContract.View, context: Context) : MainContract.Presenter {
     init {
         AutoLogin.setSharedPreferences(context)
@@ -33,19 +34,22 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
      * @see approvalPermission : sejong 로그인 허가
      * @param user : 로그인 할 유저정보
      */
-    override fun loginClicked(user: User) = when {
-        user.id == "" -> view.alertToast("아이디를 입력하세요")
-        user.pw == "" -> view.alertToast("패스워드를 입력하세요")
-        user.id.contains("admin") -> {
-            if (user.pw == "admin") {
-                user.tag = ADMIN
-                this.approvalPermission(user)
-            } else view.alertToast("잘못된 정보")
+    override fun loginClicked(user: User) {
+        when {
+            user.id == "" -> view.alertToast("아이디를 입력하세요")
+            user.pw == "" -> view.alertToast("패스워드를 입력하세요")
+            user.id.contains("admin") -> {
+                if (user.pw == "admin") {
+                    user.tag = ADMIN
+                    this.approvalPermission(user)
+                } else view.alertToast("잘못된 정보")
+            }
+            else -> {
+                user.tag = STUDENT
+                this.requestSejongPermission(user)
+            }
         }
-        else -> {
-            user.tag = STUDENT
-            this.requestSejongPermission(user)
-        }
+
     }
 
 
@@ -86,6 +90,7 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
         }
     }
 
+
     /**
      * 로그아웃 버튼 클릭시
      * sharedPreference 에 데이터를 삭제한다
@@ -114,14 +119,14 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
      * @param user : 요청할 사용자 정보
      */
     private fun requestSejongPermission(user: User) {
-
         SejongConnection.requestUserInformation(user, object : SejongConnection.LoginCallback {
             override fun approval(user: User) {
                 approvalPermission(user)
             }
 
             override fun reject(text: String) {
-                rejectPermission(text)
+                view.loadingDestroy()
+                view.alertToast(text)
             }
         })
     }
@@ -134,20 +139,20 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
      * @param user 학교인증에서 넘어온 사용자 정보
      */
     private fun approvalPermission(user: User) {
+        view.loadingStart()
         ServerConnection.connectSocket()
 
         val ref = ServerConnection.socketObservable!!
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnError { t->view.alertToast("에러띠!${t.printStackTrace()}") }//TODO 추가된 socketCloseException
+            .doOnError { t -> view.alertToast("에러띠!${t.printStackTrace()}") }//TODO 추가된 socketCloseException
             .subscribe(object : SocketSubscriber() {
                 override fun onConnected() {
                     Encryption.newKey()
-                    ServerConnection.startConnect()
                     ServerConnection.requestServerPermission(user)
-
                 }
 
                 override fun onDisconnected() {
+                    view.loadingDestroy()
                     view.alertToast("연결이 원활하지 않습니다.")
                 }
 
@@ -159,7 +164,9 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
                                 LOGIN_OK -> {
                                     Encryption.getDecodedString(jsonObject.get("data").asString).let { string ->
                                         AutoLogin.saveUserInfo(user)//체크박스에 따른 자동로그인 저장
-                                        (Gson().fromJson<Any>(string, Student::class.java) as Student).let { view.startActivity(it) }
+                                        (Gson().fromJson<Any>(string, Student::class.java) as Student).let {
+                                            view.startActivity(it)
+                                        }
                                     }
                                 }
                                 LOGIN_ALREADY -> {
@@ -170,20 +177,15 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
                                 }
                             }
                         }
-                    }catch (e : ClassCastException){
+                    } catch (e: ClassCastException) {
                         e.printStackTrace()
+                    } finally {
+                        view.loadingDestroy()
                     }
                 }
             })
         ServerConnection.addDisposable(ref)
     }
 
-    /**
-     * 우회접근에서 거절되었을 때 호출
-     * @see requestSejongPermission
-     * @param text : 사용자에게 알릴 Text
-     */
-    private fun rejectPermission(text: String) {
-        view.alertToast(text)
-    }
+
 }

@@ -44,7 +44,7 @@ object ServerConnection : BaseServer(){
                 .setPort(port)
                 .setCharset(Charset.defaultCharset())
                 .setThreadStrategy(ThreadStrategy.ASYNC)
-                .setTimeout(2 * 1000)
+                .setTimeout(2000)
                 .build()
         )
         socketObservable = socket!!.connect()
@@ -108,13 +108,9 @@ object ServerConnection : BaseServer(){
         }
     }
 
-    /**
-     * 맨 처음 접속시 서버에 클라이언트를 알려주기 위함
-     * @see capstonedesign.globalrounge.mainjob.MainPresenter.approvalPermission
-     */
-    fun startConnect(){
+    fun image_request(){
         with(JsonObject()){
-            addProperty("seqType", CLIENT)
+            addProperty("seqType", STATE_IMG)
             socket!!.sendData(this.toString()+"\n")
         }
     }

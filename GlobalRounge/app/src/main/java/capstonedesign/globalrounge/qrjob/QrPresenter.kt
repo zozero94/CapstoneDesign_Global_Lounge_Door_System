@@ -20,7 +20,7 @@ class QrPresenter(private val view: QrContract.View) : QrContract.Presenter {
         val ref = ServerConnection.socketObservable!!.observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : SocketSubscriber() {
                 override fun onConnected() {
-
+                    ServerConnection.image_request()//TODO 삭제 요망
                 }
 
                 override fun onDisconnected() {

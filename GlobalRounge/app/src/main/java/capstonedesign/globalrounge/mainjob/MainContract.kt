@@ -8,6 +8,8 @@ interface MainContract {
         fun alertToast(text: String)
         fun startActivity(student: Student)
         fun updateUserInfo(user: User)
+        fun loadingStart()
+        fun loadingDestroy()
     }
 
     interface Presenter {
