@@ -2,6 +2,7 @@ package capstonedesign.globalrounge.qrjob
 
 import android.graphics.BitmapFactory
 import android.util.Base64
+import android.util.Log
 import capstonedesign.globalrounge.model.QrCode
 import capstonedesign.globalrounge.model.permission.BaseServer.Companion.STATE_CREATE
 import capstonedesign.globalrounge.model.permission.ServerConnection
@@ -20,7 +21,7 @@ class QrPresenter(private val view: QrContract.View) : QrContract.Presenter {
         val ref = ServerConnection.socketObservable!!.observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : SocketSubscriber() {
                 override fun onConnected() {
-                    ServerConnection.image_request()//TODO 삭제 요망
+                    Log.e("커넥트", "씨발")
                 }
 
                 override fun onDisconnected() {
@@ -46,12 +47,13 @@ class QrPresenter(private val view: QrContract.View) : QrContract.Presenter {
                             makeUserImages(Base64.decode(buffer, Base64.DEFAULT))
                             buffer = ""
                         }
-                    }
-                    catch (e : ClassCastException){
+                    } catch (e: ClassCastException) {
                         e.printStackTrace()
                     }
                 }
             })
+        ServerConnection.image_request()
+        ServerConnection.sendStateOn()
         ServerConnection.addDisposable(ref)
     }
 

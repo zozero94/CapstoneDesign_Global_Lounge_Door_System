@@ -72,37 +72,41 @@
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" android:layout_weight="4"
-                        android:paddingTop="16dp">
+                        android:paddingTop="40dp">
                     <TextView
                             android:text="@{@string/user_name(user.name)}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" android:id="@+id/user_name"
-                            android:layout_margin="8dp"
+                            android:layout_margin="1dp"
                             android:hint="이 름"
-                            android:background="@drawable/image_background" android:textSize="10sp"
+                            android:textStyle="bold"
+                            android:background="@drawable/image_background" android:textSize="11sp"
                             android:padding="8dp" android:singleLine="true"/>
                     <TextView
                             android:text="@{@string/user_id(user.studentID)}"
                             android:hint="학 번"
+                            android:textStyle="bold"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" android:id="@+id/user_id"
-                            android:layout_margin="8dp"
-                            android:background="@drawable/image_background" android:textSize="10sp"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/image_background" android:textSize="11sp"
                             android:padding="8dp" android:singleLine="true"/>
                     <TextView
                             android:text="@{@string/user_department(user.department)}"
                             android:hint="학 과"
+                            android:textStyle="bold"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" android:id="@+id/user_major"
-                            android:layout_margin="8dp"
-                            android:background="@drawable/image_background" android:textSize="10sp"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/image_background" android:textSize="11sp"
                             android:padding="8dp" android:singleLine="true"/>
                     <TextView
                             android:text="@{@string/user_college(user.college)}"
                             android:hint="단 과 대 학"
                             android:layout_width="match_parent"
+                            android:textStyle="bold"
                             android:layout_height="wrap_content" android:id="@+id/user_collage"
-                            android:layout_margin="8dp"
+                            android:layout_margin="1dp"
                             android:background="@drawable/image_background" android:textSize="10sp"
                             android:padding="8dp"/>
                 </LinearLayout>
