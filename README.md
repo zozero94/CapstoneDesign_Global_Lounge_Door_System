@@ -1,10 +1,10 @@
-# CapstoneDesign [ Global_Rounge_Door_System ]
+﻿# CapstoneDesign [ Global_Rounge_Door_System ]
 ### MVP 패턴을 적용한 안드로이드 프로젝트
 
 <hr/>  
 
 ### 앱 화면  
-<img src="./image/main.png" width="300" height="600">   <img src="./image/qr.png" width="300" height="600">
+<img src="./image/app.PNG">
 
  
 
@@ -14,15 +14,15 @@
  #### [MainPresenter](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/mainjob/MainPresenter)  
  #### 학교 인증정보를 받아옴
  ```kotlin
-     private fun requestSejongPermission(user: User) {
-
+    private fun requestSejongPermission(user: User) {
         SejongConnection.requestUserInformation(user, object : SejongConnection.LoginCallback {
             override fun approval(user: User) {
-                approvalPermission(user)
+                approvalPermission(user)//인증 후 한번 더 서버인증
             }
 
             override fun reject(text: String) {
-                rejectPermission(text)
+                view.loadingDestroy()
+                view.alertToast(text)
             }
         })
     }
@@ -30,12 +30,13 @@
  
  #### 서버 인증정보를 받아옴
  ```kotlin
-  private fun approvalPermission(user: User) {
+    private fun approvalPermission(user: User) {
+        view.loadingStart()
         ServerConnection.connectSocket()
 
         val ref = ServerConnection.socketObservable!!
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnError { t->view.alertToast("에러띠!${t.printStackTrace()}") }//TODO 추가된 socketCloseException
+            .doOnError { t -> view.alertToast("에러띠!${t.printStackTrace()}") }//TODO 추가된 socketCloseException
             .subscribe(object : SocketSubscriber() {
                 override fun onConnected() {
                     Encryption.newKey()
@@ -43,6 +44,7 @@
                 }
 
                 override fun onDisconnected() {
+                    view.loadingDestroy()
                     view.alertToast("연결이 원활하지 않습니다.")
                 }
 
@@ -54,7 +56,9 @@
                                 LOGIN_OK -> {
                                     Encryption.getDecodedString(jsonObject.get("data").asString).let { string ->
                                         AutoLogin.saveUserInfo(user)//체크박스에 따른 자동로그인 저장
-                                        (Gson().fromJson<Any>(string, Student::class.java) as Student).let { view.startActivity(it) }
+                                        (Gson().fromJson<Any>(string, Student::class.java) as Student).let {
+                                            view.startActivity(it)
+                                        }
                                     }
                                 }
                                 LOGIN_ALREADY -> {
@@ -65,8 +69,10 @@
                                 }
                             }
                         }
-                    }catch (e : ClassCastException){
+                    } catch (e: ClassCastException) {
                         e.printStackTrace()
+                    } finally {
+                        view.loadingDestroy()
                     }
                 }
             })
@@ -113,7 +119,7 @@
  
 #### 서버와 통신하는 부분 [QrPersenter](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/qrjob/QrPresenter.kt)
  ```kotlin
-  override fun subscribe() {
+    override fun subscribe() {
         var buffer = ""
         val ref = ServerConnection.socketObservable!!.observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : SocketSubscriber() {
@@ -141,19 +147,15 @@
                     } catch (e: JsonSyntaxException) {
                         buffer += str
                         if (buffer[buffer.length - 1] == '\n') {
-                            Base64.decode(buffer, Base64.DEFAULT).let {
-                                makeUserImages(it)
-                            }
-                            //TODO Glide 써보자 -> View로 ByteArray보내서 View에서 생성
-                            //view.drawUserImages(realImage)
+                            makeUserImages(Base64.decode(buffer, Base64.DEFAULT))
                             buffer = ""
                         }
-                    }
-                    catch (e : ClassCastException){
+                    } catch (e: ClassCastException) {
                         e.printStackTrace()
                     }
                 }
             })
+        ServerConnection.image_request()
         ServerConnection.addDisposable(ref)
     }
  ```

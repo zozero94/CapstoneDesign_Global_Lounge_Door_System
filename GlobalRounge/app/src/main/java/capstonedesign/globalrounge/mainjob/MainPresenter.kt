@@ -121,7 +121,7 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
     private fun requestSejongPermission(user: User) {
         SejongConnection.requestUserInformation(user, object : SejongConnection.LoginCallback {
             override fun approval(user: User) {
-                approvalPermission(user)
+                approvalPermission(user)//인증 후 한번 더 서버인증
             }
 
             override fun reject(text: String) {
