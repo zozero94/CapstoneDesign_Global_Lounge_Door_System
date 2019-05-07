@@ -11,7 +11,7 @@
 ## [ Contract ]
  ### 1. 로그인 화면 [ MainJob ](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/mainjob)
   
- #### [MainPresenter](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/mainjob/MainPresenter)  
+ #### [MainPresenter](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/mainjob/MainPresenter.kt)  
  #### 학교 인증정보를 받아옴
  ```kotlin
     private fun requestSejongPermission(user: User) {
