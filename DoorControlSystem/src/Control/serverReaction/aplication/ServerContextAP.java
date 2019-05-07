@@ -1,24 +1,27 @@
-package control.ServerReaction;
+package control.serverReaction.aplication;
 
 import com.google.gson.JsonObject;
-import control.SocketThread;
+import control.socket.Aplication;
+import control.socket.SocketThreadAP;
 import model.ServerStudent;
 
-public class ServerContext {
+public class ServerContextAP {
     private boolean QrFlag;
-    private State state;
+    private StateAP state;
     private ServerStudent info;
     private String qrString;
-    private SocketThread socketThread;
+//    private SocketThreadAP socketThread;
+    private Aplication socketThread;
 
 
-    public ServerContext(SocketThread socketThread){
+    public ServerContextAP(Aplication socketThread){
         this.QrFlag = false;
         this.state = new Login(this);
         this.socketThread = socketThread;
+        this.info = null;
     }
 
-    public void setState(State state){
+    public void setState(StateAP state){
         this.state = state;
     }
     public JsonObject response(JsonObject object){
@@ -49,10 +52,16 @@ public class ServerContext {
         this.qrString = qrString;
     }
 
-    public SocketThread getSocketThread() {
+//    public SocketThreadAP getSocketThread() {
+//        return socketThread;
+//    }
+//    public void SocketThreadAP(SocketThreadAP socketThread) {
+//        this.socketThread = socketThread;
+//    }
+    public Aplication getSocketThread() {
         return socketThread;
     }
-    public void setSocketThread(SocketThread socketThread) {
+    public void Aplication(Aplication socketThread) {
         this.socketThread = socketThread;
     }
 }

@@ -11,8 +11,6 @@ public class Student implements Serializable {
     private String nationality;
     private String department;
     private String college;
-    private byte[] images;
-
     public Student() {
         this.studentID = null;
         this.name = null;
@@ -73,13 +71,6 @@ public class Student implements Serializable {
     public void setCollege(String college) {
         this.college = college;
     }
-    public byte[] getImages() {
-        return images;
-    }
-    public void setImages(byte[] images) {
-        this.images = images;
-    }
-
     @Override
     public String toString() {
         return "Student{" +

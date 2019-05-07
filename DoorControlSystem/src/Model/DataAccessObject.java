@@ -3,6 +3,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.*;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DataAccessObject {
 
@@ -19,6 +20,7 @@ public class DataAccessObject {
         conn = null;
         pstmt = null;
         rs = null;
+        connectDB();
     }
     private void connectDB(){
         try{
@@ -42,12 +44,12 @@ public class DataAccessObject {
 
     }
 
-    public ServerStudent getStudentInfo(String studentID){
+    public synchronized ServerStudent getStudentInfo(String studentID){
         String sql = "select * from studentinfo where studentid = ?";
         int result = 0;
         ServerStudent student = null;
         try{
-            connectDB();
+
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, studentID);
             rs = pstmt.executeQuery();
@@ -57,16 +59,13 @@ public class DataAccessObject {
             }
         }catch(SQLException e){
             e.printStackTrace();
-        }finally {
-            closeDB();
         }
         return  student;
     }
-    public boolean setLoginFlag(String studentID, boolean loginFlag){
+    public synchronized boolean setLoginFlag(String studentID, boolean loginFlag){
         String sql = "update studentinfo set loginflag = ? where studentid = ?";
         int result = 0;
         try{
-            connectDB();
             pstmt = conn.prepareStatement(sql);
             pstmt.setBoolean(1, loginFlag);
             pstmt.setString(2, studentID);
@@ -74,12 +73,10 @@ public class DataAccessObject {
 
         }catch(SQLException e){
             e.printStackTrace();
-        }finally {
-            closeDB();
         }
         return  result == 1 ? true : false;
     }
-    public void setAlltLoginFlag(){
+    public synchronized void setAllLoginFlag(){
         String sql = "update studentinfo set loginflag = false" ;
         int result = 0;
         try{
@@ -93,10 +90,9 @@ public class DataAccessObject {
             closeDB();
         }
     }
-    public void insertStudentImage(String fileName, String studentId){
+    public synchronized void insertStudentImage(String fileName, String studentId){
         String sql = "insert into studentimage (image, id) values (?,?)";
         try{
-            connectDB();
             File file = new File(fileName);
             int fileLength = (int)file.length();
             InputStream image = new FileInputStream(file);
@@ -107,50 +103,29 @@ public class DataAccessObject {
             System.out.println(pstmt.executeUpdate());
         }catch (Exception e){
             e.printStackTrace();
-        }finally {
-            closeDB();
         }
     }
-    public Image getStudentImage(String studentId){
+    public synchronized Image getStudentImage(String studentId){
         String sql = "select image from studentimage where id = ?";
         Image image = null;
         try{
-            connectDB();
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, studentId);
             rs = pstmt.executeQuery();
             if(rs.next()){
                 InputStream in = rs.getBinaryStream("image");
                 image = ImageIO.read(in);
-
-//                JFrame frame = new JFrame();
-//                JLabel label = new JLabel(new ImageIcon(im));
-//                frame.getContentPane().add(label, BorderLayout.CENTER);
-//                frame.pack();
-//                frame.setVisible(true);
-//                //이미지 출력방법
-
-
-//                String path = "C:\\Users\\kmw81\\IdeaProjects\\DoorControlSystem\\image\\14011038_copy.jpg";
-//                FileOutputStream fos = new FileOutputStream(path);
-//                byte[] buff = new byte[8192];
-//                int len;
-//                while((len = in.read(buff)) > 0){
-//                    fos.write(buff, 0 , len);
-//                 }
             }
         }catch (Exception e){
             e.printStackTrace();
         }finally {
-            closeDB();
             return image;
         }
     }
-    public byte[] getStudentImageByte(String studentId){
+    public synchronized byte[] getStudentImageByte(String studentId){
         String sql = "select image from studentimage where id = ?";
         byte[] image = null;
         try{
-            connectDB();
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, studentId);
             rs = pstmt.executeQuery();
@@ -162,12 +137,37 @@ public class DataAccessObject {
                     image = new byte[len];
                     System.arraycopy(buff,0, image, 0, len);
                  }
-//                JFrame frame = new JFrame();
-//                JLabel label = new JLabel(new ImageIcon(im));
-//                frame.getContentPane().add(label, BorderLayout.CENTER);
-//                frame.pack();
-//                frame.setVisible(true);
-//                //이미지 출력방법
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            return image;
+        }
+    }
+
+    public synchronized void insertStudentLog(StudentAccessInfo studentAccessInfo){
+        String sql = "insert into log (studentid, time) values (?,?)";
+        try{
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, studentAccessInfo.getStudentID());
+            pstmt.setString(2, studentAccessInfo.getTime());
+            pstmt.executeUpdate();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+//    public synchronized ArrayList<ExcelOutInfo> getExcelLogData(){
+//        String sql = " select log.studentid, time, name, gender, nationality, department, college from log join studentinfo on studentinfo.studentid = log.studentid;";
+//        try{
+//            pstmt = conn.prepareStatement(sql);
+//            rs = pstmt.executeQuery();
+//
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//    }
+}
 
 
 //                String path = "C:\\Users\\kmw81\\IdeaProjects\\DoorControlSystem\\image\\14011038_copy.jpg";
@@ -177,12 +177,3 @@ public class DataAccessObject {
 //                while((len = in.read(buff)) > 0){
 //                    fos.write(buff, 0 , len);
 //                 }
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            closeDB();
-            return image;
-        }
-    }
-}

@@ -17,27 +17,22 @@ public class ServerStudent extends Student  implements Serializable{
         super(studentID, name, gender, nationality, department, college);
         this.loginFlag = loginFlag;
     }
-
     @Override
     public String getStudentID() {
         return super.getStudentID();
     }
-
     @Override
     public String getName() {
         return super.getName();
     }
-
     @Override
     public String getGender() {
         return super.getGender();
     }
-
     @Override
     public String getNationality() {
         return super.getNationality();
     }
-
     @Override
     public String getDepartment() {
         return super.getDepartment();
@@ -62,16 +57,6 @@ public class ServerStudent extends Student  implements Serializable{
     public void setNationality(String nationality) {
         super.setNationality(nationality);
     }
-
-    @Override
-    public byte[] getImages() {
-        return super.getImages();
-    }
-    @Override
-    public void setImages(byte[] images) {
-        super.setImages(images);
-    }
-
     @Override
     public void setDepartment(String department) {
         super.setDepartment(department);
@@ -84,7 +69,6 @@ public class ServerStudent extends Student  implements Serializable{
     public String toString() {
         return super.toString();
     }
-
     public boolean isLoginFlag() {
         return this.loginFlag;
     }

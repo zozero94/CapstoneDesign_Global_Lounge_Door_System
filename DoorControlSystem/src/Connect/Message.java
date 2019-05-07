@@ -1,6 +1,4 @@
-package Connect;
-
-import Constant.Constants;
+package connect;
 
 public class Message {
 

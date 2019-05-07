@@ -23,7 +23,6 @@ import com.google.gson.Gson;
 import org.apache.commons.codec.binary.Base64;
 
 public class RsaManager {
-
     private static RsaManager rsaManager= null;
     private PublicKey publicKey;
     private PrivateKey privateKey;
@@ -31,19 +30,15 @@ public class RsaManager {
     private SecureRandom secureRandom;
     private KeyFactory keyFactory;
     private KeyPairGenerator keyPairGenerator;
-    private PKCS8EncodedKeySpec pKeySpec;
     private KeyPair keyPair;
-
     private byte[] bKey;
     private String strPublicKey;
-
     private Gson gson;
 
     public static synchronized RsaManager getInstance(){
         if(rsaManager == null) rsaManager = new RsaManager();
         return rsaManager;
      }
-
     private RsaManager() {
         try {
             publicKey = null;
@@ -71,9 +66,8 @@ public class RsaManager {
         } // key 생성
         byte[] b = publicKey.getEncoded();
         strPublicKey = Base64.encodeBase64String(b);
-    }// SocketThread(어플리케이션)에서 생성
-
-    public String getEncodedString(Student info, String publicKey){
+    }// SocketThreadAP(어플리케이션)에서 생성
+    public synchronized String getEncodedString(Student info, String publicKey){
         String encodedInfo = null;
         PublicKey key;
 
@@ -85,7 +79,6 @@ public class RsaManager {
             cipher.init(Cipher.ENCRYPT_MODE, key);
             encodedInfo = gson.toJson(info);
 
-            System.out.println(encodedInfo);
 
             byte[] strToByte = encodedInfo.getBytes();
             int size = (strToByte.length/52);
@@ -105,8 +98,7 @@ public class RsaManager {
             return encodedInfo;
         }
     }
-
-    public Student getDecodedString(String data){
+    public synchronized Student getDecodedString(String data){
         Student info = null;
         StringBuilder str= new StringBuilder();
         try{
@@ -130,7 +122,6 @@ public class RsaManager {
             return info;
         }
     }
-
     public void setPrivateKey(String key){
         try {
             byte[] bKey = Base64.decodeBase64(key.getBytes());

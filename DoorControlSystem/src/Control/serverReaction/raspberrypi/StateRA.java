@@ -1,7 +1,7 @@
-package control.ServerReaction;
+package control.serverReaction.raspberrypi;
 
 import com.google.gson.JsonObject;
 
-public interface State {
+public interface StateRA {
     public JsonObject reaction(JsonObject object);
 }
