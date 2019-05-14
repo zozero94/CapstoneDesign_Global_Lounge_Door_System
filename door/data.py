@@ -3,19 +3,19 @@ import json
 
 def toStringQr() :
     qr = decodingQrcode.qrcode()
-    jsonObject = {'seqType': '300', 'data': qr}
-    outMsg = json.dumps(jsonObject)
+    json_object = {'seqType': '300', 'data': qr}
+    out_msg = json.dumps(json_object)
     
-    return outMsg
+    return out_msg
 
 def toString(num) :
-    jsonObject = {'seqType': num}
-    outMsg = json.dumps(jsonObject)
+    json_object = {'seqType': num}
+    out_msg = json.dumps(json_object)
     
-    return outMsg
+    return out_msg
 
 def toDict(inMsg) :
-    inDic = json.loads(inMsg)
+    in_dic = json.loads(inMsg)
     
-    return inDic
+    return in_dic
     
