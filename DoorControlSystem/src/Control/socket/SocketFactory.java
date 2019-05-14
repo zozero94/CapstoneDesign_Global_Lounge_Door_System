@@ -9,7 +9,7 @@ public class SocketFactory {
     public static SocketThread getSocket(JsonObject object, Socket socket, BufferedReader reader){
         SocketThread socketThread = null;
         try {
-            if (object.get("seqType").getAsString().equals("100")) {
+            if (object.get("seqType").getAsString().equals("100") || object.get("seqType").getAsString().equals("105")) {
                 socketThread = new Aplication(socket, object.toString(), reader);
             } else {
                 socketThread = new Raspberrypi(socket, reader);

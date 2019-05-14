@@ -1,7 +1,7 @@
 package control.serverReaction.aplication;
 
 import com.google.gson.JsonObject;
-import control.SystemServerSocket;
+import control.serverReaction.SystemServerSocket;
 import model.DataAccessObject;
 import org.apache.commons.codec.binary.Base64;
 

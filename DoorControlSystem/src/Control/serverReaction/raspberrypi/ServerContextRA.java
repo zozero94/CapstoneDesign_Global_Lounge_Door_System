@@ -1,6 +1,7 @@
 package control.serverReaction.raspberrypi;
 
 import com.google.gson.JsonObject;
+import control.socket.Raspberrypi;
 
 public class ServerContextRA {
 
@@ -8,8 +9,10 @@ public class ServerContextRA {
     private Confirm confirm;
     private QrCertified qrCertified;
     private String qrString;
+    private Raspberrypi raspberrypi;
 
-    public ServerContextRA(){
+    public ServerContextRA(Raspberrypi raspberrypi){
+        this.raspberrypi = raspberrypi;
         this.confirm = new Confirm(this);
         this.qrCertified = new QrCertified(this);
         this.state = confirm;
@@ -35,5 +38,11 @@ public class ServerContextRA {
     }
     public String getStudentId(){
         return this.qrString.substring(0,8);
+    }
+    public Raspberrypi getRaspberrypi() {
+        return raspberrypi;
+    }
+    public void setRaspberrypi(Raspberrypi raspberrypi) {
+        this.raspberrypi = raspberrypi;
     }
 }

@@ -2,8 +2,7 @@ package control.serverReaction.aplication;
 
 import com.google.gson.JsonObject;
 import control.socket.Aplication;
-import control.socket.SocketThreadAP;
-import model.ServerStudent;
+import model.dto.ServerStudent;
 
 public class ServerContextAP {
     private boolean QrFlag;

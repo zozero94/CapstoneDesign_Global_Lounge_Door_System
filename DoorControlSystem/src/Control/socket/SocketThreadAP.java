@@ -2,7 +2,6 @@ package control.socket;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import control.SystemServerSocket;
 import control.serverReaction.aplication.SeqTypeConstants;
 import control.serverReaction.aplication.ServerContextAP;
 import model.DataAccessObject;

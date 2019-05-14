@@ -1,4 +1,8 @@
 package model;
+import model.dto.ExcelOutInfo;
+import model.dto.ServerStudent;
+import model.dto.StudentAccessInfo;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.*;
@@ -157,16 +161,26 @@ public class DataAccessObject {
         }
     }
 
-//    public synchronized ArrayList<ExcelOutInfo> getExcelLogData(){
-//        String sql = " select log.studentid, time, name, gender, nationality, department, college from log join studentinfo on studentinfo.studentid = log.studentid;";
-//        try{
-//            pstmt = conn.prepareStatement(sql);
-//            rs = pstmt.executeQuery();
-//
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-//    }
+    public synchronized ArrayList<ExcelOutInfo> getExcelLogData(){
+        String sql = " select log.studentid, name, gender, nationality, department, college, time from log join studentinfo on studentinfo.studentid = log.studentid;";
+        ArrayList<ExcelOutInfo> logs = null;
+        try{
+            logs = new ArrayList<ExcelOutInfo>();
+
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+            while(rs.next()){
+                logs.add(new ExcelOutInfo(rs.getString("log.studentid"),rs.getString("name"),rs.getString("gender"),rs.getString("nationality"),
+                        rs.getString("department"),rs.getString("college"),rs.getString("time")));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            return logs;
+        }
+
+    }
+
 }
 
 

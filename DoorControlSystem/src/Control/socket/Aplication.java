@@ -2,14 +2,10 @@ package control.socket;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import control.SystemServerSocket;
-import control.serverReaction.aplication.SeqTypeConstants;
+import control.serverReaction.SystemServerSocket;
 import control.serverReaction.aplication.ServerContextAP;
 import model.DataAccessObject;
-import org.apache.commons.codec.binary.Base64;
-
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
@@ -47,14 +43,12 @@ public class Aplication extends SocketThread {
         try {
             do {
                 msg = inMsg.readLine();
-                //System.out.println(msg);
+                System.out.println(msg);
                 if (msg == null) break;
                 object = (JsonObject) parser.parse(msg);
                 object = serverContext.response(object);
                 if (object != null) {
-                    if (object.get("seqType").getAsInt() == 204){
-                        outMsg.println(object.get("img"));
-                    }
+                    if (object.get("seqType").getAsInt() == 204) outMsg.println(object.get("img"));
                     else outMsg.println(object.toString()); //원래코드
 
                 }
@@ -80,6 +74,6 @@ public class Aplication extends SocketThread {
     public void setAndroidLogoutFlag(boolean androidLogoutFlag) {
         this.androidLogoutFlag = androidLogoutFlag;
     }
-    
+
 
 }

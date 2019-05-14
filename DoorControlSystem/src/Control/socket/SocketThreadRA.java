@@ -2,7 +2,7 @@ package control.socket;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import control.SystemServerSocket;
+import control.serverReaction.SystemServerSocket;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
