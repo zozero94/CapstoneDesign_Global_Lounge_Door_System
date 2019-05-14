@@ -14,6 +14,7 @@ open class BaseServer {
         const val STATE_DEL = 201
         const val STATE_CREATE = 202
         const val STATE_IMG = 203
+        const val STATE_URL = 204
 
         const val LOGOUT = 500
 

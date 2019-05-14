@@ -1,6 +1,7 @@
 package capstonedesign.globalrounge.mainjob
 
 import Encryption.Encryption
+import android.annotation.SuppressLint
 import android.content.Context
 import capstonedesign.globalrounge.dto.ADMIN
 import capstonedesign.globalrounge.dto.STUDENT
@@ -105,7 +106,7 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
      * @see capstonedesign.globalrounge.mainjob.MainActivity.onPause
      */
     override fun dispose() {
-        ServerConnection.clearDisposable()
+        SejongConnection.clearDisposable()
     }
     /**************** [ Local Function ] ****************/
     /**
@@ -118,17 +119,23 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
      *
      * @param user : 요청할 사용자 정보
      */
+    @SuppressLint("CheckResult")
     private fun requestSejongPermission(user: User) {
-        SejongConnection.requestUserInformation(user, object : SejongConnection.LoginCallback {
-            override fun approval(user: User) {
-                approvalPermission(user)//인증 후 한번 더 서버인증
+        val disposable = SejongConnection.requestUserInformation(user)
+            .subscribe { response ->
+                response.string().let {
+                    if (it.contains("alert")) {//없는정보
+                        if (it.contains("패스워드")) {
+                            view.alertToast("패스워드가 잘못 되었습니다.")
+                        } else if (it.contains("아이디")) {
+                            view.alertToast("아이디가 잘못 되었습니다.")
+                        }
+                    } else {//있는정보
+                        approvalPermission(user)
+                    }
+                }
             }
-
-            override fun reject(text: String) {
-                view.loadingDestroy()
-                view.alertToast(text)
-            }
-        })
+        SejongConnection.addDisposable(disposable)
     }
 
     /**
@@ -139,12 +146,11 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
      * @param user 학교인증에서 넘어온 사용자 정보
      */
     private fun approvalPermission(user: User) {
-        view.loadingStart()
         ServerConnection.connectSocket()
 
         val ref = ServerConnection.socketObservable!!
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnError { t -> view.alertToast("에러띠!${t.printStackTrace()}") }//TODO 추가된 socketCloseException
+            .doOnSubscribe { view.loadingStart() }
             .subscribe(object : SocketSubscriber() {
                 override fun onConnected() {
                     Encryption.newKey()
@@ -152,37 +158,34 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
                 }
 
                 override fun onDisconnected() {
-                    view.loadingDestroy()
                     view.alertToast("연결이 원활하지 않습니다.")
+                    view.loadingDestroy()
                 }
 
                 override fun onResponse(data: ByteArray) {
                     val str = String(data, StandardCharsets.UTF_8)
-                    try {
-                        (JsonParser().parse(str) as JsonObject).let { jsonObject ->
-                            when (jsonObject.get("seqType").asInt) {
-                                LOGIN_OK -> {
-                                    Encryption.getDecodedString(jsonObject.get("data").asString).let { string ->
-                                        AutoLogin.saveUserInfo(user)//체크박스에 따른 자동로그인 저장
-                                        (Gson().fromJson<Any>(string, Student::class.java) as Student).let {
-                                            view.startActivity(it)
-                                        }
+
+                    (JsonParser().parse(str) as JsonObject).let { jsonObject ->
+                        when (jsonObject.get("seqType").asInt) {
+                            LOGIN_OK -> {
+                                Encryption.getDecodedString(jsonObject.get("data").asString).let { string ->
+                                    AutoLogin.saveUserInfo(user)//체크박스에 따른 자동로그인 저장
+                                    (Gson().fromJson<Any>(string, Student::class.java) as Student).let {
+                                        view.startActivity(it)
                                     }
                                 }
-                                LOGIN_ALREADY -> {
-                                    view.alertToast("이미 로그인 중입니다.")
-                                }
-                                LOGIN_NO_DATA -> {
-                                    view.alertToast("서버에 더미데이터가 없습니다.")
-                                }
+                            }
+                            LOGIN_ALREADY -> {
+                                view.alertToast("이미 로그인 중입니다.")
+                            }
+                            LOGIN_NO_DATA -> {
+                                view.alertToast("서버에 더미데이터가 없습니다.")
                             }
                         }
-                    } catch (e: ClassCastException) {
-                        e.printStackTrace()
-                    } finally {
-                        view.loadingDestroy()
                     }
+                    view.loadingDestroy()
                 }
+
             })
         ServerConnection.addDisposable(ref)
     }

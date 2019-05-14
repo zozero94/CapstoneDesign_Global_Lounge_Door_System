@@ -77,6 +77,11 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     }
 
+    override fun onPause() {
+        super.onPause()
+        presenter.dispose()
+    }
+
     override fun loadingStart() {
         loadingThread =
             Thread(Runnable {
@@ -109,7 +114,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     override fun alertToast(text: String) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
-
 
     override fun onBackPressed() {
         if (System.currentTimeMillis() - time >= 2000) {

@@ -1,12 +1,24 @@
 package capstonedesign.globalrounge.model.permission
 
+import android.annotation.SuppressLint
 import android.util.Log
+import capstonedesign.globalrounge.dto.STUDENT
 import capstonedesign.globalrounge.dto.User
+import io.reactivex.Observable
+import io.reactivex.Scheduler
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.plugins.RxJavaPlugins
+import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.POST
 import retrofit2.http.Query
 
@@ -16,22 +28,14 @@ import retrofit2.http.Query
  */
 object SejongConnection {
     private val sejongPermission: Permission
-
-    /**
-     * 우회로그인 결과를 되돌려주는 Callback Interface
-     */
-    interface LoginCallback {
-        fun reject(text: String)
-        fun approval(user: User)
-    }
-
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     /**
      * POST 를 보내기위한 Retrofit Interface
      */
     private interface Permission {
 
         @POST(url)
-        fun getResult(@Query("rUserid") rUserid: String, @Query("rPW") rPW: String, @Query("pro") pro: Int): Call<ResponseBody>
+        fun getResult(@Query("rUserid") rUserid: String, @Query("rPW") rPW: String, @Query("pro") pro: Int): Observable<ResponseBody>
 
         companion object {
             const val url = "https://udream.sejong.ac.kr/main/loginPro.aspx/"
@@ -44,6 +48,8 @@ object SejongConnection {
     init {
         sejongPermission = with(Retrofit.Builder()) {
             baseUrl(Permission.url)
+            addConverterFactory(GsonConverterFactory.create())
+            addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
             build()
         }.create(Permission::class.java)
     }
@@ -55,31 +61,17 @@ object SejongConnection {
      * @see capstonedesign.globalrounge.mainjob.MainPresenter.requestSejongPermission
      *
      */
-    fun requestUserInformation(user: User, callback: LoginCallback) {
-        sejongPermission.getResult(user.id, user.pw, 1)
-            .enqueue(object : Callback<ResponseBody> {
-                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+    @SuppressLint("CheckResult")
+    fun requestUserInformation(user: User): Observable<ResponseBody> =
+        sejongPermission.getResult(user.id, user.pw, STUDENT)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 
-                    response.body()!!.string().let {
-                        if (it.contains("alert")) {//없는정보
-                            if (it.contains("패스워드")) {
-                                callback.reject("패스워드가 잘못 되었습니다.")
-                            } else if (it.contains("아이디")) {
-                                callback.reject("아이디가 잘못 되었습니다.")
-                            }
-                        } else {//있는정보
-                            callback.approval(user)
-                        }
-                    }
-
-
-                }
-
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Log.e("RequestPermission Error", "무언가 잘못되었군")
-                }
-            })
-
+    fun addDisposable(disposable: Disposable){
+        SejongConnection.compositeDisposable.add(disposable)
+    }
+    fun clearDisposable(){
+        SejongConnection.compositeDisposable.clear()
     }
 
 }

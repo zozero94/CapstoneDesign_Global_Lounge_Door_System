@@ -5,7 +5,9 @@ import android.util.Base64
 import android.util.Log
 import capstonedesign.globalrounge.model.QrCode
 import capstonedesign.globalrounge.model.permission.BaseServer.Companion.STATE_CREATE
+import capstonedesign.globalrounge.model.permission.BaseServer.Companion.STATE_URL
 import capstonedesign.globalrounge.model.permission.ServerConnection
+import capstonedesign.globalrounge.model.util.ImageLoader
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.google.gson.JsonSyntaxException
@@ -31,13 +33,26 @@ class QrPresenter(private val view: QrContract.View) : QrContract.Presenter {
                 override fun onResponse(data: ByteArray) {
                     val str = String(data, StandardCharsets.UTF_8)
                     try {
-                        (JsonParser().parse(str) as JsonObject).let {
-                            when (it.get("seqType").asInt) {
+                        (JsonParser().parse(str) as JsonObject).let {jsonObject->
+                            when (jsonObject.get("seqType").asInt) {
                                 STATE_CREATE -> {
-                                    QrCode.makeQrCode(it.get("qr").asString).let { bitmap ->
+                                    QrCode.makeQrCode(jsonObject.get("qr").asString).let { bitmap ->
                                         view.makeQrCode(bitmap)
                                     }
                                 }
+                                STATE_URL ->{
+                                    jsonObject.get("img").asString.let {url->
+                                        ImageLoader.request(url).subscribe {
+                                            val result = it.string()
+                                            //TODO 결과값 받아오기. Retrofit2 사용해서 유동적 url에 따른 이미지 받아오기
+                                        }
+                                    }
+                                    //view.drawUserImages()
+                                }
+                                else->{
+
+                                }
+
                             }
                         }
 
