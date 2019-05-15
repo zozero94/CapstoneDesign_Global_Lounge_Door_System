@@ -1,21 +1,22 @@
-package capstonedesign.globalrounge.model
+package capstonedesign.globalrounge.model.util
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import capstonedesign.globalrounge.dto.User
 import capstonedesign.globalrounge.mainjob.MainPresenter
 
+@SuppressLint("CommitPrefEdits")
 object AutoLogin {
     //자동로그인에 필요한 변수
 
     private lateinit var preferences: SharedPreferences
-    private lateinit var editor: SharedPreferences.Editor
+    private val editor: SharedPreferences.Editor by lazy { preferences.edit() }
 
     var checkBoxState: Boolean = false //CheckBox의 isClicked
 
-    fun setSharedPreferences(context: Context){
+    fun setSharedPreferences(context: Context) {
         preferences = context.getSharedPreferences("auto", 0)
-        editor = preferences.edit()
     }
 
     /**

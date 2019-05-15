@@ -1,4 +1,4 @@
-﻿﻿# CapstoneDesign [ Global_Rounge_Door_System ]
+﻿# CapstoneDesign [ Global_Rounge_Door_System ]
 ### MVP 패턴을 적용한 안드로이드 프로젝트
 
 <hr/>  
@@ -17,6 +17,8 @@
     @SuppressLint("CheckResult")
     private fun requestSejongPermission(user: User) {
         val disposable = SejongConnection.requestUserInformation(user)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe { response ->
                 response.string().let {
                     if (it.contains("alert")) {//없는정보
@@ -37,9 +39,8 @@
  #### 서버 인증정보를 받아옴
  ```kotlin
     private fun approvalPermission(user: User) {
-        ServerConnection.connectSocket()
-
-        val ref = ServerConnection.socketObservable!!
+        ServerConnection.connect()
+        val ref = ServerConnection.socketObservable
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { view.loadingStart() }
             .subscribe(object : SocketSubscriber() {
@@ -94,6 +95,17 @@
         <variable name="user" type="capstonedesign.globalrounge.dto.Student"/>
     </data>
  ```    
+ 
+ ```xml
+<resources>
+    <string name="app_name">GlobalRounge</string>
+    <string name="user_name">이름 : %s</string>
+    <string name="user_id">학번 : %s</string>
+    <string name="user_department">학과 : %s</string>
+    <string name="user_college">단과대학 : %s</string>
+</resources>
+
+```
  ```xml
  <TextView
  android:text="@{@string/user_name(user.name)}"
@@ -168,15 +180,15 @@
 ## (Model)  
  
 #### Permission
- + 학교 서버 우회접근[SejongPermission.kt](
+ + 학교 서버 우회접근[SejongConnection.kt](
  https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/model/permission/SejongConnection.kt) `Retrofit2`
  
- + DB서버 접근[ServerPermission.kt](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/model/permission/ServerConnection.kt)``Rx (CoddestX)``
+ + DB서버 접근[ServerConnection.kt](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/model/permission/ServerConnection.kt)``Rx (CoddestX)``
  
  #### Util  
- + 자동로그인  [ AutoLogin ](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/model/AutoLogin.kt)``SharedPreference``
- + QRCode 생성  [ QrCode ](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/model/QrCode.kt) ``Zxing``
- + 암호화  [ Encryption ](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/model/Encryption.kt) ``RSA / Base64``
+ + 자동로그인  [ AutoLogin ](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/model/util/AutoLogin.kt)``SharedPreference``
+ + QRCode 생성  [ QrCode ](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/model/util/QrCode.kt) ``Zxing``
+ + 암호화  [ Encryption ](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/model/util/Encryption.kt) ``RSA / Base64``
 <hr>
 
 

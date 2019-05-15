@@ -4,10 +4,8 @@ import android.annotation.SuppressLint
 import capstonedesign.globalrounge.dto.STUDENT
 import capstonedesign.globalrounge.dto.User
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -22,6 +20,7 @@ import retrofit2.http.Query
 object SejongConnection {
     private val sejongPermission: Permission
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
+
     /**
      * POST 를 보내기위한 Retrofit Interface
      */
@@ -57,14 +56,22 @@ object SejongConnection {
     @SuppressLint("CheckResult")
     fun requestUserInformation(user: User): Observable<ResponseBody> =
         sejongPermission.getResult(user.id, user.pw, STUDENT)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
 
-    fun addDisposable(disposable: Disposable){
-        SejongConnection.compositeDisposable.add(disposable)
+    /**
+     * Disposable 객체를 추가하는 함수
+     * @see capstonedesign.globalrounge.mainjob.MainPresenter.requestSejongPermission
+     * @param disposable : Disposable 객체
+     */
+    fun addDisposable(disposable: Disposable) {
+        compositeDisposable.add(disposable)
     }
-    fun clearDisposable(){
-        SejongConnection.compositeDisposable.clear()
+
+    /**
+     * Disposable 객체를 dispose 하는 함수
+     * @see capstonedesign.globalrounge.mainjob.MainPresenter.dispose
+     */
+    fun clearDisposable() {
+        compositeDisposable.clear()
     }
 
 }

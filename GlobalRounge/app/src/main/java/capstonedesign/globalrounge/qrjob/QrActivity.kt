@@ -2,12 +2,10 @@ package capstonedesign.globalrounge.qrjob
 
 import android.content.Context
 import android.content.Intent
-import android.databinding.BindingAdapter
 import android.databinding.DataBindingUtil
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.widget.ImageView
 import android.widget.Toast
 import capstonedesign.globalrounge.R
 import capstonedesign.globalrounge.databinding.ActivityQrBinding
@@ -20,8 +18,12 @@ class QrActivity : AppCompatActivity(), QrContract.View {
 
 
     //데이터바인딩 변수
-    private lateinit var binding: ActivityQrBinding
-    private val presenter = QrPresenter(this)
+    private val binding: ActivityQrBinding by lazy {
+        DataBindingUtil.setContentView<ActivityQrBinding>(this@QrActivity, R.layout.activity_qr)
+    }
+
+    private val presenter = QrPresenter(this@QrActivity)
+
     init {
         presenter.subscribe()
     }
@@ -29,10 +31,7 @@ class QrActivity : AppCompatActivity(), QrContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_qr)
-
         (intent.getSerializableExtra(EXTRA_USER) as Student).let { binding.user = it }
-
 
         binding.logout.setOnClickListener {
             setResult(REQUEST_CODE)
@@ -57,7 +56,6 @@ class QrActivity : AppCompatActivity(), QrContract.View {
         presenter.stateDelete()
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
         presenter.dispose()
@@ -71,7 +69,7 @@ class QrActivity : AppCompatActivity(), QrContract.View {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 
-    override fun drawUserImages(url:String) {
+    override fun drawUserImages(url: String) {
         Glide
             .with(this)
             .load(url)
@@ -79,8 +77,6 @@ class QrActivity : AppCompatActivity(), QrContract.View {
             .error(R.mipmap.jaeho)
             .into(binding.userImage)
     }
-
-
 
 
     companion object {

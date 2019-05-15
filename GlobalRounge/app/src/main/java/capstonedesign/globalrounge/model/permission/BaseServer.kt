@@ -4,7 +4,7 @@ open class BaseServer {
     internal var ip = "192.168.0.7"
     internal val port = 5050
 
-    companion object{
+    companion object {
         const val LOGIN = 100
         const val LOGIN_OK = 101
         const val LOGIN_ALREADY = 102
@@ -19,11 +19,12 @@ open class BaseServer {
         const val LOGOUT = 500
 
     }
+
     /**
      * 이스터에그를 위한 함수
      */
-    fun setIp(ip:String){
-        this.ip=ip
+    fun setIp(ip: String) {
+        this.ip = ip
     }
 
 }

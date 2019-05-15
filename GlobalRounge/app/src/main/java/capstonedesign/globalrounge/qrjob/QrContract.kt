@@ -6,7 +6,7 @@ interface QrContract {
     interface View {
         fun alertToast(text: String)
         fun makeQrCode(bitmap: Bitmap)
-        fun drawUserImages(url :String)
+        fun drawUserImages(url: String)
     }
 
     interface Presenter {

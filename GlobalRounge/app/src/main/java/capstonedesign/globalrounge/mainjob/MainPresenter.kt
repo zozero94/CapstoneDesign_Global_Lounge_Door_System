@@ -7,16 +7,17 @@ import capstonedesign.globalrounge.dto.ADMIN
 import capstonedesign.globalrounge.dto.STUDENT
 import capstonedesign.globalrounge.dto.Student
 import capstonedesign.globalrounge.dto.User
-import capstonedesign.globalrounge.model.AutoLogin
 import capstonedesign.globalrounge.model.permission.BaseServer.Companion.LOGIN_ALREADY
 import capstonedesign.globalrounge.model.permission.BaseServer.Companion.LOGIN_NO_DATA
 import capstonedesign.globalrounge.model.permission.BaseServer.Companion.LOGIN_OK
 import capstonedesign.globalrounge.model.permission.SejongConnection
 import capstonedesign.globalrounge.model.permission.ServerConnection
+import capstonedesign.globalrounge.model.util.AutoLogin
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import moe.codeest.rxsocketclient.SocketSubscriber
 import java.nio.charset.StandardCharsets
 
@@ -122,6 +123,8 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
     @SuppressLint("CheckResult")
     private fun requestSejongPermission(user: User) {
         val disposable = SejongConnection.requestUserInformation(user)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe { response ->
                 response.string().let {
                     if (it.contains("alert")) {//없는정보
@@ -146,9 +149,8 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
      * @param user 학교인증에서 넘어온 사용자 정보
      */
     private fun approvalPermission(user: User) {
-        ServerConnection.connectSocket()
-
-        val ref = ServerConnection.socketObservable!!
+        ServerConnection.connect()
+        val ref = ServerConnection.socketObservable
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { view.loadingStart() }
             .subscribe(object : SocketSubscriber() {

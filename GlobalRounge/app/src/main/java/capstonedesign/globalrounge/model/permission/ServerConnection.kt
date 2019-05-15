@@ -19,25 +19,13 @@ import java.nio.charset.Charset
  * 1차인증 후 2차인증 실행
  * @see MainPresenter.approvalPermission
  */
-object ServerConnection : BaseServer(){
-
-    var socketObservable: Observable<DataWrapper>? = null
-    private var socket : SocketClient?=null
+object ServerConnection : BaseServer() {
+    lateinit var socketObservable: Observable<DataWrapper>
+    lateinit var socket: SocketClient
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    fun addDisposable(disposable: Disposable){
-        compositeDisposable.add(disposable)
-    }
-    fun clearDisposable(){
-        compositeDisposable.clear()
-    }
-    /**
-     * 서버와 연결하는 함수
-     * @see MainPresenter.approvalPermission
-     */
-    fun connectSocket() {
-
+    fun connect(){
         socket = RxSocketClient.create(
             SocketConfig.Builder()
                 .setIp(ip)
@@ -47,8 +35,14 @@ object ServerConnection : BaseServer(){
                 .setTimeout(2000)
                 .build()
         )
-        socketObservable = socket!!.connect()
+        socketObservable = socket.connect()
+    }
+    fun addDisposable(disposable: Disposable) {
+        compositeDisposable.add(disposable)
+    }
 
+    fun clearDisposable() {
+        compositeDisposable.clear()
     }
 
     /**
@@ -71,7 +65,7 @@ object ServerConnection : BaseServer(){
             }.toString())
         }
 
-        socket!!.sendData(message.toString() + "\n")
+        socket.sendData(message.toString() + "\n")
         //\n을 붙이지 않으면 서버에서 ReadLine으로 읽을 수 없음
     }
 
@@ -79,10 +73,10 @@ object ServerConnection : BaseServer(){
      * 서버로 사용자 상태 on을 요청
      * @see capstonedesign.globalrounge.qrjob.QrPresenter.stateRequest
      */
-    fun sendStateOn(){
-        with(JsonObject()){
+    fun sendStateOn() {
+        with(JsonObject()) {
             addProperty("seqType", STATE_REQ)
-            socket!!.sendData(this.toString()+"\n")
+            socket.sendData(this.toString() + "\n")
         }
     }
 
@@ -90,10 +84,10 @@ object ServerConnection : BaseServer(){
      * 서버로 사용자 상태 off를 요청
      * @see capstonedesign.globalrounge.qrjob.QrPresenter.stateDelete
      */
-    fun sendStateOff(){
-        with(JsonObject()){
+    fun sendStateOff() {
+        with(JsonObject()) {
             addProperty("seqType", STATE_DEL)
-            socket!!.sendData(this.toString()+"\n")
+            socket.sendData(this.toString() + "\n")
         }
     }
 
@@ -101,10 +95,10 @@ object ServerConnection : BaseServer(){
      * 사용자 로그아웃을 요청
      * @see capstonedesign.globalrounge.qrjob.QrPresenter.logout
      */
-    fun logout(){
-        with(JsonObject()){
+    fun logout() {
+        with(JsonObject()) {
             addProperty("seqType", LOGOUT)
-            socket!!.sendData(this.toString()+"\n")
+            socket.sendData(this.toString() + "\n")
         }
     }
 
@@ -112,10 +106,10 @@ object ServerConnection : BaseServer(){
      * 서버로부터 이미지 요청
      * @see capstonedesign.globalrounge.qrjob.QrPresenter.subscribe
      */
-    fun imageRequest(){
-        with(JsonObject()){
+    fun imageRequest() {
+        with(JsonObject()) {
             addProperty("seqType", STATE_IMG)
-            socket!!.sendData(this.toString()+"\n")
+            socket.sendData(this.toString() + "\n")
         }
     }
 

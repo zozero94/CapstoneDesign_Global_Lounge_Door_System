@@ -18,10 +18,15 @@ import capstonedesign.globalrounge.qrjob.QrActivity
 class MainActivity : AppCompatActivity(), MainContract.View {
 
     //데이터 바인딩 변수
-    private lateinit var binding: ActivityMainBinding
+    private val binding: ActivityMainBinding by lazy {
+        DataBindingUtil.setContentView<ActivityMainBinding>(
+            this,
+            R.layout.activity_main
+        )
+    }
 
     //MVP의 Presenter
-    private lateinit var presenter: MainContract.Presenter
+    private val presenter by lazy { MainPresenter(this@MainActivity, this) }
 
     private var loadingThread: Thread? = null
 
@@ -36,10 +41,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         //기본 View Setting
         super.onCreate(savedInstanceState)
-        //데이터바인딩을 통한 XML코드와 연결
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        //presenter Setting
-        presenter = MainPresenter(this, this)
+
         //Login Button Listener
         binding.loginBtn.setOnClickListener {
             User(
@@ -89,14 +91,14 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                     binding.loading.startAnimation(this)
                 }
             })
-        loadingThread!!.start()
+        loadingThread?.start()
         binding.loading.visibility = View.VISIBLE
 
     }
 
     override fun loadingDestroy() {
         if ((loadingThread?.isInterrupted == false)) {
-            loadingThread!!.interrupt()
+            loadingThread?.interrupt()
             binding.loading.clearAnimation()
             binding.loading.visibility = View.INVISIBLE
         }

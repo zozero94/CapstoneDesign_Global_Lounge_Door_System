@@ -103,7 +103,7 @@ object Encryption {
             val appendString = String(cipher.doFinal(temp), StandardCharsets.UTF_8)
             str.append(appendString)
         }
-        keyPair=null
+        keyPair = null
         return str.toString()
     }
 

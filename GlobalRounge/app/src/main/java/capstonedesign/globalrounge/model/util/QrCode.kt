@@ -11,6 +11,9 @@ object QrCode {
 
     /**
      * QR코드를 생성한다
+     *
+     * @see capstonedesign.globalrounge.qrjob.QrPresenter.subscribe
+     * @param data : QR코드 생성시 이용할 String
      */
     fun makeQrCode(data: String): Bitmap =
         writer.encode(data, BarcodeFormat.QR_CODE, 500, 500).let { encoder.createBitmap(it) }
