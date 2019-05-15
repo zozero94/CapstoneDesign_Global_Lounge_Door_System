@@ -74,11 +74,12 @@
                         <outlet property="idTextField" destination="ThY-eu-yH4" id="q1N-3g-h3g"/>
                         <outlet property="loginButton" destination="gbQ-aa-jiT" id="vgI-M7-L0R"/>
                         <outlet property="pwTextField" destination="8f7-Zy-FwU" id="FsK-dc-P3q"/>
+                        <segue destination="e5S-ue-WWk" kind="custom" identifier="sendData" id="btR-SK-2Yh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="40.799999999999997" y="20.689655172413794"/>
+            <point key="canvasLocation" x="1" y="21"/>
         </scene>
         <!--Log On View Controller-->
         <scene sceneID="Jtp-YJ-uPf">
@@ -100,10 +101,6 @@
                                 <rect key="frame" x="16" y="743" width="343" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="정보배경.png" translatesAutoresizingMaskIntoConstraints="NO" id="bTg-JR-oAp">
-                                <rect key="frame" x="52" y="190" width="272" height="441"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JZw-dn-dKU">
                                 <rect key="frame" x="282" y="54" width="65" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -116,10 +113,56 @@
                                     <action selector="logoutBtn:" destination="e5S-ue-WWk" eventType="touchUpInside" id="3Zb-PC-iPb"/>
                                 </connections>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="redraw" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="정보배경.png" translatesAutoresizingMaskIntoConstraints="NO" id="bTg-JR-oAp">
+                                <rect key="frame" x="27" y="137" width="321" height="538"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5MG-dA-5BH">
+                                <rect key="frame" x="122" y="196" width="130" height="130"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="사람.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="4rT-RW-zfP">
+                                <rect key="frame" x="51" y="428" width="98" height="120"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="이 름 | " borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fCw-f8-jsl">
+                                <rect key="frame" x="157" y="428" width="169" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="학 과 |" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qdM-vb-bGI">
+                                <rect key="frame" x="157" y="488" width="169" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="신 분 |" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4di-HH-bup">
+                                <rect key="frame" x="157" y="518" width="169" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="학 번 |" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vfw-fp-dEb">
+                                <rect key="frame" x="157" y="458" width="169" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="6M7-t1-qRt"/>
                     </view>
+                    <connections>
+                        <outlet property="qrImage" destination="5MG-dA-5BH" id="ljF-Mp-fpV"/>
+                        <outlet property="userImage" destination="4rT-RW-zfP" id="BQO-3u-F89"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sHA-f3-byh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -133,6 +176,7 @@
         <image name="맨위.png" width="247.67999267578125" height="49"/>
         <image name="배경.png" width="312" height="459.83999633789062"/>
         <image name="비밀번호배경.png" width="129.60000610351562" height="24"/>
+        <image name="사람.jpeg" width="453" height="340"/>
         <image name="아이디배경.png" width="132" height="24"/>
         <image name="자동로그인off.png" width="70.55999755859375" height="28.799999237060547"/>
         <image name="자동로그인on.png" width="69.599998474121094" height="27.840000152587891"/>

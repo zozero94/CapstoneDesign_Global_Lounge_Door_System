@@ -9,17 +9,30 @@
 import UIKit
 import SwiftSocket
 
-class ViewController: UIViewController {
+class ViewController: UIViewController  {
     @IBOutlet var idTextField: UITextField!
     @IBOutlet var pwTextField: UITextField!
     @IBOutlet var autoLoginButton: UIButton!
     @IBOutlet var loginButton: UIButton!
     
+    //login
     var isAutoLogin : Bool = false
     var isLogOut: String = ""
-    var dic : [String : String] = [:]
-    var checkLogout : String = ""
+    let rsa: RSAWrapper? = RSAWrapper()
     
+    //json
+    var dic : [String : String] = [:]
+    var dataDic : [String : String] = [:]
+    var dicToString: String? = ""
+    var checkLogout : String = ""
+    var jsonStringData : String? = ""
+    var pubKey : String? = ""
+    var prvKey : String? = ""
+
+    var hexValue : String? = ""
+    var modulusValue : String? = ""
+
+    var client: ServerConnection = ServerConnection.sharedInstance
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,12 +40,11 @@ class ViewController: UIViewController {
         idTextField.setLeftPaddingPoints(30)
         pwTextField.setLeftPaddingPoints(30)
         
-        
         print("viewDidLoad() 호출됨.//// -> isAutoLogin값 -> \(isAutoLogin)")
     }
     
+    //화면 나타나기 직전
     override func viewWillAppear(_ animated: Bool) {
-        
         checkLogout = String(UserDefaults.standard.string(forKey: "logout") ?? "0")
         
         if checkLogout == "0" {
@@ -57,8 +69,11 @@ class ViewController: UIViewController {
             UserDefaults.standard.synchronize()
         }
         print(UserDefaults.standard.bool(forKey: "autoLogin"))
-        print("viewWillAppear() 호출됨.")
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+    }
+    
     
     //자동로그인
     @IBAction func autoLogin(_ sender: UIButton) {
@@ -80,7 +95,42 @@ class ViewController: UIViewController {
         if idTextField.text == "" || pwTextField.text == "" {
             showAlert(Message: "아이디/패스워드를 입력해주세요.")
         } else {
-            generateKeys(text: idTextField.text!)
+            let success: Bool = (rsa?.generateKeyPair(keySize: 512, privateTag: "com.atarmkplant", publicTag: "com.atarmkplant"))!
+            if !success {
+                print("RSA Failed")
+                return
+            }
+            
+            //rsa
+            print("getPublicKey()",(rsa?.getPublicKey().debugDescription)!)
+            
+            let start = (rsa?.getPublicKey().debugDescription)!.index((rsa?.getPublicKey().debugDescription)!.startIndex, offsetBy: 111)
+            let end = (rsa?.getPublicKey().debugDescription)!.index((rsa?.getPublicKey().debugDescription)!.endIndex, offsetBy: -180)
+            let hex = (rsa?.getPublicKey().debugDescription)![start..<end]
+            
+            hexValue! = String(hex)
+            
+            print("hex->\(hex)")
+            
+            let startIdx = (rsa?.getPublicKey().debugDescription)!.index((rsa?.getPublicKey().debugDescription)!.startIndex, offsetBy: 144)
+            let endIdx = (rsa?.getPublicKey().debugDescription)!.index((rsa?.getPublicKey().debugDescription)!.endIndex, offsetBy: -24)
+            let modulus = (rsa?.getPublicKey().debugDescription)![startIdx..<endIdx]
+            
+            modulusValue! = String(modulus)
+            
+            print("modulus->\(modulus)")
+            
+            //111-116 exponent, 144,272 modulus
+            //String(data:(rsa?.getPrivateKey().debugDescription)!, encoding: .utf8)
+            
+            let id = idTextField.text!
+            let encryption = rsa?.encryptBase64(text: id)
+            print("encryption->\(encryption!)")
+            let decryption = rsa?.decpryptBase64(encrpted: encryption!)
+            print("decryption->\(decryption!)")
+            pubKey = encryption!
+            
+            UserDefaults.standard.set("sendLoginInfo",forKey: "sendLoginInfo")
             requestPost(Id: idTextField.text!, Pw: pwTextField.text!)
         }
     }
@@ -97,6 +147,7 @@ class ViewController: UIViewController {
             UserDefaults.standard.synchronize()
         }
     }
+    
     //알림창 띄우기
     func showAlert(Message: String) {
         let alert = UIAlertController(title: "", message: Message, preferredStyle: .alert)
@@ -129,23 +180,61 @@ class ViewController: UIViewController {
                         let str = String(strData)
                         
                         DispatchQueue.main.async {
-                            print("response->\(response!)")
+                            //print("response->\(response!)")
                             
                             if str.contains("alert"){
                                 self.showAlert(Message: "아이디/패스워드를 확인해주세요.")
+                                
                             } else {
-                                self.dic.updateValue(self.idTextField.text!, forKey: "id")
-                                self.dic.updateValue("100", forKey: "flag")
-                                self.setAutoLogin()
-                                print("LOGIN-> \(self.dic["flag"]!)) / id -> \(self.dic["id"]!) /publicKey -> \(self.dic["publicKey"]!)")
+                                self.dic.updateValue("105", forKey: "seqType")
+                                self.dataDic.updateValue(self.idTextField.text!, forKey: "id")
+                                self.dataDic.updateValue(self.hexValue!, forKey: "exponent")
+                                self.dataDic.updateValue(self.modulusValue!, forKey: "modulus")
+                                
+                                //여기에다가 관리자인지 아닌지 -- 수정해야됌
+                                if !self.idTextField.text!.elementsEqual("admin"){
+                                    self.dataDic.updateValue("0", forKey: "type")
+                                } else {
+                                    self.dataDic.updateValue("1", forKey: "type")
+                                }
+                                
+                                
+                                //admin은 우회인증 x
                                 
                                 do {
-                                    let jsonData = try JSONSerialization.data(withJSONObject: self.dic, options: JSONSerialization.WritingOptions.prettyPrinted)
+                                    let dataDicToJsonData = try JSONSerialization.data(withJSONObject: self.dataDic, options: [])
+                                    self.dicToString = String(data:dataDicToJsonData, encoding: .utf8)!
+                                   
+                                    self.dic.updateValue(self.dicToString!,forKey: "data")
+                                  
                                 } catch let error as NSError {
                                     print(error)
                                 }
                                 
-                                self.setLogOnView()
+                                self.setAutoLogin()
+                                
+                                do {
+                                    let jsonData = try JSONSerialization.data(withJSONObject: self.dic, options: [])
+                                    //let decoded = try JSONSerialization.jsonObject(with: jsonData, options: [])
+                                
+                                    self.jsonStringData = String(data: jsonData, encoding: .ascii)
+                                    self.jsonStringData = self.jsonStringData!
+                                    //self.jsonStringData! = self.jsonStringData!.components(separatedBy: ["\\"]).joined()
+                                    self.jsonStringData!.append("\n")
+                                    print(self.jsonStringData!)
+                            
+                                } catch let error as NSError {
+                                    print(error)
+                                }
+                                //서버 연결/연결x
+                                //if self.client.isConnected() {
+                                
+                                    //print(self.client.sendData(data: self.jsonStringData!))
+                                    self.setLogOnView()
+                                
+                                //} else {
+                                //   self.showAlert(Message: "서버가 연결되지 않았습니다.")
+                                //}
                             }
                         }
                     }
@@ -163,95 +252,11 @@ class ViewController: UIViewController {
         logOn?.modalTransitionStyle = UIModalTransitionStyle.flipHorizontal
         self.present(logOn!, animated: true, completion: nil)
     }
-    //JSON -> String
-    func jsonToString(json: AnyObject) -> String{
-        var data : String = ""
-        
-        do {
-            let data1 = try JSONSerialization.data(withJSONObject: json, options: JSONSerialization.WritingOptions.prettyPrinted)
-            let convertedString = String(data: data1, encoding: String.Encoding.utf8)
-            
-            data = convertedString!
-        } catch let error as NSError {
-            print(error)
-        }
-        return data
-    }
     
-    //RSA
-    func generateKeys(text: String) {
-        var publicKey: SecKey?
-        var privateKey: SecKey?
+    func stringToDictionary() -> [String:String] {
+        var dictionary : [String:String] = [:]
         
-        let publicKeyAttr: [NSObject:NSObject] = [kSecAttrIsPermanent: true as NSObject, kSecAttrApplicationTag: "publicTag".data(using: String.Encoding.utf8)! as NSObject]
-        let privateKeyAttr: [NSObject:NSObject] = [kSecAttrIsPermanent: true as NSObject, kSecAttrApplicationTag: "privateTag".data(using: String.Encoding.utf8)! as NSObject]
-        
-        var keyPairAttr = [NSObject:NSObject]()
-        keyPairAttr[kSecAttrKeyType] = kSecAttrKeyTypeRSA
-        keyPairAttr[kSecAttrKeySizeInBits] = 512 as NSObject      //크기 조정
-        keyPairAttr[kSecPublicKeyAttrs] = publicKeyAttr as NSObject
-        keyPairAttr[kSecPrivateKeyAttrs] = privateKeyAttr as NSObject
-        
-        _ = SecKeyGeneratePair(keyPairAttr as CFDictionary, &publicKey, &privateKey)
-        
-        var error:Unmanaged<CFError>?
-        if #available(iOS 10.0, *) {
-            if let cfdata = SecKeyCopyExternalRepresentation(publicKey!, &error) {
-                let data:Data = cfdata as Data  //data
-                //let data:Data? = textField.text!.data(using: .utf8) //textField
-                let b64Key = data.base64EncodedString(options: .lineLength64Characters)
-                //let b64Key = data!.base64EncodedString(options: .lineLength64Characters)  //textField
-                print("public base 64 : \n\(b64Key)")
-            }
-            if let cfdata = SecKeyCopyExternalRepresentation(privateKey!, &error) {
-                let data:Data = cfdata as Data
-                let b64Key = data.base64EncodedString(options: .lineLength64Characters)
-                print("private base 64 : \n\(b64Key)")
-            }
-        }
-        
-        let encrypted = encryptBase64(text: text, key: publicKey!)
-        let decrypted = decryptBase64(encrypted: encrypted, key: privateKey!)
-        
-        self.dic.updateValue(encrypted, forKey: "publicKey")
-        
-        print("decrypted \(String(describing: decrypted))")
-        
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    func encryptBase64(text: String, key:SecKey) -> String {
-        let plainBuffer = [UInt8](text.utf8)
-        var cipherBufferSize : Int = Int(SecKeyGetBlockSize(key))
-        var cipherBuffer = [UInt8](repeating: 0, count:Int(cipherBufferSize))
-        
-        let status = SecKeyEncrypt(key, SecPadding.PKCS1, plainBuffer, plainBuffer.count, &cipherBuffer, &cipherBufferSize)
-        
-        if status != errSecSuccess {
-            print("Failed Encryption")
-        }
-        
-        let mudata = NSData(bytes: &cipherBuffer, length: cipherBufferSize)
-        
-        return mudata.base64EncodedString()
-    }
-    
-    func decryptBase64(encrypted: String, key: SecKey) -> String? {
-        let data : NSData = NSData(base64Encoded: encrypted, options: .ignoreUnknownCharacters)!
-        let count = data.length / MemoryLayout<UInt8>.size
-        var array = [UInt8](repeating: 0, count: count)
-        data.getBytes(&array, length: count*MemoryLayout<UInt8>.size)
-        
-        var plaintextBufferSize = Int(SecKeyGetBlockSize(key))
-        var plaintextBuffer = [UInt8](repeating: 0, count: Int(plaintextBufferSize))
-        
-        let status = SecKeyDecrypt(key, SecPadding.PKCS1, array, plaintextBufferSize, &plaintextBuffer, &plaintextBufferSize)
-        
-        if status != errSecSuccess {
-            print("Failed Decrypt")
-            return nil
-        }
-        return NSString(bytes: &plaintextBuffer, length: plaintextBufferSize, encoding: String.Encoding.utf8.rawValue)! as String
+        return dictionary
     }
 }
 
@@ -262,4 +267,3 @@ extension UITextField {
         self.leftViewMode = .always
     }
 }
-
