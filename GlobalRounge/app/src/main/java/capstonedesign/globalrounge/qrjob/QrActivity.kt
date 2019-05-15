@@ -2,15 +2,18 @@ package capstonedesign.globalrounge.qrjob
 
 import android.content.Context
 import android.content.Intent
+import android.databinding.BindingAdapter
 import android.databinding.DataBindingUtil
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.ImageView
 import android.widget.Toast
 import capstonedesign.globalrounge.R
 import capstonedesign.globalrounge.databinding.ActivityQrBinding
 import capstonedesign.globalrounge.dto.Student
 import capstonedesign.globalrounge.mainjob.MainActivity.Companion.REQUEST_CODE
+import com.bumptech.glide.Glide
 
 
 class QrActivity : AppCompatActivity(), QrContract.View {
@@ -68,9 +71,17 @@ class QrActivity : AppCompatActivity(), QrContract.View {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 
-    override fun drawUserImages(bitmap: Bitmap) {
-        binding.userImage.setImageBitmap(bitmap)
+    override fun drawUserImages(url:String) {
+        Glide
+            .with(this)
+            .load(url)
+            .asBitmap()
+            .error(R.mipmap.jaeho)
+            .into(binding.userImage)
     }
+
+
+
 
     companion object {
         private const val EXTRA_USER = "EXTRA_USER"

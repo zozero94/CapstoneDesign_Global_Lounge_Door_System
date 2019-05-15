@@ -1,21 +1,14 @@
 package capstonedesign.globalrounge.model.permission
 
 import android.annotation.SuppressLint
-import android.util.Log
 import capstonedesign.globalrounge.dto.STUDENT
 import capstonedesign.globalrounge.dto.User
 import io.reactivex.Observable
-import io.reactivex.Scheduler
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -55,7 +48,7 @@ object SejongConnection {
     }
 
     /**
-     * 사용자 정보를 요청하는 구간
+     * 사용자 정보를 입력하여 Observable 객체를 생성
      * @param user : 입력된 사용자 정보
      * @param callback : 응답값에 따른 콜백
      * @see capstonedesign.globalrounge.mainjob.MainPresenter.requestSejongPermission

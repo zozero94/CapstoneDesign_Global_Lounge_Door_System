@@ -6,13 +6,13 @@ interface QrContract {
     interface View {
         fun alertToast(text: String)
         fun makeQrCode(bitmap: Bitmap)
-        fun drawUserImages(bitmap: Bitmap)
+        fun drawUserImages(url :String)
     }
 
     interface Presenter {
         fun subscribe()
-        fun stateRequest()
         fun dispose()
+        fun stateRequest()
         fun stateDelete()
         fun logout()
     }

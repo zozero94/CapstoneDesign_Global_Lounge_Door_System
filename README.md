@@ -1,4 +1,4 @@
-﻿# CapstoneDesign [ Global_Rounge_Door_System ]
+﻿﻿# CapstoneDesign [ Global_Rounge_Door_System ]
 ### MVP 패턴을 적용한 안드로이드 프로젝트
 
 <hr/>  
@@ -14,29 +14,34 @@
  #### [MainPresenter](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/mainjob/MainPresenter.kt)  
  #### 학교 인증정보를 받아옴
  ```kotlin
+    @SuppressLint("CheckResult")
     private fun requestSejongPermission(user: User) {
-        SejongConnection.requestUserInformation(user, object : SejongConnection.LoginCallback {
-            override fun approval(user: User) {
-                approvalPermission(user)//인증 후 한번 더 서버인증
+        val disposable = SejongConnection.requestUserInformation(user)
+            .subscribe { response ->
+                response.string().let {
+                    if (it.contains("alert")) {//없는정보
+                        if (it.contains("패스워드")) {
+                            view.alertToast("패스워드가 잘못 되었습니다.")
+                        } else if (it.contains("아이디")) {
+                            view.alertToast("아이디가 잘못 되었습니다.")
+                        }
+                    } else {//있는정보
+                        approvalPermission(user)
+                    }
+                }
             }
-
-            override fun reject(text: String) {
-                view.loadingDestroy()
-                view.alertToast(text)
-            }
-        })
+        SejongConnection.addDisposable(disposable)
     }
  ```
  
  #### 서버 인증정보를 받아옴
  ```kotlin
     private fun approvalPermission(user: User) {
-        view.loadingStart()
         ServerConnection.connectSocket()
 
         val ref = ServerConnection.socketObservable!!
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnError { t -> view.alertToast("에러띠!${t.printStackTrace()}") }//TODO 추가된 socketCloseException
+            .doOnSubscribe { view.loadingStart() }
             .subscribe(object : SocketSubscriber() {
                 override fun onConnected() {
                     Encryption.newKey()
@@ -44,37 +49,34 @@
                 }
 
                 override fun onDisconnected() {
-                    view.loadingDestroy()
                     view.alertToast("연결이 원활하지 않습니다.")
+                    view.loadingDestroy()
                 }
 
                 override fun onResponse(data: ByteArray) {
                     val str = String(data, StandardCharsets.UTF_8)
-                    try {
-                        (JsonParser().parse(str) as JsonObject).let { jsonObject ->
-                            when (jsonObject.get("seqType").asInt) {
-                                LOGIN_OK -> {
-                                    Encryption.getDecodedString(jsonObject.get("data").asString).let { string ->
-                                        AutoLogin.saveUserInfo(user)//체크박스에 따른 자동로그인 저장
-                                        (Gson().fromJson<Any>(string, Student::class.java) as Student).let {
-                                            view.startActivity(it)
-                                        }
+
+                    (JsonParser().parse(str) as JsonObject).let { jsonObject ->
+                        when (jsonObject.get("seqType").asInt) {
+                            LOGIN_OK -> {
+                                Encryption.getDecodedString(jsonObject.get("data").asString).let { string ->
+                                    AutoLogin.saveUserInfo(user)//체크박스에 따른 자동로그인 저장
+                                    (Gson().fromJson<Any>(string, Student::class.java) as Student).let {
+                                        view.startActivity(it)
                                     }
                                 }
-                                LOGIN_ALREADY -> {
-                                    view.alertToast("이미 로그인 중입니다.")
-                                }
-                                LOGIN_NO_DATA -> {
-                                    view.alertToast("서버에 더미데이터가 없습니다.")
-                                }
+                            }
+                            LOGIN_ALREADY -> {
+                                view.alertToast("이미 로그인 중입니다.")
+                            }
+                            LOGIN_NO_DATA -> {
+                                view.alertToast("서버에 더미데이터가 없습니다.")
                             }
                         }
-                    } catch (e: ClassCastException) {
-                        e.printStackTrace()
-                    } finally {
-                        view.loadingDestroy()
                     }
+                    view.loadingDestroy()
                 }
+
             })
         ServerConnection.addDisposable(ref)
     }
@@ -120,7 +122,6 @@
 #### 서버와 통신하는 부분 [QrPersenter](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/qrjob/QrPresenter.kt)
  ```kotlin
     override fun subscribe() {
-        var buffer = ""
         val ref = ServerConnection.socketObservable!!.observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : SocketSubscriber() {
                 override fun onConnected() {
@@ -134,28 +135,29 @@
                 override fun onResponse(data: ByteArray) {
                     val str = String(data, StandardCharsets.UTF_8)
                     try {
-                        (JsonParser().parse(str) as JsonObject).let {
-                            when (it.get("seqType").asInt) {
+                        (JsonParser().parse(str) as JsonObject).let { jsonObject ->
+                            when (jsonObject.get("seqType").asInt) {
                                 STATE_CREATE -> {
-                                    QrCode.makeQrCode(it.get("qr").asString).let { bitmap ->
+                                    QrCode.makeQrCode(jsonObject.get("qr").asString).let { bitmap ->
                                         view.makeQrCode(bitmap)
+                                    }
+                                }
+                                STATE_URL -> {
+                                    jsonObject.get("img").asString.let { url ->
+                                        view.drawUserImages(url)
                                     }
                                 }
                             }
                         }
 
                     } catch (e: JsonSyntaxException) {
-                        buffer += str
-                        if (buffer[buffer.length - 1] == '\n') {
-                            makeUserImages(Base64.decode(buffer, Base64.DEFAULT))
-                            buffer = ""
-                        }
+                        e.printStackTrace()
                     } catch (e: ClassCastException) {
                         e.printStackTrace()
                     }
                 }
             })
-        ServerConnection.image_request()
+        ServerConnection.imageRequest()
         ServerConnection.addDisposable(ref)
     }
  ```
@@ -168,44 +170,6 @@
 #### Permission
  + 학교 서버 우회접근[SejongPermission.kt](
  https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/model/permission/SejongConnection.kt) `Retrofit2`
- ```kotlin
-     private interface Permission {
-
-        @POST(url)
-        fun getResult(@Query("rUserid") rUserid: String, @Query("rPW") rPW: String, @Query("pro") pro: Int): Call<ResponseBody>
-
-        companion object {
-            const val url = "https://udream.sejong.ac.kr/main/loginPro.aspx/"
-        }
-    }
-    
-        fun requestUserInformation(user: User, callback: LoginCallback) {
-        sejongPermission.getResult(user.id, user.pw, 1)
-            .enqueue(object : Callback<ResponseBody> {
-                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-
-                    response.body()!!.string().let {
-                        if (it.contains("alert")) {//없는정보
-                            if (it.contains("패스워드")) {
-                                callback.reject("패스워드가 잘못 되었습니다.")
-                            } else if (it.contains("아이디")) {
-                                callback.reject("아이디가 잘못 되었습니다.")
-                            }
-                        } else {//있는정보
-                            callback.approval(user)
-                        }
-                    }
-
-
-                }
-
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Log.e("RequestPermission Error", "무언가 잘못되었군")
-                }
-            })
-
-    }
- ```
  
  + DB서버 접근[ServerPermission.kt](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/model/permission/ServerConnection.kt)``Rx (CoddestX)``
  
@@ -227,3 +191,4 @@
 + Gson
 + coddestX
 + Zxing
++ Glide

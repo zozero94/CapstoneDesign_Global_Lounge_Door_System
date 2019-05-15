@@ -112,7 +112,7 @@ object ServerConnection : BaseServer(){
      * 서버로부터 이미지 요청
      * @see capstonedesign.globalrounge.qrjob.QrPresenter.subscribe
      */
-    fun image_request(){
+    fun imageRequest(){
         with(JsonObject()){
             addProperty("seqType", STATE_IMG)
             socket!!.sendData(this.toString()+"\n")
