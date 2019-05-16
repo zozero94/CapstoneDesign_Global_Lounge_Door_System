@@ -2,9 +2,10 @@ package control.socket;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import control.serverReaction.SystemServerSocket;
+import control.SeqTypeConstants;
 import control.serverReaction.aplication.ServerContextAP;
 import model.DataAccessObject;
+
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -17,63 +18,58 @@ public class Aplication extends SocketThread {
     private PrintWriter outMsg;
 
     private String msg;
-    private ServerContextAP serverContext;
+    private ServerContextAP serverContextAP;
     private boolean androidLogoutFlag;
 
-    private int check;
+    private DataAccessObject dao;
 
     public Aplication(Socket socket, String msg, BufferedReader reader) throws Exception {
         this.inMsg = reader;
         this.outMsg = new PrintWriter(socket.getOutputStream(), true);
         this.parser = new JsonParser();
-        this.serverContext = new ServerContextAP(this);
+        this.serverContextAP = new ServerContextAP(this);
         this.androidLogoutFlag = true;
-        this.check = 0;
         this.msg = msg;
+        this.dao = new DataAccessObject();
         SystemServerSocket.getInstance().addClient(this);
-        object = (JsonObject) parser.parse(msg);
-        object = serverContext.response(object);
-        if (object != null) {
-            outMsg.println(object.toString()); //원래코드
-        }
     }
 
     @Override
     public void run() {
         try {
             do {
-                msg = inMsg.readLine();
-                System.out.println(msg);
-                if (msg == null) break;
                 object = (JsonObject) parser.parse(msg);
-                object = serverContext.response(object);
-                if (object != null) {
-                    if (object.get("seqType").getAsInt() == 204) outMsg.println(object.get("img"));
-                    else outMsg.println(object.toString()); //원래코드
+                object = serverContextAP.response(object);
+                if (object != null)
+                    outMsg.println(object.toString()); //원래코드
 
-                }
+                msg = inMsg.readLine();
+                if (msg == null) break;
+                System.out.println(msg);
             } while (androidLogoutFlag);
         } catch (Exception e) {
             e.printStackTrace();
-            if (serverContext.getInfo() != null) System.out.println(serverContext.getInfo().getStudentID());
+            if (serverContextAP.getInfo() != null) System.out.println(serverContextAP.getInfo().getStudentID());
         } finally {
-            if (serverContext.getInfo() != null)
-                DataAccessObject.getInstance().setLoginFlag(serverContext.getInfo().getStudentID(), false);
+            if (serverContextAP.getInfo() != null)
+                dao.setLoginFlag(serverContextAP.getInfo().getStudentID(), false);
             SystemServerSocket.getInstance().removeClient(this);
         }
     }
 
     public boolean compareQrString(String qrString) {
-        return serverContext.isQrFlag() == true ? serverContext.getQrString().equals(qrString) : false;// true 같음 false 틀림
+        return serverContextAP.isQrFlag() ? serverContextAP.getQrString().equals(qrString) : false;// true 같음 false 틀림
     }
-
     public boolean compareStudentId(String studentId) {
-        return serverContext.getInfo().getStudentID().equals(studentId);// true 같음 false 틀림
+        return serverContextAP.getInfo().getStudentID().equals(studentId);// true 같음 false 틀림
     }
-
     public void setAndroidLogoutFlag(boolean androidLogoutFlag) {
         this.androidLogoutFlag = androidLogoutFlag;
     }
-
-
+    public void sendNewQrString(){
+        JsonObject send = new JsonObject();
+        send.addProperty("seqType", SeqTypeConstants.STATE_REQ);
+        send = serverContextAP.response(send);
+        outMsg.println(send.toString()); //원래코드
+    }
 }

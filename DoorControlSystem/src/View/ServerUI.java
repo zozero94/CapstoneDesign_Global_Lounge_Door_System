@@ -40,7 +40,8 @@ public class ServerUI{
     }
     class ExitListener implements WindowListener {
         public void windowClosing(WindowEvent e) {
-            DataAccessObject.getInstance().setAllLoginFlag();
+            DataAccessObject dao = new DataAccessObject();
+            dao.setAllLoginFlag();
         }
         public void windowActivated(WindowEvent e) {
         }

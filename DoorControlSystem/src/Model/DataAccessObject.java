@@ -1,26 +1,24 @@
 package model;
+
 import model.dto.ExcelOutInfo;
 import model.dto.ServerStudent;
 import model.dto.StudentAccessInfo;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 
 public class DataAccessObject {
 
-    private static DataAccessObject dataAccessObject = null;
     private Connection conn;
     private PreparedStatement pstmt;
     private ResultSet rs;
 
-    public synchronized static DataAccessObject getInstance(){
-        if(dataAccessObject == null) dataAccessObject = new DataAccessObject();
-        return dataAccessObject;
-    }
-    private DataAccessObject() {
+    public DataAccessObject() {
         conn = null;
         pstmt = null;
         rs = null;
@@ -48,9 +46,8 @@ public class DataAccessObject {
 
     }
 
-    public synchronized ServerStudent getStudentInfo(String studentID){
+    public ServerStudent getStudentInfo(String studentID){
         String sql = "select * from studentinfo where studentid = ?";
-        int result = 0;
         ServerStudent student = null;
         try{
 
@@ -59,14 +56,15 @@ public class DataAccessObject {
             rs = pstmt.executeQuery();
             while(rs.next())
             {
-                student = new ServerStudent(rs.getString("studentid"), rs.getString("name"),rs.getString("gender"),rs.getString("nationality"),rs.getString("department"),rs.getString("college"),rs.getBoolean("loginflag"));
+                student = new ServerStudent(rs.getString("studentid"), rs.getString("name"),rs.getString("gender"),
+                        rs.getString("nationality"),rs.getString("department"),rs.getString("college"),rs.getBoolean("loginflag"));
             }
         }catch(SQLException e){
             e.printStackTrace();
         }
         return  student;
     }
-    public synchronized boolean setLoginFlag(String studentID, boolean loginFlag){
+    public  boolean setLoginFlag(String studentID, boolean loginFlag){
         String sql = "update studentinfo set loginflag = ? where studentid = ?";
         int result = 0;
         try{
@@ -78,23 +76,36 @@ public class DataAccessObject {
         }catch(SQLException e){
             e.printStackTrace();
         }
+        return result == 1;
+    }
+    public  boolean setUrl(String studentID, String url){
+        String sql = "update urlimage set url = ? where id = ?";
+        int result = 0;
+        try{
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, url);
+            pstmt.setString(2, studentID);
+            result = pstmt.executeUpdate();
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
         return  result == 1 ? true : false;
     }
-    public synchronized void setAllLoginFlag(){
+    public  void setAllLoginFlag(){
         String sql = "update studentinfo set loginflag = false" ;
-        int result = 0;
         try{
             connectDB();
             pstmt = conn.prepareStatement(sql);
-            result = pstmt.executeUpdate();
-
+            pstmt.executeUpdate();
         }catch(SQLException e){
             e.printStackTrace();
         }finally {
             closeDB();
         }
     }
-    public synchronized void insertStudentImage(String fileName, String studentId){
+
+    public void insertStudentImage(String fileName, String studentId){
         String sql = "insert into studentimage (image, id) values (?,?)";
         try{
             File file = new File(fileName);
@@ -109,7 +120,7 @@ public class DataAccessObject {
             e.printStackTrace();
         }
     }
-    public synchronized Image getStudentImage(String studentId){
+    public Image getStudentImage(String studentId){
         String sql = "select image from studentimage where id = ?";
         Image image = null;
         try{
@@ -126,7 +137,23 @@ public class DataAccessObject {
             return image;
         }
     }
-    public synchronized byte[] getStudentImageByte(String studentId){
+    public String getStudentImageUrl(String studentId){
+        String sql = "select url from urlimage where id = ?";
+        String url = null;
+        try{
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, studentId);
+            rs = pstmt.executeQuery();
+            if(rs.next())
+                url = rs.getString("url");
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return url;
+
+    }
+    public byte[] getStudentImageByte(String studentId){
         String sql = "select image from studentimage where id = ?";
         byte[] image = null;
         try{
@@ -148,8 +175,7 @@ public class DataAccessObject {
             return image;
         }
     }
-
-    public synchronized void insertStudentLog(StudentAccessInfo studentAccessInfo){
+    public void insertStudentLog(StudentAccessInfo studentAccessInfo){
         String sql = "insert into log (studentid, time) values (?,?)";
         try{
             pstmt = conn.prepareStatement(sql);
@@ -160,8 +186,7 @@ public class DataAccessObject {
             e.printStackTrace();
         }
     }
-
-    public synchronized ArrayList<ExcelOutInfo> getExcelLogData(){
+    public ArrayList<ExcelOutInfo> getExcelLogData(){
         String sql = " select log.studentid, name, gender, nationality, department, college, time from log join studentinfo on studentinfo.studentid = log.studentid;";
         ArrayList<ExcelOutInfo> logs = null;
         try{
@@ -182,12 +207,3 @@ public class DataAccessObject {
     }
 
 }
-
-
-//                String path = "C:\\Users\\kmw81\\IdeaProjects\\DoorControlSystem\\image\\14011038_copy.jpg";
-//                FileOutputStream fos = new FileOutputStream(path);
-//                byte[] buff = new byte[8192];
-//                int len;
-//                while((len = in.read(buff)) > 0){
-//                    fos.write(buff, 0 , len);
-//                 }

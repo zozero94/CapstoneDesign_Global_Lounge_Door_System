@@ -6,10 +6,10 @@ import model.dto.ServerStudent;
 
 public class ServerContextAP {
     private boolean QrFlag;
+    private String qrString;
+
     private StateAP state;
     private ServerStudent info;
-    private String qrString;
-//    private SocketThreadAP socketThread;
     private Aplication socketThread;
 
 
@@ -51,12 +51,6 @@ public class ServerContextAP {
         this.qrString = qrString;
     }
 
-//    public SocketThreadAP getSocketThread() {
-//        return socketThread;
-//    }
-//    public void SocketThreadAP(SocketThreadAP socketThread) {
-//        this.socketThread = socketThread;
-//    }
     public Aplication getSocketThread() {
         return socketThread;
     }

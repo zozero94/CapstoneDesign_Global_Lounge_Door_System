@@ -56,16 +56,26 @@ public class LogChartPanel extends JPanel {
     }
 
     private void setComponentPos(){
-        this.line.setBounds(0,70, 1033, 100);
+        this.line.setBounds(0,60, 1033, 110);
     }
-    public void setXYTableData(ArrayList<ExcelOutInfo> datas){
-        for(int i = 0 ; i < datas.size(); i++){
+    public void setXYTableData(ArrayList<ExcelOutInfo> outInfos){
+
+        for (ExcelOutInfo d:outInfos) {
+
+        }
+        for(int i = 0 ; i < outInfos.size(); i++){
             Month month = new Month();
         }
 
 
-
-
+        //TODO
+        // 차트
+        // 필요로 하는 통계값
+        // 일별 월별 년도 선택 3개 중 택 1
+        // 일별로 여성이랑 남성 데이터 방문횟수
+        // 국가별 데이터
+        // 주로 사용하는 시간대 사용자가 많은 시간대
+        // 학번 성명 소속 학년 국적
 
         Day day = new Day(1,3,2005);
         Day day1 = new Day(2,3,2005);
@@ -92,6 +102,7 @@ public class LogChartPanel extends JPanel {
         this.xyTable.add(day5, 3, "남성");
         this.xyTable.add(day6, 3, "남성");
         this.xyTable.add(day7, 3, "남성");
+
         DateAxis dateaxis = new DateAxis();
         dateaxis.setTickMarkPosition(DateTickMarkPosition.MIDDLE);
         dateaxis.setLowerMargin(0.01D);

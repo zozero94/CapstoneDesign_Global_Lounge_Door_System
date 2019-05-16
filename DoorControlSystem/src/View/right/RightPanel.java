@@ -1,29 +1,7 @@
 package view.right;
 
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.DateAxis;
-import org.jfree.chart.axis.DateTickMarkPosition;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.block.BlockBorder;
-import org.jfree.chart.labels.ItemLabelAnchor;
-import org.jfree.chart.labels.ItemLabelPosition;
-import org.jfree.chart.labels.StandardXYItemLabelGenerator;
-import org.jfree.chart.labels.StandardXYToolTipGenerator;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.StackedXYBarRenderer;
-import org.jfree.chart.title.LegendTitle;
-import org.jfree.chart.title.TextTitle;
-import org.jfree.data.time.Day;
-import org.jfree.data.time.TimeTableXYDataset;
-import org.jfree.ui.RectangleEdge;
-import org.jfree.ui.TextAnchor;
-
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 
 public class RightPanel extends JPanel {
 
@@ -66,11 +44,11 @@ public class RightPanel extends JPanel {
     public void changBtnColor(JButton btn){
         if(btn == this.btnLog)
         {
-            this.btnLogChart.setBackground(GuiConstant.RIGHTPANEL_2);
-            this.btnLog.setBackground(GuiConstant.RIGHTPANEL);
+            this.btnLogChart.setBackground(GuiConstant.BACK_COLOR);
+            this.btnLog.setBackground(GuiConstant.BACK_COLOR_CHANG);
         }else{
-            this.btnLogChart.setBackground(GuiConstant.RIGHTPANEL);
-            this.btnLog.setBackground(GuiConstant.RIGHTPANEL_2);
+            this.btnLogChart.setBackground(GuiConstant.BACK_COLOR_CHANG);
+            this.btnLog.setBackground(GuiConstant.BACK_COLOR);
         }
     }
     public JButton getBtnLogChart() {

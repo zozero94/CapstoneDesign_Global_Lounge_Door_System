@@ -1,12 +1,11 @@
 package control.serverReaction.aplication;
 
 import com.google.gson.JsonObject;
-import control.serverReaction.SystemServerSocket;
+import control.SeqTypeConstants;
+import control.socket.SystemServerSocket;
 import model.DataAccessObject;
-import org.apache.commons.codec.binary.Base64;
 
 import java.text.SimpleDateFormat;
-
 import java.util.Date;
 
 public class Qr implements StateAP {
@@ -15,38 +14,33 @@ public class Qr implements StateAP {
     private ServerContextAP serverContext;
     private SimpleDateFormat dayTime;
 
-
-
+    private DataAccessObject dao;
     public Qr(ServerContextAP serverContext) {
         this.serverContext = serverContext;
+        this.dao = new DataAccessObject();
         dayTime = new SimpleDateFormat("yyyyMMddHHmmss");
     }
 
     @Override
     public JsonObject reaction(JsonObject object){
         this.objectReturn = new JsonObject();
-        if(object.get("seqType").getAsInt() == SeqTypeConstants.STATE_REQ ){
+        if(object.get("seqType").getAsString().equals(SeqTypeConstants.STATE_REQ) ){   // QR 갱신
             serverContext.setQrString(serverContext.getInfo().getStudentID() + dayTime.format(new Date(System.currentTimeMillis()) ));
             objectReturn.addProperty("seqType", SeqTypeConstants.STATE_CREATE);
             objectReturn.addProperty("qr", serverContext.getQrString());
-            // QR 갱신
             serverContext.setQrFlag(true);
-        }
-        else if(object.get("seqType").getAsInt() == SeqTypeConstants.STATE_DEL){
+        }else if(object.get("seqType").getAsString().equals(SeqTypeConstants.STATE_DEL)){// QR 코드를 만료
             this.objectReturn = null;
-            // QR 코드를 만료
-            System.out.println("qr 코드 만료");
             serverContext.setQrFlag(false);
-        }else if(object.get("seqType").getAsInt() == SeqTypeConstants.STATE_IMG){
+        }else if(object.get("seqType").getAsString().equals(SeqTypeConstants.STATE_IMG)){
             objectReturn.addProperty("seqType", 204);
-            objectReturn.addProperty("img", Base64.encodeBase64String(DataAccessObject.getInstance().getStudentImageByte(serverContext.getInfo().getStudentID())));
+            objectReturn.addProperty("img", "https://udream.sejong.ac.kr/upload/per/" +serverContext.getInfo().getStudentID()+".jpg?ver=20190515205000");//udram image
+            //objectReturn.addProperty("img", DataAccessObject.getInstance().getStudentImageUrl(serverContext.getInfo().getStudentID())); //git에 저장된 이미지
         } else{
             this.objectReturn = null;
             SystemServerSocket.getInstance().removeClient(serverContext.getInfo().getStudentID());
-            DataAccessObject.getInstance().setLoginFlag(serverContext.getInfo().getStudentID(), false);
+            dao.setLoginFlag(serverContext.getInfo().getStudentID(), false);
             serverContext.getSocketThread().setAndroidLogoutFlag(false);
-            // 로그아웃 flag 수정하고
-            // 이런식의 로그아웃이 아닌 경우 소켓이 끊어 질때마다 로그아웃 플래그 수정해야함
         }
         return objectReturn;
     }

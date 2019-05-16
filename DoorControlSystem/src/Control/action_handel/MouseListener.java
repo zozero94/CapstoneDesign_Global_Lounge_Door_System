@@ -1,12 +1,11 @@
 package control.action_handel;
 
-import view.right.GuiConstant;
-import javax.swing.*;
 import java.awt.event.MouseEvent;
 
 public class MouseListener implements java.awt.event.MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
+
     }
 
     @Override

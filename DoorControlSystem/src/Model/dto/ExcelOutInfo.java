@@ -28,6 +28,15 @@ public class ExcelOutInfo {
         this.college = college;
         this.time = time.substring(0, 19);
     }
+    public ExcelOutInfo(Student student, String time) {
+        this.studentID = student.getStudentID();
+        this.name = student.getName();
+        this.gender = student.getGender();
+        this.nationality = student.getNationality();
+        this.department = student.getDepartment();
+        this.college = student.getCollege();
+        this.time = time;
+    }
     public String getInfo(int i){
         switch (i){
             case 0: return studentID;

@@ -35,6 +35,16 @@ public class Student implements Serializable {
         this.college = college;
     }
 
+    public String getString(int i) {
+        switch (i){
+            case'1':return studentID;
+            case'2':return name;
+            case'3':return gender;
+            case'4':return nationality;
+            case'5':return department;
+            default:return college;
+        }
+    }
     public String getStudentID() {
         return studentID;
     }

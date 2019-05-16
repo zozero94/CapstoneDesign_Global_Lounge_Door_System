@@ -1,10 +1,8 @@
 package control.action_handel;
 
-import model.dto.ExcelOutInfo;
+import control.socket.SystemServerSocket;
 import view.BtnPanel;
-import view.LogPanel;
 import view.RightPrimaryPanel;
-import view.right.GuiConstant;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -17,8 +15,9 @@ public class ButtonListener implements ActionListener {
 
         BtnPanel.getInstance().turnButtonColor((JButton)e.getSource());
         RightPrimaryPanel.getInstance().changePanel((JButton)e.getSource());
-        //ControlMain.getInstance();
-        ExcelOutInfo s = new ExcelOutInfo("14011070","민우","남자","한국","컴퓨터공학과","소프트웨어","2019-05-06 13:32:030");
-        LogPanel.getInstance().insertTableData(s);
+        if(e.getSource().equals(BtnPanel.getInstance().getBtn(2)))
+            BtnPanel.getInstance().saveExcel();
+        if(e.getSource().equals(BtnPanel.getInstance().getBtn(3)))
+            if(SystemServerSocket.getInstance().getRaspberrypi()!=null) SystemServerSocket.getInstance().getRaspberrypi().openDoor();
     }
 }

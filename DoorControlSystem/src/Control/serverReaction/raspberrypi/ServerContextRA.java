@@ -24,10 +24,7 @@ public class ServerContextRA {
         return objectReturn;
     }
 
-    public String check(){
-        return this.state==qrCertified ? "QR 인증후":"QR 인증전";
-    }
-    public void SwitchState(){
+    private void SwitchState(){
         this.state = state == confirm ? qrCertified : confirm;
     }
     public String getQrString() {

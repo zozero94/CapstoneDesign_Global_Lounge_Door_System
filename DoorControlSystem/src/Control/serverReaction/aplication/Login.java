@@ -2,6 +2,7 @@ package control.serverReaction.aplication;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import control.SeqTypeConstants;
 import control.encryption.RsaManager;
 import model.DataAccessObject;
 import model.dto.Student;
@@ -13,32 +14,30 @@ public class Login implements StateAP {
     private JsonParser parser;
     private String strData;
 
-    // private RsaManager rsaManager;
+    private RsaManager rsaManager;
+    private DataAccessObject dao;
 
     public Login(ServerContextAP serverContext){
         parser = new JsonParser();
         this.serverContext = serverContext;
-        //rsaManager;
+        this.rsaManager = new RsaManager();
+        this.dao = new DataAccessObject();
     }
     @Override
     public JsonObject reaction(JsonObject object){
         this.objectReturn = new JsonObject();
         strData = object.get("data").getAsString();
         data = (JsonObject)parser.parse(strData);
-        serverContext.setInfo(DataAccessObject.getInstance().getStudentInfo(data.get("id").getAsString()));
+        serverContext.setInfo(dao.getStudentInfo(data.get("id").getAsString()));
 
         if(serverContext.getInfo() != null) {
-            if(object.get("seqType").getAsInt() == 105){
-                DataAccessObject.getInstance().setLoginFlag(serverContext.getInfo().getStudentID(), true);
+            if(serverContext.getInfo().isLoginFlag())  objectReturn.addProperty("seqType", SeqTypeConstants.LOGIN_ALREADY);
+            else {
+                if (object.get("seqType").getAsString().equals(SeqTypeConstants.LOGIN_IOS)) rsaManager.setStringPublicKey(data.get("modulus").getAsString(), data.get("exponent").getAsString());
+                else rsaManager.setPublicKey(data.get("key").getAsString());
+                objectReturn.addProperty("data", rsaManager.getEncodedString(new Student(serverContext.getInfo())));
+                dao.setLoginFlag(serverContext.getInfo().getStudentID(), true);
                 objectReturn.addProperty("seqType", SeqTypeConstants.LOGIN_OK);
-                objectReturn.addProperty("data", RsaManager.getInstance().getEncodedString(new Student(serverContext.getInfo()),RsaManager.getInstance().getStringPublicKey( data.get("modulus").getAsString(),data.get("exponent").getAsString() )));
-                serverContext.setState(new Qr(serverContext));
-            }
-            else if (serverContext.getInfo().isLoginFlag() == true)  objectReturn.addProperty("seqType", SeqTypeConstants.LOGIN_ALREADY);
-            else{
-                DataAccessObject.getInstance().setLoginFlag(serverContext.getInfo().getStudentID(), true);
-                objectReturn.addProperty("seqType", SeqTypeConstants.LOGIN_OK);
-                objectReturn.addProperty("data", RsaManager.getInstance().getEncodedString(new Student(serverContext.getInfo()), data.get("key").getAsString()));
                 serverContext.setState(new Qr(serverContext));
             }
         }

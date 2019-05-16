@@ -1,34 +1,22 @@
 package control.encryption;
 
+import com.google.gson.Gson;
 import model.dto.Student;
-
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.SecureRandom;
-import java.security.interfaces.RSAPublicKey;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.RSAPublicKeySpec;
-import java.security.spec.X509EncodedKeySpec;
-
+import org.apache.commons.codec.binary.Base64;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-
-import com.google.gson.Gson;
-import org.apache.commons.codec.binary.Base64;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.*;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.RSAPublicKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 
 public class RsaManager {
-    private static RsaManager rsaManager = null;
     private PublicKey publicKey;
     private PrivateKey privateKey;
     private Cipher cipher;
@@ -40,12 +28,8 @@ public class RsaManager {
     private String strPublicKey;
     private Gson gson;
 
-    public static synchronized RsaManager getInstance() {
-        if (rsaManager == null) rsaManager = new RsaManager();
-        return rsaManager;
-    }
 
-    private RsaManager() {
+    public RsaManager() {
         try {
             publicKey = null;
             privateKey = null;
@@ -75,19 +59,15 @@ public class RsaManager {
         strPublicKey = Base64.encodeBase64String(b);
     }// SocketThreadAP(어플리케이션)에서 생성
 
-    public synchronized String getEncodedString(Student info, String publicKey) {
+    public synchronized String getEncodedString(Student info) {
         String encodedInfo = null;
         PublicKey key;
 
         try {
-            bKey = Base64.decodeBase64(publicKey.getBytes());
-            X509EncodedKeySpec pKeySpec = new X509EncodedKeySpec(bKey);
-            key = keyFactory.generatePublic(pKeySpec);
 
-            cipher.init(Cipher.ENCRYPT_MODE, key);
+            cipher.init(Cipher.ENCRYPT_MODE, this.publicKey);
             encodedInfo = gson.toJson(info);
 
-            System.out.println(encodedInfo);
             byte[] strToByte = encodedInfo.getBytes();
             int size = (strToByte.length / 52);
             byte[] encodedByte = new byte[(size + 1) << 6];
@@ -101,17 +81,15 @@ public class RsaManager {
                 System.arraycopy(strToByte, (size * 52), temp, 0, strToByte.length - (size * 52));
                 System.arraycopy(cipher.doFinal(temp), 0, encodedByte, (size << 6), 64);
             }
-
             encodedInfo = Base64.encodeBase64String(encodedByte);
-            System.out.println(encodedInfo);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         return encodedInfo;
 
     }
-
-    public synchronized Student getDecodedString(String data) {
+    public Student getDecodedString(String data) {
         Student info = null;
         StringBuilder str = new StringBuilder();
         try {
@@ -141,28 +119,30 @@ public class RsaManager {
         }
 
     }
-
     public String getStrPublicKey() {
         return strPublicKey;
     }
 
 
-    public String getStringPublicKey(String modulus, String exponent) {
+    public void setStringPublicKey(String modulus, String exponent) {
         BigInteger m = new BigInteger(modulus, 16);
         BigInteger p = new BigInteger(exponent, 16);
 
-        String sPublicKey = null;
         try {
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             RSAPublicKeySpec publicKeySpec = new RSAPublicKeySpec(m, p);
-            RSAPublicKey key = (RSAPublicKey) keyFactory.generatePublic(publicKeySpec);
-
-            byte[] bKey = key.getEncoded();
-            sPublicKey = Base64.encodeBase64String(bKey);
-
+            this.publicKey = keyFactory.generatePublic(publicKeySpec);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return sPublicKey;
+    }
+    public void setPublicKey(String publicKey) {
+        try {
+            bKey = Base64.decodeBase64(publicKey.getBytes());
+            X509EncodedKeySpec pKeySpec = new X509EncodedKeySpec(bKey);
+            this.publicKey = keyFactory.generatePublic(pKeySpec);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

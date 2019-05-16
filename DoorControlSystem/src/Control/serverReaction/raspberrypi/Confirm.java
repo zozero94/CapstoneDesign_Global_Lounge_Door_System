@@ -1,7 +1,8 @@
 package control.serverReaction.raspberrypi;
 
 import com.google.gson.JsonObject;
-import control.serverReaction.SystemServerSocket;
+import control.SeqTypeConstants;
+import control.socket.SystemServerSocket;
 
 public class Confirm implements StateRA {
 
@@ -17,14 +18,13 @@ public class Confirm implements StateRA {
         {
             serverContextRA.getRaspberrypi().setSendFlag(false);
             this.serverContextRA.setQrString(object.get("data").getAsString());
-            objectReturn.addProperty("seqType", 301);
+            objectReturn.addProperty("seqType", SeqTypeConstants.QR_OK);
         }
         else if(object.get("seqType").getAsInt() == 402) {
-            objectReturn.addProperty("seqType", 302);
+            objectReturn.addProperty("seqType", SeqTypeConstants.QR_DIFF);
             serverContextRA.getRaspberrypi().setSendFlag(true);
-            System.out.println("set flag");
         }
-        else objectReturn.addProperty("seqType", 302);
+        else objectReturn.addProperty("seqType", SeqTypeConstants.QR_DIFF);
         return objectReturn;
     }
 }

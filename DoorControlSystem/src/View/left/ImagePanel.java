@@ -1,7 +1,6 @@
 package view.left;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class ImagePanel extends JPanel {

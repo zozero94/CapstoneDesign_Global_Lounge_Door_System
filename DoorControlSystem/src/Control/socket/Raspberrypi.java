@@ -1,7 +1,7 @@
 package control.socket;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import control.serverReaction.SystemServerSocket;
+import control.SeqTypeConstants;
 import control.serverReaction.raspberrypi.ServerContextRA;
 
 import java.io.BufferedReader;
@@ -20,6 +20,8 @@ public class Raspberrypi extends SocketThread implements Runnable{
     private ServerContextRA serverContextRA;
     private boolean sendFlag;
 
+    private static final String OPEN = "{\"seqType\":\""+ SeqTypeConstants.OPEN+"\"}";
+
     public Raspberrypi(Socket socket, BufferedReader reader) throws Exception{
         this.inMsg = reader;
         this.outMsg = new PrintWriter(socket.getOutputStream(), true);
@@ -34,7 +36,6 @@ public class Raspberrypi extends SocketThread implements Runnable{
             while(true) {
                 msg = inMsg.readLine();
                 if (msg == null) break;
-                System.out.println(msg);
                 object = (JsonObject) parser.parse(msg);
                 object = serverContextRA.response(object);
                 if(object != null)
@@ -43,24 +44,17 @@ public class Raspberrypi extends SocketThread implements Runnable{
         }
         catch (Exception e){
             e.printStackTrace();
-
+            SystemServerSocket.getInstance().setRaspberrypi(null);
         }finally {
-            System.out.println("연결종료");
+            SystemServerSocket.getInstance().setRaspberrypi(null);
         }
-
     }
     public void openDoor(){
-        JsonObject object = new JsonObject();
-        try{
-            object.addProperty("seqType", 700);
-            this.setSendFlag(false);
-            outMsg.println(object.toString());
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+            if(isSendFlag()) {
+                this.setSendFlag(false);
+                outMsg.println(OPEN);
+            }
     }
-
     public boolean isSendFlag() {
         return sendFlag;
     }
