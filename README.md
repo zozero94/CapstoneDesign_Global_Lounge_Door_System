@@ -1,4 +1,4 @@
-﻿# CapstoneDesign [ Global_Rounge_Door_System ]
+# CapstoneDesign [ Global_Rounge_Door_System ]
 ### MVP 패턴을 적용한 안드로이드 프로젝트
 
 <hr/>  
@@ -85,6 +85,7 @@
  <hr>  
  
  ### 2. QR코드 화면 [ QrJob ](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/qrjob)
+  <img src="./image/qr.png">
   
  
  ##### 데이터 바인딩을 이용하여 user 데이터 삽입 [ activity_qr.xml ](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/res/layout/activity_qr.xml)
