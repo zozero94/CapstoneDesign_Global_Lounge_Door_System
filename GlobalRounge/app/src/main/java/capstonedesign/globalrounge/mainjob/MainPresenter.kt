@@ -116,8 +116,6 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
      *
      * 인증 성공시
      * @see approvalPermission
-     * 인증 실패시
-     * @see rejectPermission
      *
      * @param user : 요청할 사용자 정보
      */
@@ -182,7 +180,7 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
                                 view.alertToast("이미 로그인 중입니다.")
                             }
                             LOGIN_NO_DATA -> {
-                                view.alertToast("서버에 더미데이터가 없습니다.")
+                                view.alertToast("정보가 잘못되었습니다.")
                             }
                         }
                     }

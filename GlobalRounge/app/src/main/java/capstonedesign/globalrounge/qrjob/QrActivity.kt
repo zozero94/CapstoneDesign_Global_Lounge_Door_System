@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.WindowManager
 import android.widget.Toast
 import capstonedesign.globalrounge.R
 import capstonedesign.globalrounge.databinding.ActivityQrBinding
@@ -23,6 +24,8 @@ class QrActivity : AppCompatActivity(), QrContract.View {
     }
 
     private val presenter = QrPresenter(this@QrActivity)
+    private val params by lazy { window.attributes }
+    private var origin: Float =0.0f
 
     init {
         presenter.subscribe()
@@ -47,12 +50,21 @@ class QrActivity : AppCompatActivity(), QrContract.View {
 
     override fun onResume() {
         super.onResume()
+
+        origin = params.screenBrightness
+        params.screenBrightness = 1f
+        window.attributes = params
+
         presenter.stateRequest()
     }
 
 
     override fun onPause() {
         super.onPause()
+
+        params.screenBrightness = origin
+        window.attributes = params
+
         presenter.stateDelete()
     }
 
