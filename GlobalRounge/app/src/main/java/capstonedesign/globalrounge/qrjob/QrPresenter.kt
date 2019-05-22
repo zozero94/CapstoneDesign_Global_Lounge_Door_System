@@ -33,26 +33,20 @@ class QrPresenter(private val view: QrContract.View) : QrContract.Presenter {
 
                 override fun onResponse(data: ByteArray) {
                     val str = String(data, StandardCharsets.UTF_8)
-                    try {
-                        (JsonParser().parse(str) as JsonObject).let { jsonObject ->
-                            when (jsonObject.get("seqType").asInt) {
-                                STATE_CREATE -> {
-                                    QrCode.makeQrCode(jsonObject.get("qr").asString).let { bitmap ->
-                                        view.makeQrCode(bitmap)
-                                    }
+
+                    (JsonParser().parse(str) as JsonObject).let { jsonObject ->
+                        when (jsonObject.get("seqType").asInt) {
+                            STATE_CREATE -> {
+                                QrCode.makeQrCode(jsonObject.get("qr").asString).let { bitmap ->
+                                    view.makeQrCode(bitmap)
                                 }
-                                STATE_URL -> {
-                                    jsonObject.get("img").asString.let { url ->
-                                        view.drawUserImages(url)
-                                    }
+                            }
+                            STATE_URL -> {
+                                jsonObject.get("img").asString.let { url ->
+                                    view.drawUserImages(url)
                                 }
                             }
                         }
-
-                    } catch (e: JsonSyntaxException) {
-                        e.printStackTrace()
-                    } catch (e: ClassCastException) {
-                        e.printStackTrace()
                     }
                 }
             })

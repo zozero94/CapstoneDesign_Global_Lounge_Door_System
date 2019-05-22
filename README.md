@@ -1,5 +1,5 @@
-# CapstoneDesign [ Global_Rounge_Door_System ]
-### MVP 패턴을 적용한 안드로이드 프로젝트
+﻿# CapstoneDesign [ Global_Rounge_Door_System ]
+### Android Branch using by MVP Pattern
 
 <hr/>  
 
@@ -14,7 +14,7 @@
  #### [MainPresenter](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/mainjob/MainPresenter.kt)  
  #### 학교 인증정보를 받아옴
  ```kotlin
-    @SuppressLint("CheckResult")
+   @SuppressLint("CheckResult")
     private fun requestSejongPermission(user: User) {
         val disposable = SejongConnection.requestUserInformation(user)
             .subscribeOn(Schedulers.io())
@@ -60,10 +60,10 @@
                     (JsonParser().parse(str) as JsonObject).let { jsonObject ->
                         when (jsonObject.get("seqType").asInt) {
                             LOGIN_OK -> {
-                                Encryption.getDecodedString(jsonObject.get("data").asString).let { string ->
-                                    AutoLogin.saveUserInfo(user)//체크박스에 따른 자동로그인 저장
-                                    (Gson().fromJson<Any>(string, Student::class.java) as Student).let {
-                                        view.startActivity(it)
+                                Encryption.getDecodedString(jsonObject.get("data").asString).let { decoded ->
+                                    (Gson().fromJson<Any>(decoded, Student::class.java) as Student).let { student ->
+                                        AutoLogin.saveUserInfo(user)//체크박스에 따른 자동로그인 저장
+                                        view.startActivity(student)
                                     }
                                 }
                             }
@@ -71,12 +71,13 @@
                                 view.alertToast("이미 로그인 중입니다.")
                             }
                             LOGIN_NO_DATA -> {
-                                view.alertToast("서버에 더미데이터가 없습니다.")
+                                view.alertToast("정보가 잘못되었습니다.")
                             }
                         }
                     }
                     view.loadingDestroy()
                 }
+
 
             })
         ServerConnection.addDisposable(ref)
@@ -135,7 +136,9 @@
 #### 서버와 통신하는 부분 [QrPersenter](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/qrjob/QrPresenter.kt)
  ```kotlin
     override fun subscribe() {
-        val ref = ServerConnection.socketObservable!!.observeOn(AndroidSchedulers.mainThread())
+        val ref = ServerConnection
+            .socketObservable
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : SocketSubscriber() {
                 override fun onConnected() {
 
@@ -147,26 +150,20 @@
 
                 override fun onResponse(data: ByteArray) {
                     val str = String(data, StandardCharsets.UTF_8)
-                    try {
-                        (JsonParser().parse(str) as JsonObject).let { jsonObject ->
-                            when (jsonObject.get("seqType").asInt) {
-                                STATE_CREATE -> {
-                                    QrCode.makeQrCode(jsonObject.get("qr").asString).let { bitmap ->
-                                        view.makeQrCode(bitmap)
-                                    }
+                  
+                    (JsonParser().parse(str) as JsonObject).let { jsonObject ->
+                        when (jsonObject.get("seqType").asInt) {
+                            STATE_CREATE -> {
+                                QrCode.makeQrCode(jsonObject.get("qr").asString).let { bitmap ->
+                                    view.makeQrCode(bitmap)
                                 }
-                                STATE_URL -> {
-                                    jsonObject.get("img").asString.let { url ->
-                                        view.drawUserImages(url)
-                                    }
+                            }
+                            STATE_URL -> {
+                                jsonObject.get("img").asString.let { url ->
+                                    view.drawUserImages(url)
                                 }
                             }
                         }
-
-                    } catch (e: JsonSyntaxException) {
-                        e.printStackTrace()
-                    } catch (e: ClassCastException) {
-                        e.printStackTrace()
                     }
                 }
             })

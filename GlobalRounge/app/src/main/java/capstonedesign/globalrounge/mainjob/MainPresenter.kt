@@ -169,10 +169,10 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
                     (JsonParser().parse(str) as JsonObject).let { jsonObject ->
                         when (jsonObject.get("seqType").asInt) {
                             LOGIN_OK -> {
-                                Encryption.getDecodedString(jsonObject.get("data").asString).let { string ->
-                                    AutoLogin.saveUserInfo(user)//체크박스에 따른 자동로그인 저장
-                                    (Gson().fromJson<Any>(string, Student::class.java) as Student).let {
-                                        view.startActivity(it)
+                                Encryption.getDecodedString(jsonObject.get("data").asString).let { decoded ->
+                                    (Gson().fromJson<Any>(decoded, Student::class.java) as Student).let { student ->
+                                        AutoLogin.saveUserInfo(user)//체크박스에 따른 자동로그인 저장
+                                        view.startActivity(student)
                                     }
                                 }
                             }
@@ -186,6 +186,7 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
                     }
                     view.loadingDestroy()
                 }
+
 
             })
         ServerConnection.addDisposable(ref)

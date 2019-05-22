@@ -21,11 +21,11 @@ import java.nio.charset.Charset
  */
 object ServerConnection : BaseServer() {
     lateinit var socketObservable: Observable<DataWrapper>
-    lateinit var socket: SocketClient
+    private lateinit var socket: SocketClient
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    fun connect(){
+    fun connect() {
         socket = RxSocketClient.create(
             SocketConfig.Builder()
                 .setIp(ip)
@@ -37,6 +37,7 @@ object ServerConnection : BaseServer() {
         )
         socketObservable = socket.connect()
     }
+
     fun addDisposable(disposable: Disposable) {
         compositeDisposable.add(disposable)
     }
