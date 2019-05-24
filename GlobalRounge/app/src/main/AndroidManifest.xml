@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
+    <uses-permission android:name="android.permission.VIBRATE"/>
     <application
             android:allowBackup="true"
             android:icon="@mipmap/sejong"
@@ -23,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".qrjob.QrActivity" android:launchMode="singleTop" android:screenOrientation="portrait"></activity>
-        <service android:name=".qrjob.BeaconService"></service>
+        <service android:name=".beacon.BeaconService"></service>
     </application>
 
 </manifest>

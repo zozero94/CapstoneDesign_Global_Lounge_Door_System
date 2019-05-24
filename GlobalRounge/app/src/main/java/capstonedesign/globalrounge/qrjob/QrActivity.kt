@@ -1,18 +1,18 @@
 package capstonedesign.globalrounge.qrjob
 
-import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.Bitmap
-import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
+import capstonedesign.globalrounge.beacon.BeaconService
 import capstonedesign.globalrounge.R
 import capstonedesign.globalrounge.databinding.ActivityQrBinding
 import capstonedesign.globalrounge.dto.Student
 import capstonedesign.globalrounge.mainjob.MainActivity.Companion.REQUEST_CODE
+import capstonedesign.globalrounge.model.util.AutoLogin
 import com.bumptech.glide.Glide
 
 
@@ -35,18 +35,21 @@ class QrActivity : AppCompatActivity(), QrContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-
-
-        (intent.getSerializableExtra(EXTRA_USER) as Student).let { binding.user = it }
+        (intent.getSerializableExtra(EXTRA_USER) as Student).let {
+            binding.user = it
+            if (AutoLogin.getUserInfo().id=="admin") { //관리자이며 자동로그인일 경우 비콘 시작
+                startService(BeaconService.getIntent(this))
+                //TODO 아마도 서비스가 중복될수도 있다.
+            }
+        }
 
         binding.logout.setOnClickListener {
             setResult(REQUEST_CODE)
             presenter.logout()
+            stopService(BeaconService.getIntent(this))//TODO 안될수도...
             finish()
         }
 
-        startService(BeaconService.getIntent(this))
 
     }
 
