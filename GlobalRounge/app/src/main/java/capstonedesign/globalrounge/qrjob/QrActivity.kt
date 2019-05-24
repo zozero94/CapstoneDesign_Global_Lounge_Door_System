@@ -1,12 +1,13 @@
 package capstonedesign.globalrounge.qrjob
 
+import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.WindowManager
 import android.widget.Toast
 import capstonedesign.globalrounge.R
 import capstonedesign.globalrounge.databinding.ActivityQrBinding
@@ -25,7 +26,7 @@ class QrActivity : AppCompatActivity(), QrContract.View {
 
     private val presenter = QrPresenter(this@QrActivity)
     private val params by lazy { window.attributes }
-    private var origin: Float =0.0f
+    private var origin: Float = 0.0f
 
     init {
         presenter.subscribe()
@@ -34,6 +35,9 @@ class QrActivity : AppCompatActivity(), QrContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+
+
         (intent.getSerializableExtra(EXTRA_USER) as Student).let { binding.user = it }
 
         binding.logout.setOnClickListener {
@@ -41,6 +45,8 @@ class QrActivity : AppCompatActivity(), QrContract.View {
             presenter.logout()
             finish()
         }
+
+        startService(BeaconService.getIntent(this))
 
     }
 
@@ -96,6 +102,5 @@ class QrActivity : AppCompatActivity(), QrContract.View {
         fun getIntent(context: Context?, student: Student) = Intent(context, QrActivity::class.java).apply {
             putExtra(EXTRA_USER, student)
         }
-
     }
 }

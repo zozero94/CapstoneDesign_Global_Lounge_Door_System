@@ -1,7 +1,7 @@
 package capstonedesign.globalrounge.model.permission
 
 open class BaseServer {
-    internal var ip = "192.168.123.4"
+    internal var ip = "192.168.123.8"
     internal val port = 5050
 
     companion object {

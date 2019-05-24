@@ -1,8 +1,13 @@
 package capstonedesign.globalrounge.mainjob
 
+import android.Manifest
+import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.databinding.DataBindingUtil
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -41,6 +46,18 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         //기본 View Setting
         super.onCreate(savedInstanceState)
+
+        if (Settings.Secure.getInt(applicationContext.contentResolver, Settings.Secure.LOCATION_MODE) == 0) {
+            startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+            Toast.makeText(applicationContext, "높은 정확도 사용을 권장합니다.", Toast.LENGTH_LONG).show()
+        }
+        BluetoothAdapter.getDefaultAdapter()?.let {
+            if(!it.isEnabled)
+                startActivity(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION), 0)
+        }
 
         //Login Button Listener
         binding.loginBtn.setOnClickListener {
