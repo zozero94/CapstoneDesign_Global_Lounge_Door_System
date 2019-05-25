@@ -38,20 +38,18 @@ class QrActivity : AppCompatActivity(), QrContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 0)
             requestPermissions(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), 1)
         }
         (intent.getSerializableExtra(EXTRA_USER) as Student).let {
             binding.user = it
-            if (it.name.contains("admin")) {
-                startService(BeaconService.getIntent(this@QrActivity))
+            if (it.studentID.contains("admin")) {
+                presenter.beaconConnect(this@QrActivity)
             }
         }
 
         binding.logout.setOnClickListener {
             setResult(REQUEST_CODE)
             presenter.logout()
-            stopService(BeaconService.getIntent(this@QrActivity))
             finish()
         }
 
@@ -84,18 +82,9 @@ class QrActivity : AppCompatActivity(), QrContract.View {
 
     override fun onDestroy() {
         super.onDestroy()
-        val manager = this.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        var flag = true
+        presenter.beaconDisconnect(this@QrActivity)
+        presenter.dispose()
 
-        for(service in manager.getRunningServices(Int.MAX_VALUE)){
-            if(BeaconService::class.java.name == service.service.className){
-                flag = false
-            }
-        }
-
-        if(flag){
-            presenter.dispose()
-        }
     }
 
     override fun onBackPressed() {

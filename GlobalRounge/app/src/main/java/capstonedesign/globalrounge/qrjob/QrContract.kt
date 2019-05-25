@@ -1,5 +1,6 @@
 package capstonedesign.globalrounge.qrjob
 
+import android.content.Context
 import android.graphics.Bitmap
 
 interface QrContract {
@@ -15,5 +16,7 @@ interface QrContract {
         fun stateRequest()
         fun stateDelete()
         fun logout()
+        fun beaconConnect(context: Context)
+        fun beaconDisconnect(context: Context)
     }
 }

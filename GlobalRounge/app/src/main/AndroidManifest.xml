@@ -24,7 +24,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".qrjob.QrActivity" android:launchMode="singleTop" android:screenOrientation="portrait"></activity>
-        <service android:name=".beacon.BeaconService" ></service>
     </application>
 
 </manifest>

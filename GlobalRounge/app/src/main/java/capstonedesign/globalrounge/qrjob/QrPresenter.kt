@@ -1,5 +1,7 @@
 package capstonedesign.globalrounge.qrjob
 
+import android.content.Context
+import capstonedesign.globalrounge.beacon.BeaconService
 import capstonedesign.globalrounge.model.QrCode
 import capstonedesign.globalrounge.model.permission.BaseServer.Companion.STATE_CREATE
 import capstonedesign.globalrounge.model.permission.BaseServer.Companion.STATE_OK
@@ -46,6 +48,9 @@ class QrPresenter(private val view: QrContract.View) : QrContract.Presenter {
                                     view.drawUserImages(url)
                                 }
                             }
+                            STATE_OK -> {
+
+                            }
 
                         }
                     }
@@ -77,6 +82,7 @@ class QrPresenter(private val view: QrContract.View) : QrContract.Presenter {
      */
     override fun dispose() {
         ServerConnection.clearDisposable()
+
     }
 
     /**
@@ -85,5 +91,21 @@ class QrPresenter(private val view: QrContract.View) : QrContract.Presenter {
      */
     override fun logout() {
         ServerConnection.logout()
+    }
+
+    /**
+     * 비콘 연결 시작
+     * @see capstonedesign.globalrounge.qrjob.QrActivity.onCreate
+     */
+    override fun beaconConnect(context: Context) {
+        BeaconService(context).connectBeacon()
+    }
+
+    /**
+     * 비콘 연결 종료
+     * @see capstonedesign.globalrounge.qrjob.QrActivity.onDestroy
+     */
+    override fun beaconDisconnect(context: Context) {
+        BeaconService(context).disconnectBeacon()
     }
 }
