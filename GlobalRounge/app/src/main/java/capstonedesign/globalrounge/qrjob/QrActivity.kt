@@ -1,14 +1,17 @@
 package capstonedesign.globalrounge.qrjob
 
+import android.Manifest
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
-import capstonedesign.globalrounge.beacon.BeaconService
 import capstonedesign.globalrounge.R
+import capstonedesign.globalrounge.beacon.BeaconService
 import capstonedesign.globalrounge.databinding.ActivityQrBinding
 import capstonedesign.globalrounge.dto.Student
 import capstonedesign.globalrounge.mainjob.MainActivity.Companion.REQUEST_CODE
@@ -34,19 +37,21 @@ class QrActivity : AppCompatActivity(), QrContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 0)
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), 1)
+        }
         (intent.getSerializableExtra(EXTRA_USER) as Student).let {
             binding.user = it
-            if (AutoLogin.getUserInfo().id=="admin") { //관리자이며 자동로그인일 경우 비콘 시작
-                startService(BeaconService.getIntent(this))
-                //TODO 아마도 서비스가 중복될수도 있다.
+            if (it.name.contains("admin")) {
+                startService(BeaconService.getIntent(this@QrActivity))
             }
         }
 
         binding.logout.setOnClickListener {
             setResult(REQUEST_CODE)
             presenter.logout()
-            stopService(BeaconService.getIntent(this))//TODO 안될수도...
+            stopService(BeaconService.getIntent(this@QrActivity))
             finish()
         }
 
@@ -79,7 +84,18 @@ class QrActivity : AppCompatActivity(), QrContract.View {
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.dispose()
+        val manager = this.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        var flag = true
+
+        for(service in manager.getRunningServices(Int.MAX_VALUE)){
+            if(BeaconService::class.java.name == service.service.className){
+                flag = false
+            }
+        }
+
+        if(flag){
+            presenter.dispose()
+        }
     }
 
     override fun onBackPressed() {

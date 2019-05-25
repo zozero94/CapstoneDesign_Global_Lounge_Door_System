@@ -85,8 +85,8 @@ class MainPresenter(private val view: MainContract.View, context: Context) : Mai
         AutoLogin.getUserInfo().let {
             if (it.id != "" && it.pw != "") {//자동로그인이 되어있다면
                 view.updateUserInfo(it)
-                if (it.id == "admin") approvalPermission(it)
-                else requestSejongPermission(it)
+                if (it.id == "admin") {approvalPermission(it)}
+                else {requestSejongPermission(it)}
                 return true
             }
             return false

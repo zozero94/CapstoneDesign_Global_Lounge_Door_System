@@ -114,4 +114,11 @@ object ServerConnection : BaseServer() {
         }
     }
 
+    fun openAdmin(){
+        with(JsonObject()) {
+            addProperty("seqType", STATE_ADMIN)
+            socket.sendData(this.toString() + "\n")
+        }
+    }
+
 }

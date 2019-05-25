@@ -1,13 +1,12 @@
 package capstonedesign.globalrounge.mainjob
 
-import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Toast
@@ -54,9 +53,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             if(!it.isEnabled)
                 startActivity(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION), 0)
-        }
+
 
         //Login Button Listener
         binding.loginBtn.setOnClickListener {
@@ -92,11 +89,10 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         super.onResume()
         //자동 로그인을 체크
         binding.checkBox.isChecked = presenter.checkAutoLogin()
-
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onStop() {
+        super.onStop()
         presenter.dispose()
     }
 

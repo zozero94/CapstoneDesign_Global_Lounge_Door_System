@@ -2,11 +2,11 @@ package capstonedesign.globalrounge.qrjob
 
 import capstonedesign.globalrounge.model.QrCode
 import capstonedesign.globalrounge.model.permission.BaseServer.Companion.STATE_CREATE
+import capstonedesign.globalrounge.model.permission.BaseServer.Companion.STATE_OK
 import capstonedesign.globalrounge.model.permission.BaseServer.Companion.STATE_URL
 import capstonedesign.globalrounge.model.permission.ServerConnection
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import com.google.gson.JsonSyntaxException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import moe.codeest.rxsocketclient.SocketSubscriber
 import java.nio.charset.StandardCharsets
@@ -46,6 +46,7 @@ class QrPresenter(private val view: QrContract.View) : QrContract.Presenter {
                                     view.drawUserImages(url)
                                 }
                             }
+
                         }
                     }
                 }
