@@ -46,7 +46,7 @@ object ShakeAlgorithm : SensorEventListener {
     }
 
     fun setCallback(callback: ShakeCallback) {
-            ShakeAlgorithm.callback = callback
+        ShakeAlgorithm.callback = callback
     }
 
 }

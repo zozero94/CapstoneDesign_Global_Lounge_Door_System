@@ -1,7 +1,7 @@
 package capstonedesign.globalrounge.qrjob
 
 import android.content.Context
-import capstonedesign.globalrounge.beacon.BeaconService
+import capstonedesign.globalrounge.beacon.Beacon
 import capstonedesign.globalrounge.model.QrCode
 import capstonedesign.globalrounge.model.permission.BaseServer.Companion.STATE_CREATE
 import capstonedesign.globalrounge.model.permission.BaseServer.Companion.STATE_OK
@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets
 
 
 class QrPresenter(private val view: QrContract.View) : QrContract.Presenter {
-
+    private val beacon = Beacon(view as Context)
     /**
      * QrActivity 로 넘어옴과 동시에 새로운 Observable 을 구독하는 함수
      * @see capstonedesign.globalrounge.qrjob.QrActivity
@@ -97,15 +97,15 @@ class QrPresenter(private val view: QrContract.View) : QrContract.Presenter {
      * 비콘 연결 시작
      * @see capstonedesign.globalrounge.qrjob.QrActivity.onCreate
      */
-    override fun beaconConnect(context: Context) {
-        BeaconService(context).connectBeacon()
+    override fun beaconConnect() {
+        beacon.connect()
     }
 
     /**
      * 비콘 연결 종료
      * @see capstonedesign.globalrounge.qrjob.QrActivity.onDestroy
      */
-    override fun beaconDisconnect(context: Context) {
-        BeaconService(context).disconnectBeacon()
+    override fun beaconDisconnect() {
+        beacon.disconnect()
     }
 }

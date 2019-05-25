@@ -1,21 +1,18 @@
 package capstonedesign.globalrounge.qrjob
 
 import android.Manifest
-import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.Bitmap
-import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import capstonedesign.globalrounge.R
-import capstonedesign.globalrounge.beacon.BeaconService
 import capstonedesign.globalrounge.databinding.ActivityQrBinding
 import capstonedesign.globalrounge.dto.Student
 import capstonedesign.globalrounge.mainjob.MainActivity.Companion.REQUEST_CODE
-import capstonedesign.globalrounge.model.util.AutoLogin
 import com.bumptech.glide.Glide
 
 
@@ -37,13 +34,16 @@ class QrActivity : AppCompatActivity(), QrContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), 1)
-        }
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+            1
+        )
+
         (intent.getSerializableExtra(EXTRA_USER) as Student).let {
             binding.user = it
             if (it.studentID.contains("admin")) {
-                presenter.beaconConnect(this@QrActivity)
+                presenter.beaconConnect()
             }
         }
 
@@ -82,7 +82,7 @@ class QrActivity : AppCompatActivity(), QrContract.View {
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.beaconDisconnect(this@QrActivity)
+        presenter.beaconDisconnect()
         presenter.dispose()
 
     }

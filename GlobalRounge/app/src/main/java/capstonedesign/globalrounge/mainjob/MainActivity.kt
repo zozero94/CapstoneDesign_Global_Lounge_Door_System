@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             Toast.makeText(applicationContext, "높은 정확도 사용을 권장합니다.", Toast.LENGTH_LONG).show()
         }
         BluetoothAdapter.getDefaultAdapter()?.let {
-            if(!it.isEnabled)
+            if (!it.isEnabled)
                 startActivity(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
         }
 
