@@ -1,6 +1,0 @@
-framework module Pods_Lounge {
-  umbrella header "Pods-Lounge-umbrella.h"
-
-  export *
-  module * { export * }
-}
