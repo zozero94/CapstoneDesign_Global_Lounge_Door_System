@@ -9,9 +9,9 @@
  
 
 ## [ Contract ]
- ### 1. 로그인 화면 [ MainJob ](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/mainjob)
+ ### 1. 로그인 화면 [ MainJob ](https://github.com/zojae031/CapstoneDesign_Global_Lounge_Door_System/tree/android/GlobalLounge/app/src/main/java/capstonedesign/globallounge/mainjob)
   
- #### [MainPresenter](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/mainjob/MainPresenter.kt)  
+ #### [MainPresenter](https://github.com/zojae031/CapstoneDesign_Global_Lounge_Door_System/blob/android/GlobalLounge/app/src/main/java/capstonedesign/globallounge/mainjob/MainPresenter.kt)  
  #### 학교 인증정보를 받아옴
  ```kotlin
     @SuppressLint("CheckResult")
@@ -85,11 +85,11 @@
  ```
  <hr>  
  
- ### 2. QR코드 화면 [ QrJob ](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/qrjob)
+ ### 2. QR코드 화면 [ QrJob ](https://github.com/zojae031/CapstoneDesign_Global_Lounge_Door_System/tree/android/GlobalLounge/app/src/main/java/capstonedesign/globallounge/qrjob)
   <img src="./image/qr.png">
   
  
- ##### 데이터 바인딩을 이용하여 user 데이터 삽입 [ activity_qr.xml ](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/res/layout/activity_qr.xml)
+ ##### 데이터 바인딩을 이용하여 user 데이터 삽입 [ activity_qr.xml ](https://github.com/zojae031/CapstoneDesign_Global_Lounge_Door_System/blob/android/GlobalLounge/app/src/main/res/layout/activity_qr.xml)
  
  
  ```xml
@@ -126,14 +126,14 @@
  />
  ```
  
- ##### [QrActivity](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/qrjob/QrActivity.kt)  
+ ##### [QrActivity](https://github.com/zojae031/CapstoneDesign_Global_Lounge_Door_System/blob/android/GlobalLounge/app/src/main/java/capstonedesign/globallounge/qrjob/QrActivity.kt)  
  
  ```kotlin
  (intent.getSerializableExtra(EXTRA_USER) as Student).let { binding.user = it }
  
  ```
  
-#### 서버와 통신하는 부분 [QrPersenter](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/qrjob/QrPresenter.kt)
+#### 서버와 통신하는 부분 [QrPersenter](https://github.com/zojae031/CapstoneDesign_Global_Lounge_Door_System/blob/android/GlobalLounge/app/src/main/java/capstonedesign/globallounge/qrjob/QrPresenter.kt)
  ```kotlin
     override fun subscribe() {
         val ref = ServerConnection
@@ -183,14 +183,16 @@
  
 #### Permission
  + 학교 서버 우회접근[SejongConnection.kt](
- https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/model/permission/SejongConnection.kt) `Retrofit2`
+https://github.com/zojae031/CapstoneDesign_Global_Lounge_Door_System/blob/android/GlobalLounge/app/src/main/java/capstonedesign/globallounge/model/permission/SejongConnection.kt) `Retrofit2`
  
- + DB서버 접근[ServerConnection.kt](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/model/permission/ServerConnection.kt)``Rx (CoddestX)``
+ + DB서버 접근[ServerConnection.kt](https://github.com/zojae031/CapstoneDesign_Global_Lounge_Door_System/blob/android/GlobalLounge/app/src/main/java/capstonedesign/globallounge/model/permission/ServerConnection.kt)``Rx (CoddestX)``
  
  #### Util  
- + 자동로그인  [ AutoLogin ](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/model/util/AutoLogin.kt)``SharedPreference``
- + QRCode 생성  [ QrCode ](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/model/util/QrCode.kt) ``Zxing``
- + 암호화  [ Encryption ](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/model/util/Encryption.kt) ``RSA / Base64``
+ + 자동로그인  [ AutoLogin ](https://github.com/zojae031/CapstoneDesign_Global_Lounge_Door_System/blob/android/GlobalLounge/app/src/main/java/capstonedesign/globallounge/model/util/AutoLogin.kt)``SharedPreference``
+ + QRCode 생성  [ QrCode ](https://github.com/zojae031/CapstoneDesign_Global_Lounge_Door_System/blob/android/GlobalLounge/app/src/main/java/capstonedesign/globallounge/model/util/QrCode.kt) ``Zxing``
+ + 암호화  [ Encryption ](https://github.com/zojae031/CapstoneDesign_Global_Lounge_Door_System/blob/android/GlobalLounge/app/src/main/java/capstonedesign/globallounge/model/util/Encryption.kt) ``RSA / Base64``
+ + 비콘 [ Beacon ](https://github.com/zojae031/CapstoneDesign_Global_Lounge_Door_System/tree/android/GlobalLounge/app/src/main/java/capstonedesign/globallounge/model/beacon)``AltBeacon``
+   
 <hr>
 
 
