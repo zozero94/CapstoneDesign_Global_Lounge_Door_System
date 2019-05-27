@@ -1,4 +1,4 @@
-﻿# CapstoneDesign [ Global_Rounge_Door_System ]
+﻿# CapstoneDesign [ Global Lounge Door System ]
 ### Android Branch using by MVP Pattern
 
 <hr/>  
@@ -14,7 +14,7 @@
  #### [MainPresenter](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/blob/android/GlobalRounge/app/src/main/java/capstonedesign/globalrounge/mainjob/MainPresenter.kt)  
  #### 학교 인증정보를 받아옴
  ```kotlin
-   @SuppressLint("CheckResult")
+    @SuppressLint("CheckResult")
     private fun requestSejongPermission(user: User) {
         val disposable = SejongConnection.requestUserInformation(user)
             .subscribeOn(Schedulers.io())
@@ -100,7 +100,7 @@
  
  ```xml
 <resources>
-    <string name="app_name">GlobalRounge</string>
+    <string name="app_name">GlobalLounge</string>
     <string name="user_name">이름 : %s</string>
     <string name="user_id">학번 : %s</string>
     <string name="user_department">학과 : %s</string>
@@ -150,7 +150,7 @@
 
                 override fun onResponse(data: ByteArray) {
                     val str = String(data, StandardCharsets.UTF_8)
-                  
+
                     (JsonParser().parse(str) as JsonObject).let { jsonObject ->
                         when (jsonObject.get("seqType").asInt) {
                             STATE_CREATE -> {
@@ -163,6 +163,10 @@
                                     view.drawUserImages(url)
                                 }
                             }
+                            STATE_OK -> {
+                                //TODO 비콘 완료 시 행동
+                            }
+
                         }
                     }
                 }
@@ -202,3 +206,4 @@
 + coddestX
 + Zxing
 + Glide
++ AltBeacon
