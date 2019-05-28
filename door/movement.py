@@ -1,143 +1,74 @@
-import RPi.GPIO as gpio
+import threading, time
+import data
+import sensor as sensor
 
-import time
+lock = threading.Lock()
+eve = threading.Event()
 
-gpio.setwarnings(False)
-gpio.setmode(gpio.BCM)
-
-# init sonic sencor
-
-sonic = {'a_trig': 3, 'a_echo': 2, 'b_trig': 14, 'b_echo': 15}
-
-gpio.setup(sonic['a_trig'], gpio.OUT)
-gpio.setup(sonic['a_echo'], gpio.IN)
-gpio.setup(sonic['b_trig'], gpio.OUT)
-gpio.setup(sonic['b_echo'], gpio.IN)
-
-# init motor
+class MainMovement(threading.Thread):
 
 
-motor_pin = 18
-gpio.setup(moter_pin, gpio.OUT)
-pwm_motor = gpio.PWM(moter_pin, 50)
-pwm_motor.start(0)
+    def __init__(self, client_socket):
 
-# init led
+        threading.Thread.__init__(self)
+        self.client_socket = client_socket
 
 
-led = {'red': 21, 'green': 20, 'blue': 16}
+    def run(self):
 
-gpio.setup(led['red'], gpio.OUT)
-gpio.setup(led['green'], gpio.OUT)
-gpio.setup(led['blue'], gpio.OUT)
+        while True:
 
-pwm_red = gpio.PWM(led['red'], 1000)
-pwm_green = gpio.PWM(led['green'], 1000)
-pwm_blue = gpio.PWM(led['blue'], 1000)
+            try:
 
-pwm_red.start(100)
-pwm_green.start(0)
-pwm_blue.start(0)
+                res = self.client_socket.recv(1024)
+                res_dic = data.toDict(res)
+                print(res)
 
+                lock.acquire()
+                if res_dic['seqType'] == "301":
+                    if sensor.first_infrared(time.time()):
+                        self.client_socket.send(data.toString(400))
+                    else:
+                        self.client_socket.send(data.toString(401))
 
-def updateled(color, duty):
-    led_pwm[color].ChangeDutyCycle(float(duty))
+                elif res_dic['seqType'] == "302":
+                    time.sleep(1)
+        
+                elif res_dic['seqType'] == "700":
+                    sensor.first_infrared(time.time())
+                    self.client_socket.send(data.toString(402))
+                lock.release()
+                eve.set()
 
+            except Exception as e:
 
-def open():
-    p.ChangeDutyCycle(6)
-    time.sleep(0.8)
-    p.ChangeDutyCycle(0)
+                print (e)
 
+ 
 
-def close():
-    time.sleep(0.8)
-    p.ChangeDutyCycle(2)
-    time.sleep(0.8)
-    p.ChangeDutyCycle(0)
+ 
 
-
-def distance(trig, echo):
-    start = 0
-    end = 0
-    gpio.output(trig, False)
-    time.sleep(0.2)
-    gpio.output(trig, True)
-    time.sleep(0.00001)
-
-    gpio.output(trig, False)
-
-    while gpio.input(echo) == 0:
-        start = time.time()
-
-    while gpio.input(echo) == 1:
-        end = time.time()
-
-    pulse_duration = end - start
-    d = pulse_duration / 0.000058
-
-    if trig == 3:
-        print("first_distance:", d, "cm")
-    else:
-        print("second_distance:", d, "cm")
-
-    return d
+class QrMovement(threading.Thread):
 
 
-def second_ultrasonic(s):
+    def __init__(self, client_socket):
 
-    elem = {'start_time': s, 'end_time': s, 'init_distance': 0, 'flag': 0}
+        threading.Thread.__init__(self)
+        self.client_socket = client_socket
 
-    while elem['end_time'] - elem['start_time'] <= 10:
+    def run(self):
+        
+        eve.set()
+        while True:
 
-        d = distance(sonic['b_trig'], sonic['b_echo'])
+            try:
+                code = data.toStringQr()
+                sensor.buzzer()
 
-        if elem['flag'] == 0:
-            elem['init_distance'] = d
-            elem['flag'] = 1
+                self.client_socket.send(code.encode())
+                eve.clear()
+                eve.wait()
 
-        elif elem['flag'] == 1:
-            if abs(elem['init_distance'] - d) > 10:
-                elem['flag'] = 2
+            except Exception as e:
 
-        elif elem['flag'] == 2:
-            # close door
-            if abs(elem['init_distance'] - d) < 5:
-                close()
-                updateled('red', 100)
-                updateled('blue', 0)
-
-                print("out")
-                return True
-
-        elem['end_time'] = time.time()
-
-    close()
-    updateled('red', 100)
-    updateled('blue', 0)
-
-    return False
-
-
-def first_ultrasonic(s):
-    start_time = s
-    end_time = s
-
-    updateled('red', 0)
-    updateled('blue', 100)
-
-    while end_time - start_time <= 10:
-
-        d = distance(sonic['a_trig'], sonic['a_echo'])
-
-        if d < 20:
-            print("in")
-            open()
-            return second_ultrasonic(time.time())
-
-        end_time = time.time()
-
-    return False
-
-# test
-# first_ultrasonic(time.time())
+                print (e)
