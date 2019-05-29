@@ -10,7 +10,7 @@ import Foundation
 import SwiftSocket
 
 class ServerConnection {
-    let client = TCPClient(address: "192.168.0.7", port: Int32(5050))
+    let client = TCPClient(address: "192.168.123.8", port: Int32(5050))
     var responseData : String = ""
     var flag = false
     static let sharedInstance = ServerConnection()
@@ -18,7 +18,6 @@ class ServerConnection {
     private init(){}
     
     func sendData(data: String) -> String{
-        print("data->\(data)")
         
         switch client.connect(timeout: 2) {
         case .success:
@@ -26,10 +25,9 @@ class ServerConnection {
                 responseData = response
             }
         case .failure(let error):
-            print(String(describing: error))
             responseData = String(describing: error)
         }
-        return responseData ////// ViewController에서 if/else if/ else로 나눠서 로그인/로그인x/서버 닫혀있는지 판별 httpPost에서
+        return responseData
     }
     
     func sendData2(data: String) -> String {
@@ -40,10 +38,8 @@ class ServerConnection {
     }
     
     private func sendRequest(string: String, using client: TCPClient) -> String? {
-        print("Sending data ... ")
         switch self.client.send(string: string) {
         case .success:
-            print("success")
             return readResponse(from: client)
         case .failure(let error):
             print(String(describing: error))
@@ -52,7 +48,6 @@ class ServerConnection {
     }
     
     private func readResponse(from client: TCPClient) -> String? {
-        print("..............")
         guard let response = client.read(1024*10,timeout: 2)
             else {
                 return nil
@@ -61,8 +56,6 @@ class ServerConnection {
     }
     
     func close() {
-        print("close()")
-        
         self.client.close()
     }
 }
