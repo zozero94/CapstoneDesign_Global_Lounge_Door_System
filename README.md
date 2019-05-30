@@ -31,8 +31,8 @@
  + 데이터 암호화  
  
 ##### 2-3) [모듈](https://github.com/zojae031/CapstoneDesign_Global_Rounge_Door_System/tree/module)
- + 초음파센서를 이용하여 움직임 감지
- + 인증 여부 판단
+ + 적외선 센서로 일정 거리 내의 물건 감지
+ + QR코드 인식 후 디코딩 
  + 출입문의 프로토타입 모델 
  
 ### 3. 기대 효과
