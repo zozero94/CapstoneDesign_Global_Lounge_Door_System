@@ -36,10 +36,13 @@ public class Raspberrypi extends SocketThread implements Runnable{
             while(true) {
                 msg = inMsg.readLine();
                 if (msg == null) break;
+                System.out.println("RA run"+msg);
                 object = (JsonObject) parser.parse(msg);
                 object = serverContextRA.response(object);
-                if(object != null)
+                if(object != null) {
+                    System.out.println("RA response"+ object.toString());
                     outMsg.println(object.toString());
+                }
             }
         }
         catch (Exception e){

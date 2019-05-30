@@ -2,15 +2,16 @@ package control.serverReaction.aplication;
 
 import com.google.gson.JsonObject;
 import control.socket.Aplication;
-import model.dto.ServerStudent;
+import model.dto.Data;
 
 public class ServerContextAP {
     private boolean QrFlag;
     private String qrString;
 
     private StateAP state;
-    private ServerStudent info;
+    private Data info;
     private Aplication socketThread;
+
 
 
     public ServerContextAP(Aplication socketThread){
@@ -27,10 +28,10 @@ public class ServerContextAP {
         return state.reaction(object);
     }
 
-    public ServerStudent getInfo() {
+    public Data getInfo() {
         return info;
     }
-    public void setInfo(ServerStudent info) {
+    public void setInfo(Data info) {
         this.info = info;
     }
 
@@ -54,7 +55,5 @@ public class ServerContextAP {
     public Aplication getSocketThread() {
         return socketThread;
     }
-    public void Aplication(Aplication socketThread) {
-        this.socketThread = socketThread;
-    }
+
 }

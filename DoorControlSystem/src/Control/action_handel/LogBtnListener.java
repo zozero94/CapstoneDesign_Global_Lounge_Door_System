@@ -1,5 +1,5 @@
 package control.action_handel;
-import view.LogPanel;
+import view.right.LogPanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -9,6 +9,7 @@ public class LogBtnListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e){
+        LogPanel.getInstance().initInfo();
         LogPanel.getInstance().showLogTable((JButton) e.getSource());
     }
 }

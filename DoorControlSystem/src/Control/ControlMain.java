@@ -1,9 +1,11 @@
 package control;
 
 import control.action_handel.ButtonListener;
+import control.action_handel.LogBtnListener;
+import control.action_handel.LogChartBtnListener;
 import control.action_handel.MouseListener;
 import control.socket.SystemServerSocket;
-import view.ServerUI;
+import view.UI.ServerUI;
 
 public class ControlMain {
 
@@ -14,6 +16,8 @@ public class ControlMain {
 
     private ButtonListener buttonListener;
     private MouseListener mouseListener;
+    private LogBtnListener logBtnListener;
+    private LogChartBtnListener logChartBtnListener;
 
     public static synchronized ControlMain getInstance(){
         if(controlMain == null) controlMain = new ControlMain();
@@ -23,16 +27,15 @@ public class ControlMain {
         this.systemUI = new ServerUI();
         this.buttonListener = new ButtonListener();
         this.mouseListener = new MouseListener();
+        this.logBtnListener = new LogBtnListener();
+        this.logChartBtnListener = new LogChartBtnListener();
         this.systemServerSocket = SystemServerSocket.getInstance();
         setActionListener();
         systemServerSocket.start();
     }
 
     private void setActionListener(){
-        this.systemUI.addActionListener(mouseListener,buttonListener);
+        this.systemUI.addActionListener(mouseListener,buttonListener, logBtnListener, logChartBtnListener);
     }
-
-//        excelSaveFile("C:\\Users\\kmw81\\IdeaProjects\\DoorControlSystem\\image\\140.xls");
-    // this.systemDAO.insertStudentImage("C:\\Users\\kmw81\\IdeaProjects\\DoorControlSystem\\image\\14011038.jpg","14011038");
 
 }

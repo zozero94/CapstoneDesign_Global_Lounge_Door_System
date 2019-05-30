@@ -27,19 +27,21 @@ public class ServerContextRA {
     private void SwitchState(){
         this.state = state == confirm ? qrCertified : confirm;
     }
-    public String getQrString() {
-        return qrString;
-    }
     public void setQrString(String qrString) {
         this.qrString = qrString;
     }
     public String getStudentId(){
+        if(this.checkAdmin())
+            return getAdmin();
         return this.qrString.substring(0,8);
+    }
+    public String getAdmin(){
+        return this.qrString.substring(0,6);
+    }
+    public boolean checkAdmin(){
+        return this.qrString.substring(0,5).equals("admin");
     }
     public Raspberrypi getRaspberrypi() {
         return raspberrypi;
-    }
-    public void setRaspberrypi(Raspberrypi raspberrypi) {
-        this.raspberrypi = raspberrypi;
     }
 }

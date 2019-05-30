@@ -23,7 +23,8 @@ public class DateCalculator {
         }
         return dayTime.format(calendar.getTime());
     }
-    public static String currentTimeMonth(){
+
+    public static String currentTimeDay(){
         return dayTime.format(new Date(System.currentTimeMillis()));
     }
     public static String currentTime(){

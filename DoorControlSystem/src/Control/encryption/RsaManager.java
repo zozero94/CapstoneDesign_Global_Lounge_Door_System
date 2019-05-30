@@ -27,8 +27,6 @@ public class RsaManager {
     private byte[] bKey;
     private String strPublicKey;
     private Gson gson;
-
-
     public RsaManager() {
         try {
             publicKey = null;
@@ -43,7 +41,6 @@ public class RsaManager {
             e.printStackTrace();
         }
     }
-
     public void newKey() {
         try {
             keyPairGenerator = KeyPairGenerator.getInstance("RSA");
@@ -58,16 +55,12 @@ public class RsaManager {
         byte[] b = publicKey.getEncoded();
         strPublicKey = Base64.encodeBase64String(b);
     }// SocketThreadAP(어플리케이션)에서 생성
-
-    public synchronized String getEncodedString(Student info) {
+    public String getEncodedString(Student info) {
         String encodedInfo = null;
         PublicKey key;
-
         try {
-
             cipher.init(Cipher.ENCRYPT_MODE, this.publicKey);
             encodedInfo = gson.toJson(info);
-
             byte[] strToByte = encodedInfo.getBytes();
             int size = (strToByte.length / 52);
             byte[] encodedByte = new byte[(size + 1) << 6];
@@ -82,7 +75,6 @@ public class RsaManager {
                 System.arraycopy(cipher.doFinal(temp), 0, encodedByte, (size << 6), 64);
             }
             encodedInfo = Base64.encodeBase64String(encodedByte);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -108,7 +100,6 @@ public class RsaManager {
         }
         return info;
     }
-
     public void setPrivateKey(String key) {
         try {
             byte[] bKey = Base64.decodeBase64(key.getBytes());
@@ -122,8 +113,6 @@ public class RsaManager {
     public String getStrPublicKey() {
         return strPublicKey;
     }
-
-
     public void setStringPublicKey(String modulus, String exponent) {
         BigInteger m = new BigInteger(modulus, 16);
         BigInteger p = new BigInteger(exponent, 16);

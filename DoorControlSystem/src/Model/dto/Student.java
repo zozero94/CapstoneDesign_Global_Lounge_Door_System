@@ -1,8 +1,6 @@
 package model.dto;
 
-import java.io.Serializable;
-
-public class Student implements Serializable {
+public class Student {
 
 
     private String studentID;
@@ -18,7 +16,7 @@ public class Student implements Serializable {
         this.nationality = null;
         this.department = null;
     }
-    public Student(ServerStudent student) {
+    public Student(Data student) {
         this.studentID = student.getStudentID();
         this.name = student.getName();
         this.gender = student.getGender();
@@ -37,11 +35,11 @@ public class Student implements Serializable {
 
     public String getString(int i) {
         switch (i){
-            case'1':return studentID;
-            case'2':return name;
-            case'3':return gender;
-            case'4':return nationality;
-            case'5':return department;
+            case 1:return studentID;
+            case 2:return name;
+            case 3:return gender;
+            case 4:return nationality;
+            case 5:return department;
             default:return college;
         }
     }
@@ -80,6 +78,13 @@ public class Student implements Serializable {
     }
     public void setCollege(String college) {
         this.college = college;
+    }
+    public void setNull(){
+        this.studentID = null;
+        this.name = null;
+        this.gender = null;
+        this.nationality = null;
+        this.department = null;
     }
     @Override
     public String toString() {

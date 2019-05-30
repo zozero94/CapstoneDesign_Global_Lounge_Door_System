@@ -20,9 +20,10 @@ public class Confirm implements StateRA {
             this.serverContextRA.setQrString(object.get("data").getAsString());
             objectReturn.addProperty("seqType", SeqTypeConstants.QR_OK);
         }
-        else if(object.get("seqType").getAsInt() == 402) {
+        else if(object.get("seqType").getAsString().equals(SeqTypeConstants.ACCESS_CLOSE)) {
             objectReturn.addProperty("seqType", SeqTypeConstants.QR_DIFF);
             serverContextRA.getRaspberrypi().setSendFlag(true);
+
         }
         else objectReturn.addProperty("seqType", SeqTypeConstants.QR_DIFF);
         return objectReturn;

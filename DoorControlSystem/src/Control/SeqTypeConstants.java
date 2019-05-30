@@ -11,6 +11,10 @@ public class SeqTypeConstants {
     public final static String STATE_DEL= "201";
     public final static String STATE_CREATE = "202";
     public final static String STATE_IMG = "203";
+    public final static String STATE_URL = "204";
+    public final static String STATE_ADMIN = "205";
+    public final static String STATE_OPEN = "206";
+    public final static String STATE_NO = "207";
 
     public final static String QR = "300";
     public final static String QR_OK = "301";
@@ -18,8 +22,11 @@ public class SeqTypeConstants {
 
     public final static String ACCESS_OK = "400";
     public final static String ACCESS_NO = "401";
+    public final static String ACCESS_CLOSE = "402";
 
     public final static String LOGOUT = "500";
 
     public final static String OPEN = "700";
+
+    public final static String ADMIN = "2";
 }

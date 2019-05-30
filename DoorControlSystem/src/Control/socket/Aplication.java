@@ -40,9 +40,11 @@ public class Aplication extends SocketThread {
             do {
                 object = (JsonObject) parser.parse(msg);
                 object = serverContextAP.response(object);
-                if (object != null)
-                    outMsg.println(object.toString()); //원래코드
-
+                if (object != null) {
+                    outMsg.println(object.toString());
+                    System.out.println(object.toString());
+                }
+                if(!androidLogoutFlag) break;
                 msg = inMsg.readLine();
                 if (msg == null) break;
                 System.out.println(msg);
@@ -51,8 +53,10 @@ public class Aplication extends SocketThread {
             e.printStackTrace();
             if (serverContextAP.getInfo() != null) System.out.println(serverContextAP.getInfo().getStudentID());
         } finally {
-            if (serverContextAP.getInfo() != null)
+            if(serverContextAP.getInfo().adminCheck()) dao.admin_count--;
+            else if (serverContextAP.getInfo() != null)
                 dao.setLoginFlag(serverContextAP.getInfo().getStudentID(), false);
+
             SystemServerSocket.getInstance().removeClient(this);
         }
     }
@@ -66,10 +70,14 @@ public class Aplication extends SocketThread {
     public void setAndroidLogoutFlag(boolean androidLogoutFlag) {
         this.androidLogoutFlag = androidLogoutFlag;
     }
+    public void setQrFlagFalse() {
+        this.serverContextAP.setQrFlag(false);
+    }
     public void sendNewQrString(){
         JsonObject send = new JsonObject();
         send.addProperty("seqType", SeqTypeConstants.STATE_REQ);
         send = serverContextAP.response(send);
+        this.serverContextAP.setQrFlag(true);
         outMsg.println(send.toString()); //원래코드
     }
 }

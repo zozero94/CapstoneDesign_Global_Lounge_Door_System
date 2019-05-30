@@ -38,12 +38,10 @@ public class SystemServerSocket {
             serverSocket = new ServerSocket(5050);
             logger.info("Server Start");
             while(true){
+                System.out.println(clients.size());
                 socket = serverSocket.accept();
                 logger.info("Client access");
                 inMsg = new BufferedReader(new InputStreamReader((socket.getInputStream())));
-
-
-//                PrintWriter outMsg = new PrintWriter(socket.getOutputStream(), true);
 
                 msg = inMsg.readLine();
                 System.out.println(msg);
@@ -57,7 +55,6 @@ public class SystemServerSocket {
             e.printStackTrace();
         }
     }
-
     public boolean compareQrString(String qrString){
         boolean qrExistFlag = false;
         for (Aplication client : clients) {
@@ -67,6 +64,14 @@ public class SystemServerSocket {
             }
         }
         return qrExistFlag;
+    }
+    public void setQrFlagFalse(String id){
+        for (Aplication client : clients) {
+            if (client.compareStudentId(id)) {
+                client.setQrFlagFalse();
+                break;
+            }
+        }
     }
     public void sendMsg(String studentID){
         for(int i = 0 ; i < clients.size(); i++){
