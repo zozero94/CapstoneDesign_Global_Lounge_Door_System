@@ -5,6 +5,7 @@ import control.SeqTypeConstants;
 import control.socket.SystemServerSocket;
 import model.DataAccessObject;
 import model.dto.Data;
+import view.DateCalculator;
 import view.GuiConstant;
 import view.right.LogPanel;
 
@@ -25,9 +26,9 @@ public class QrCertified implements StateRA{
 
         if(object.get("seqType").getAsString().equals(SeqTypeConstants.ACCESS_OK)){
             SystemServerSocket.getInstance().sendMsg(serverContextRA.getStudentId());
-            SystemServerSocket.getInstance().setQrFlagFalse(serverContextRA.getStudentId());
             if(!serverContextRA.checkAdmin()){
                 studentInfo = dao.getStudent(serverContextRA.getStudentId());
+                studentInfo.setTime(DateCalculator.currentTime());
                 dao.insertStudentLog(studentInfo);
                 logPanel.insertTableData(studentInfo, true);
                 logPanel.imageChange(GuiConstant.getImageUrl(serverContextRA.getStudentId()), studentInfo.getStudentID());

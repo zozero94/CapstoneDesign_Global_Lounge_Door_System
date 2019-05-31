@@ -74,10 +74,9 @@ public class Aplication extends SocketThread {
         this.serverContextAP.setQrFlag(false);
     }
     public void sendNewQrString(){
-        JsonObject send = new JsonObject();
+         JsonObject send = new JsonObject();
         send.addProperty("seqType", SeqTypeConstants.STATE_REQ);
         send = serverContextAP.response(send);
-        this.serverContextAP.setQrFlag(true);
         outMsg.println(send.toString()); //원래코드
     }
 }

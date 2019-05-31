@@ -41,11 +41,8 @@ public class Qr implements StateAP {
                 SystemServerSocket.getInstance().getRaspberrypi().openDoor();
                 objectReturn.addProperty("seqType", SeqTypeConstants.STATE_OPEN);
             }
-            else {
-                JOptionPane.showMessageDialog(null, "출입문과의 연결을 확인하세요", "경고", JOptionPane.WARNING_MESSAGE);
+            else
                 objectReturn.addProperty("seqType", SeqTypeConstants.STATE_NO);
-            }
-
         }else{
             this.objectReturn = null;
             serverContext.setQrFlag(false);

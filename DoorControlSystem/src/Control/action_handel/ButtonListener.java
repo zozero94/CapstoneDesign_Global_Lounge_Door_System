@@ -20,6 +20,8 @@ public class ButtonListener implements ActionListener {
             if (SystemServerSocket.getInstance().getRaspberrypi() != null) SystemServerSocket.getInstance().getRaspberrypi().openDoor();
             else JOptionPane.showMessageDialog(null, "출입문과의 연결을 확인하세요", "경고", JOptionPane.WARNING_MESSAGE);
         }
+        // TODO
+        // chart 버튼 클릭시에 현재 갱신된 내용을 차트에 다시 그려야함
 
     }
 }
