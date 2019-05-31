@@ -24,6 +24,7 @@ open class UserDefaultSetting {
     
     func setBrightness(brightness:Float){
         UserDefaults.standard.set(brightness, forKey: "brightness")
+        UserDefaults.standard.synchronize()
     }
     
     func removeAll() {
@@ -31,7 +32,6 @@ open class UserDefaultSetting {
         UserDefaults.standard.removeObject(forKey: "id")
         UserDefaults.standard.removeObject(forKey: "pwd")
         UserDefaults.standard.removeObject(forKey: "tag")
-        UserDefaults.standard.removeObject(forKey: "brightness")
         UserDefaults.standard.synchronize()
     }
 

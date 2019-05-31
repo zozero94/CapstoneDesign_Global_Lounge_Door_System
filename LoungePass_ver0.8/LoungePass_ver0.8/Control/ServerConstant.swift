@@ -10,8 +10,8 @@ import Foundation
 
 open class ServerConstant{
  
-    let LOGIN = "104" //로그인 요청
-    
+    let LOGIN =
+    "104" //로그인 요청
 
     let LOGIN_OK = "101" //로그인 성공
     let LOGIN_ALREADY = "102" //로그인 중 (중복로그인요청)
@@ -22,6 +22,8 @@ open class ServerConstant{
     
     let STATE_CREATE = "202"
     let STATE_URL = "204" //server -> client
+    let STATE_ADMIN = "205"
+    let STATE_NO = "207"
     
     let LOGOUT = "500" // 로그아웃
     

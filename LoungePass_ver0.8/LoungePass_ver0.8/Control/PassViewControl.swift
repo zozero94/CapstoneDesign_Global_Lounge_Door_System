@@ -16,6 +16,7 @@ class PassViewControl:ServerConstant{
     private let socket = ServerConnect.sharedInstance
     private let studentInfo = StudentInfo.sharedInstance
     
+    
     func logoutClicked() {
         
         print("remove")
@@ -24,11 +25,13 @@ class PassViewControl:ServerConstant{
         socket.closing()
     }
     
-    func requestImage(key:String) ->Bool{
+    func requestData(key:String) ->Bool{
         if key == "qr"{
             return socket.sendData(string: dataConverter.getSeqData(seq: STATE_REQ))
         }else if key == "img" {
             return socket.sendData(string: dataConverter.getSeqData(seq: STATE_IMG))
+        }else if key == "beacon"{
+            return socket.sendData(string: dataConverter.getSeqData(seq: STATE_ADMIN))
         }
         return false
     }
@@ -57,6 +60,10 @@ class PassViewControl:ServerConstant{
         return ""
     }
     
+    func requestOpenDoor() -> Bool {
+        return requestData(key: "beacon")
+    }
+    
     func IsResponse() ->[String :Any]?{
         
         var response : String?
@@ -64,7 +71,6 @@ class PassViewControl:ServerConstant{
         while response == nil { response = socket.readResponse()}
         
         print(type(of: response))
-        
         
         var dic = dataConverter.jsonStringToDictionary(text: response!)
         

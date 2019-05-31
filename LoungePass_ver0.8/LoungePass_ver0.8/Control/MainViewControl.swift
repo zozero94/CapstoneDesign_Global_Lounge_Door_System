@@ -34,9 +34,7 @@ class MainViewControll:ServerConstant{
         
         if user.tag == "1"{ pass = sejongPass(user: user)}
         else {pass = serverPass(user: user)}
-        
         if pass == 7 {setAutoLoginInfo(user: user)}
-        
         return pass
     }
     
@@ -56,7 +54,8 @@ class MainViewControll:ServerConstant{
         
         if socket.connecting(){
             _ = socket.sendData(string: dataConverter.getLoginData(seq: LOGIN, id: user.id!, exponent: encryption.getExponent()!, modulus: encryption.getHex()!, type: user.tag!))
-            let response = self.socket.readResponse()
+            var response : String?
+            while response == nil { response = socket.readResponse()}
             let dic = dataConverter.jsonStringToDictionary(text: response!)
             
             // setting student info

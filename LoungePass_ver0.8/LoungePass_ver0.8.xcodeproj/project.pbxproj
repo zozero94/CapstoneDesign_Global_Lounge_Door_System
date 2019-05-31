@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		091F08D8229FFD7600857427 /* beacon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 091F08D7229FFD7600857427 /* beacon.swift */; };
 		0948360F22994F26001FAD0A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0948360E22994F26001FAD0A /* AppDelegate.swift */; };
 		0948361122994F26001FAD0A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0948361022994F26001FAD0A /* ViewController.swift */; };
 		0948361422994F26001FAD0A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0948361222994F26001FAD0A /* Main.storyboard */; };
@@ -29,6 +30,7 @@
 
 /* Begin PBXFileReference section */
 		079446C0CE9D96F516D7A240 /* Pods-LoungePass_ver0.8.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoungePass_ver0.8.release.xcconfig"; path = "Target Support Files/Pods-LoungePass_ver0.8/Pods-LoungePass_ver0.8.release.xcconfig"; sourceTree = "<group>"; };
+		091F08D7229FFD7600857427 /* beacon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = beacon.swift; sourceTree = "<group>"; };
 		0948360B22994F26001FAD0A /* LoungePass_ver0.8.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoungePass_ver0.8.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0948360E22994F26001FAD0A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0948361022994F26001FAD0A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				094836332299612C001FAD0A /* PassViewController.swift */,
 				0948363D22997EA4001FAD0A /* PassViewControl.swift */,
 				0948363B22996BBA001FAD0A /* ServerConstant.swift */,
+				091F08D7229FFD7600857427 /* beacon.swift */,
 			);
 			path = Control;
 			sourceTree = "<group>";
@@ -182,6 +185,11 @@
 				TargetAttributes = {
 					0948360A22994F26001FAD0A = {
 						CreatedOnToolsVersion = 10.2;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -271,6 +279,7 @@
 				0948363122996071001FAD0A /* SejongConnect.swift in Sources */,
 				0948363822996260001FAD0A /* MainViewControl.swift in Sources */,
 				0948361122994F26001FAD0A /* ViewController.swift in Sources */,
+				091F08D8229FFD7600857427 /* beacon.swift in Sources */,
 				0948363E22997EA4001FAD0A /* PassViewControl.swift in Sources */,
 				0948362F22996040001FAD0A /* ImageGenerator.swift in Sources */,
 				094836342299612C001FAD0A /* PassViewController.swift in Sources */,

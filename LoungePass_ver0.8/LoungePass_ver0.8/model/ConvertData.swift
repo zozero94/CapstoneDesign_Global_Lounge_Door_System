@@ -32,7 +32,7 @@ class ConvertData{
                 print(error.localizedDescription)
             }
         }
-        return nil
+        return [:]
     }
     
     //server통신 seqence

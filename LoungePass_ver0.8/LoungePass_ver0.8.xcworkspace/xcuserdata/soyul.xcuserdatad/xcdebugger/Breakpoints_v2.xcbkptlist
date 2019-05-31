@@ -26,13 +26,157 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LoungePass_ver0.8/Control/ViewController.swift"
-            timestampString = "580487280.404111"
+            timestampString = "580969573.495934"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "9"
             endingLineNumber = "9"
             landmarkName = "unknown"
             landmarkType = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LoungePass_ver0.8/Control/PassViewControl.swift"
+            timestampString = "580970017.170204"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "PassViewControl"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LoungePass_ver0.8/model/ServerConnect.swift"
+            timestampString = "580971855.831605"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "18"
+            endingLineNumber = "18"
+            landmarkName = "ServerConnect"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "globalinit_33_5D8000740BA476D5FDBCE555A5FBC707_func0"
+                  moduleName = "LoungePass_ver0.8"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/soyul/Desktop/LoungePass_ver0.8/LoungePass_ver0.8/model/ServerConnect.swift"
+                  timestampString = "580968853.397338"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "18"
+                  endingLineNumber = "18"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "LoungePass_ver0_8.ServerConnect.sharedInstance.unsafeMutableAddressor : LoungePass_ver0_8.ServerConnect"
+                  moduleName = "LoungePass_ver0.8"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/soyul/Desktop/LoungePass_ver0.8/LoungePass_ver0.8/model/ServerConnect.swift"
+                  timestampString = "580968853.400418"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "18"
+                  endingLineNumber = "18"
+                  offsetFromSymbolStart = "20">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LoungePass_ver0.8/model/ServerConnect.swift"
+            timestampString = "580971855.8316979"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "19"
+            endingLineNumber = "19"
+            landmarkName = "ServerConnect"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "LoungePass_ver0_8.ServerConnect.__allocating_init() -&gt; LoungePass_ver0_8.ServerConnect"
+                  moduleName = "LoungePass_ver0.8"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/soyul/Desktop/LoungePass_ver0.8/LoungePass_ver0.8/model/ServerConnect.swift"
+                  timestampString = "580968853.981719"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "LoungePass_ver0_8.ServerConnect.init() -&gt; LoungePass_ver0_8.ServerConnect"
+                  moduleName = "LoungePass_ver0.8"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/soyul/Desktop/LoungePass_ver0.8/LoungePass_ver0.8/model/ServerConnect.swift"
+                  timestampString = "580968853.984522"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "14"
+                  endingLineNumber = "14"
+                  offsetFromSymbolStart = "52">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LoungePass_ver0.8/Control/PassViewController.swift"
+            timestampString = "580970017.17047"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
+            landmarkName = "logoutClick(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LoungePass_ver0.8/Control/PassViewController.swift"
+            timestampString = "580970017.17056"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
+            landmarkName = "logoutClick(_:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

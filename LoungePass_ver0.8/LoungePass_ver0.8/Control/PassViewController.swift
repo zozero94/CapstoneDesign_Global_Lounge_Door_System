@@ -7,7 +7,8 @@
 //
 
 import UIKit
-
+import CoreLocation
+import AudioToolbox
 
 class PassViewController: UIViewController {
     
@@ -25,18 +26,32 @@ class PassViewController: UIViewController {
     
     let imageGenerator = ImageGenerator()
     private let control = PassViewControl()
+    
+    var test = -1
+    var userType = 1
+    var locationManager:CLLocationManager!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        if (self.control.getStudentInfo(key: "studentID").contains("admin")){
+            userType = 2
+            print("userType",userType)
+            locationManager = CLLocationManager()
+            locationManager.delegate = self
+            locationManager.requestAlwaysAuthorization()
+        }
         setImageView(image: qrImageViewBorder)
         setImageView(image: userImageViewBorder)
         UIScreen.main.brightness = CGFloat(1.0)
         
-        _ = self.control.requestImage(key: "img")
-        _ = self.control.requestImage(key: "qr")
+        _ = self.control.requestData(key: "img")
+        _ = self.control.requestData(key: "qr")
         DispatchQueue.global(qos: .userInitiated).async {
             // 소켓 response 대기
             //while
+            
             while true {
                 let response = self.control.IsResponse()
                 
@@ -46,6 +61,7 @@ class PassViewController: UIViewController {
                         switch response!["seqType"] as! String {
                         case ServerConstant().STATE_CREATE : self.qrImageView.image = response!["qr"] as? UIImage
                         case ServerConstant().STATE_URL : self.userImageView.image = response!["img"] as? UIImage
+                        case  ServerConstant().STATE_NO :self.showAlert(Message: "출입문을 열수없습니다.")
                         default: break
                         }
                     }
@@ -64,9 +80,26 @@ class PassViewController: UIViewController {
         
     }
     
+    
+    override func motionBegan(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        
+        if(userType == 2){
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+            print(test)
+            if test > 0 {
+              control.requestOpenDoor()
+            }
+            else {
+                self.showAlert(Message: "출입문과의 거리 인식이 불안정합니다.")
+            }
+        }
+     }
+    
+    
     @IBAction func logoutClick(_ sender: UIButton) {
         //UIScreen.main.brightness = CGFloat(UserDefaults.standard.object(forKey: "brightness") as! Float)
-        UIScreen.main.brightness = CGFloat(UserDefaults.standard.object(forKey: "brightness") as! Float)
+        
+        UIScreen.main.brightness = CGFloat(UserDefaults.standard.float(forKey: "brightness"))
         self.control.logoutClicked()
         present()
     }

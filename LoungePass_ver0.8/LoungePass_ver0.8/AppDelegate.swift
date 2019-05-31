@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let socket = ServerConnect.sharedInstance
         socket.closing()
         UIScreen.main.brightness = CGFloat(UserDefaults.standard.object(forKey: "brightness") as! Float)
+        exit(0)
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
