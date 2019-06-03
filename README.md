@@ -8,7 +8,6 @@
   #### 1-1) 학생 우회 인증
   ```Swift
   func requestPost(Id: String, Pw: String){
-        // https://udream.sejong.ac.kr/main/loginPro.aspx?rUserid=14011038&rPW=wodud31&pro=1
         let strUrl : String = "https://udream.sejong.ac.kr/main/loginPro.aspx" + "?rUserid=" + Id + "&rPW=" + Pw + "&pro=1"
         let url = URL(string: strUrl)
         
@@ -108,7 +107,7 @@
         }
         return nil
     }
-     ```
+    ```
      
      
     
