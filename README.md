@@ -45,7 +45,7 @@
    ```
     
   #### 1-2) 서버 인증
-    ```Swift
+```Swift
     func loginSequence() {
         self.dic.updateValue("104", forKey: "seqType")
         self.dataDic.updateValue(self.idTextField.text!, forKey: "id")
@@ -85,15 +85,15 @@
                 }
             }
         }
-    }```
+    }
+```
     
    
    <hr/>
     
 ### 2. 로그인 후 화면
-   ### 2-1) QR코드 생성하기
-    
-    ```Swift
+   ### 2-1) QR코드 생성하기 
+```Swift
     func generateQRCode(from string: String) -> UIImage?{
         let data = string.data(using: String.Encoding.utf8)
         
@@ -106,7 +106,8 @@
             }
         }
         return nil
-    } ```
+    } 
+```
      
      
     
