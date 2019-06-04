@@ -8,6 +8,8 @@
 
 import UIKit
 import SwiftSocket
+import CoreLocation
+import AudioToolbox
 
 class LogOnViewController: UIViewController {
     @IBOutlet var qrImage: UIImageView!
@@ -22,13 +24,17 @@ class LogOnViewController: UIViewController {
     let rsa: RSAWrapper? = RSAWrapper()
     let convertor : Convertor? = Convertor()
     let client: ServerConnection = ServerConnection.sharedInstance
-
+   
     var imageUrl : String? = ""
     var studentStringData : String? = ""
     var studentDicData : [String : String] = [:]
     var qrData : String? = ""
     var qrDataDic : [String : String] = [:]
     var isCaptured: Bool = false
+    var loc = -1
+    var locationManager: CLLocationManager!
+    
+    var beaconPeripheralData: NSDictionary!
     
     var appConfiguredBrightness: CGFloat = 0.0
     
@@ -50,6 +56,7 @@ class LogOnViewController: UIViewController {
         
         studentStringData = UserDefaults.standard.string(forKey: "qrData")!
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         qrData = client.sendData2(data: "{\"seqType\":\"200\"}\n")
@@ -127,6 +134,21 @@ class LogOnViewController: UIViewController {
             return nil
         }
     }
+    override func motionBegan(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        if UserDefaults.standard.string(forKey: "id") == "admin" {
+            
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+            
+            if loc > 0 {
+                let _ = self.client.sendData(data: "{\"seqType\": \"205\"}" + "\n")
+            }
+            else {
+                self.showAlert(Message: "출입문과의 거리 인식이 불안정합니다.")
+            }
+
+        }
+    }
+    
     
     func setImageView(image: UIImageView) {
         image.layer.borderColor = UIColor.black.cgColor
