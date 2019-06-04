@@ -4,42 +4,6 @@
     <list default="true" id="2711b73a-ee2c-45d6-9507-73d79eae0e81" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../CapstoneDesign_Global_Rounge_Door_System" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DoorControlSystem/Control/serverReaction/aplication/Qr.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DoorControlSystem/Control/serverReaction/aplication/Qr.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DoorControlSystem/Control/socket/Aplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DoorControlSystem/Control/socket/Aplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DoorControlSystem/META-INF/DoorControlSystem.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DoorControlSystem/Model/dto/Data.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DoorControlSystem/Model/dto/Data.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Control/ControlMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/control/ControlMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Control/SeqTypeConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/control/SeqTypeConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Control/action_handel/ButtonListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/control/action_handel/ButtonListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Control/action_handel/LogBtnListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/control/action_handel/LogBtnListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Control/action_handel/LogChartBtnListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/control/action_handel/LogChartBtnListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Control/action_handel/MouseListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/control/action_handel/MouseListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Control/encryption/RsaManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/control/encryption/RsaManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Control/serverReaction/aplication/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/control/serverReaction/aplication/Login.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Control/serverReaction/aplication/Qr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/control/serverReaction/aplication/Qr.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Control/serverReaction/aplication/ServerContextAP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/control/serverReaction/aplication/ServerContextAP.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Control/serverReaction/aplication/StateAP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/control/serverReaction/aplication/StateAP.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Control/serverReaction/raspberrypi/Confirm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/control/serverReaction/raspberrypi/Confirm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Control/serverReaction/raspberrypi/QrCertified.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/control/serverReaction/raspberrypi/QrCertified.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Control/serverReaction/raspberrypi/ServerContextRA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/control/serverReaction/raspberrypi/ServerContextRA.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Control/serverReaction/raspberrypi/StateRA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/control/serverReaction/raspberrypi/StateRA.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Control/socket/Aplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/control/socket/Aplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Control/socket/Raspberrypi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/control/socket/Raspberrypi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Control/socket/SocketFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/control/socket/SocketFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Control/socket/SocketThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/control/socket/SocketThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Control/socket/SystemServerSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/control/socket/SystemServerSocket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/DBConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/DBConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/DataAccessObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/DataAccessObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/dto/Data.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/dto/Data.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/dto/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/dto/Student.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/DateCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/DateCalculator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/GuiConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/GuiConstant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/UI/PrimaryPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/UI/PrimaryPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/UI/ServerUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/UI/ServerUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/left/BtnPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/left/BtnPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/right/LogChartPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/right/LogChartPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/right/LogPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/right/LogPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/right/RightPrimaryPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/right/RightPrimaryPanel.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -73,23 +37,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/control/serverReaction/aplication/Login.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="455">
-              <caret line="36" column="46" selection-start-line="36" selection-start-column="32" selection-end-line="36" selection-end-column="46" />
+            <state relative-caret-position="146">
+              <caret line="39" column="79" lean-forward="true" selection-start-line="39" selection-start-column="79" selection-end-line="39" selection-end-column="79" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/model/DataAccessObject.java">
+        <entry file="file://$PROJECT_DIR$/src/control/SeqTypeConstants.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2717">
-              <caret line="147" column="32" selection-start-line="147" selection-start-column="16" selection-end-line="147" selection-end-column="32" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="133">
+              <caret line="7" column="49" selection-start-line="7" selection-start-column="49" selection-end-line="7" selection-end-column="49" />
             </state>
           </provider>
         </entry>
@@ -97,8 +58,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/control/ControlMain.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="21" selection-start-line="21" selection-end-line="21" />
+            <state relative-caret-position="398">
+              <caret line="40" column="1" lean-forward="true" selection-start-line="40" selection-start-column="1" selection-end-line="40" selection-end-column="1" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#getInstance#0;class#ControlMain#0" />
@@ -112,7 +73,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/control/socket/SystemServerSocket.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="978">
+            <state relative-caret-position="1159">
               <caret line="77" column="60" selection-start-line="77" selection-start-column="60" selection-end-line="77" selection-end-column="60" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -128,7 +89,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/control/encryption/RsaManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="559">
+            <state relative-caret-position="1368">
               <caret line="127" column="28" selection-start-line="127" selection-start-column="16" selection-end-line="127" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -192,10 +153,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/model/dto/Data.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="836">
+            <state relative-caret-position="874">
               <caret line="48" column="5" selection-start-line="48" selection-start-column="5" selection-end-line="48" selection-end-column="5" />
               <folding>
                 <element signature="e#152#153#0" expanded="true" />
@@ -292,8 +253,9 @@
       <scroll-view-position x="0" y="0" />
     </layout>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="224" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="330" />
+    <option name="y" value="-1061" />
     <option name="width" value="1703" />
     <option name="height" value="1047" />
   </component>
@@ -303,6 +265,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -332,35 +295,6 @@
               <item name="DoorControlSystem" type="b2602c69:ProjectViewProjectNode" />
               <item name="DoorControlSystem" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="control" type="462c0819:PsiDirectoryNode" />
-              <item name="encryption" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DoorControlSystem" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DoorControlSystem" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="control" type="462c0819:PsiDirectoryNode" />
-              <item name="serverReaction" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DoorControlSystem" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DoorControlSystem" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="control" type="462c0819:PsiDirectoryNode" />
-              <item name="serverReaction" type="462c0819:PsiDirectoryNode" />
-              <item name="aplication" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DoorControlSystem" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DoorControlSystem" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="control" type="462c0819:PsiDirectoryNode" />
-              <item name="socket" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DoorControlSystem" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DoorControlSystem" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="model" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -376,12 +310,32 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="view" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="DoorControlSystem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DoorControlSystem" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="view" type="462c0819:PsiDirectoryNode" />
+              <item name="left" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="DoorControlSystem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DoorControlSystem" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="view" type="462c0819:PsiDirectoryNode" />
+              <item name="right" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="DoorControlSystem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DoorControlSystem" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="view" type="462c0819:PsiDirectoryNode" />
+              <item name="UI" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -536,11 +490,12 @@
       <workItem from="1559542641978" duration="135000" />
       <workItem from="1559545715741" duration="622000" />
       <workItem from="1559554736583" duration="1250000" />
+      <workItem from="1559636497981" duration="1224000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="419042000" />
+    <option name="totallyTimeSpent" value="420266000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -552,9 +507,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="684" y="0" width="1243" height="1047" extended-state="0" />
+    <frame x="-8" y="-1088" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49756888" visible="true" weight="0.14116652" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49756888" visible="true" weight="0.2228145" />
       <window_info id="Structure" order="1" sideWeight="0.5024311" side_tool="true" weight="0.124200426" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -563,7 +518,7 @@
       <window_info id="Favorites" order="6" sideWeight="0.500813" side_tool="true" weight="0.12313433" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3308026" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49946696" weight="0.46549836" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49946696" visible="true" weight="0.46095446" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39370933" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -894,13 +849,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/control/SeqTypeConstants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="7" column="49" selection-start-line="7" selection-start-column="49" selection-end-line="7" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/control/serverReaction/raspberrypi/QrCertified.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="437">
@@ -986,6 +934,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/control/serverReaction/aplication/Login.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="146">
+          <caret line="39" column="79" lean-forward="true" selection-start-line="39" selection-start-column="79" selection-end-line="39" selection-end-column="79" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/model/DataAccessObject.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2717">
@@ -996,15 +951,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/control/ControlMain.java">
+    <entry file="file://$PROJECT_DIR$/src/control/socket/SystemServerSocket.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="21" selection-start-line="21" selection-end-line="21" />
+        <state relative-caret-position="1159">
+          <caret line="77" column="60" selection-start-line="77" selection-start-column="60" selection-end-line="77" selection-end-column="60" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#getInstance#0;class#ControlMain#0" />
-            <element signature="method#ControlMain#0;class#ControlMain#0" />
-            <element signature="method#setActionListener#0;class#ControlMain#0" />
+            <element signature="method#getInstance#0;class#SystemServerSocket#0" />
+            <element signature="method#SystemServerSocket#0;class#SystemServerSocket#0" />
+            <element signature="method#compareQrString#0;class#SystemServerSocket#0" />
+            <element signature="method#removeClient#1;class#SystemServerSocket#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/control/encryption/RsaManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1368">
+          <caret line="127" column="28" selection-start-line="127" selection-start-column="16" selection-end-line="127" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#RsaManager#0;class#RsaManager#0" />
+            <element signature="method#newKey#0;class#RsaManager#0" />
+            <element signature="method#getDecodedString#0;class#RsaManager#0" />
+            <element signature="method#setPrivateKey#0;class#RsaManager#0" />
           </folding>
         </state>
       </provider>
@@ -1052,49 +1022,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/control/SeqTypeConstants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="7" column="49" selection-start-line="7" selection-start-column="49" selection-end-line="7" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/control/ControlMain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="398">
+          <caret line="40" column="1" lean-forward="true" selection-start-line="40" selection-start-column="1" selection-end-line="40" selection-end-column="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#getInstance#0;class#ControlMain#0" />
+            <element signature="method#ControlMain#0;class#ControlMain#0" />
+            <element signature="method#setActionListener#0;class#ControlMain#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/model/dto/Data.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="836">
+        <state relative-caret-position="874">
           <caret line="48" column="5" selection-start-line="48" selection-start-column="5" selection-end-line="48" selection-end-column="5" />
           <folding>
             <element signature="e#152#153#0" expanded="true" />
             <element signature="e#177#178#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/control/socket/SystemServerSocket.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="978">
-          <caret line="77" column="60" selection-start-line="77" selection-start-column="60" selection-end-line="77" selection-end-column="60" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#getInstance#0;class#SystemServerSocket#0" />
-            <element signature="method#SystemServerSocket#0;class#SystemServerSocket#0" />
-            <element signature="method#compareQrString#0;class#SystemServerSocket#0" />
-            <element signature="method#removeClient#1;class#SystemServerSocket#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/control/encryption/RsaManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="559">
-          <caret line="127" column="28" selection-start-line="127" selection-start-column="16" selection-end-line="127" selection-end-column="28" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#RsaManager#0;class#RsaManager#0" />
-            <element signature="method#newKey#0;class#RsaManager#0" />
-            <element signature="method#getDecodedString#0;class#RsaManager#0" />
-            <element signature="method#setPrivateKey#0;class#RsaManager#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/control/serverReaction/aplication/Login.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="455">
-          <caret line="36" column="46" selection-start-line="36" selection-start-column="32" selection-end-line="36" selection-end-column="46" />
         </state>
       </provider>
     </entry>
