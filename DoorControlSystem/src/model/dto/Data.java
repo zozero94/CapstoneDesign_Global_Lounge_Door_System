@@ -47,12 +47,7 @@ public class Data extends Student {
     public boolean adminCheck(){
         return this.getStudentID().substring(0,5).equals("admin");
     }
-
     public boolean isLoginFlag() {
         return loginFlag;
-    }
-
-    public void setLoginFlag(boolean loginFlag) {
-        this.loginFlag = loginFlag;
     }
 }

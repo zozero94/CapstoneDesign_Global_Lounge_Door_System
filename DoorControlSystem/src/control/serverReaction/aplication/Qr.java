@@ -6,8 +6,6 @@ import control.socket.SystemServerSocket;
 import model.DataAccessObject;
 import view.DateCalculator;
 
-import javax.swing.*;
-
 public class Qr implements StateAP {
 
     private JsonObject objectReturn;
@@ -47,8 +45,9 @@ public class Qr implements StateAP {
             this.objectReturn = null;
             serverContext.setQrFlag(false);
             SystemServerSocket.getInstance().removeClient(serverContext.getInfo().getStudentID());
-            dao.setLoginFlag(serverContext.getInfo().getStudentID(), false);
+            if(!serverContext.getInfo().adminCheck())  dao.setLoginFlag(serverContext.getInfo().getStudentID(), false);
             serverContext.getSocketThread().setAndroidLogoutFlag(false);
+            System.out.println("Logout aplication " +  serverContext.getSocketThread().isAndroidLogoutFlag());
         }
         return objectReturn;
     }
