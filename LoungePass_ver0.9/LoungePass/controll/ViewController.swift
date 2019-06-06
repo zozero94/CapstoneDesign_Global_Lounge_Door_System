@@ -31,7 +31,6 @@ class ViewController: UIViewController {
         UserDefaults.standard.synchronize()
         // 자동로그인 확인
         autologin = control.isAutoLogin()
-        print(autologin)
        
     }
     

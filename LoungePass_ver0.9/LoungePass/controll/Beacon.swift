@@ -9,8 +9,6 @@ import UIKit
 import CoreLocation
 
 extension PassViewController : CLLocationManagerDelegate{
-    
-    
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedAlways {
             if CLLocationManager.isMonitoringAvailable(for: CLBeaconRegion.self) {

@@ -65,9 +65,6 @@ class RSAEncryption{
         }
         
         let mudata = NSData(bytes: &cipherBuffer, length: cipherBufferSize)
-        print("buffer")
-        print(cipherBuffer)
-        print(cipherBufferSize)
         return mudata.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength64Characters)
     }
     

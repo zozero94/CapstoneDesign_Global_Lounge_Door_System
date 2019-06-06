@@ -103,6 +103,7 @@ class PassViewController: UIViewController {
             _ = self.control.requestData(key: "qr")
         }
     }
+    
     // 흔들림감지.
     override func motionBegan(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         
@@ -113,7 +114,7 @@ class PassViewController: UIViewController {
                 let _ = control.requestData(key: "beacon")
             }
             else {
-                self.showAlert(Message: "출입문과의 거리 인식이 불안정합니다.")
+                self.showAlert(Message: "출입문과의 거리 인식이 불안정합니다.\n\n   다시 시도해주세요.")
             }
         }
     }

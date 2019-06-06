@@ -22,10 +22,6 @@ class MainControl : ServerConstant{
         self.autoFlag = auto
     }
     
-    /*
-     
-     */
-    
     func loginClicked()->Int8{
         var pass :Int8
         
@@ -35,8 +31,10 @@ class MainControl : ServerConstant{
         
         // 회원 인증
         if user.tag == "1"{ pass = sejongPass()}
-        else {pass = serverPass()}
-        
+        else {
+            pass = serverPass()
+        }
+    
         // 인증이 된 경우 자동 로그인 정보 저장
         if pass == 7 {setAutoLoginInfo()}
         

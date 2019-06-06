@@ -11,7 +11,7 @@ import SwiftSocket
 
 class ServerConnect{
     
-    private var host = "192.168.0.8"
+    private var host = "192.168.1.3"
     private var port = 5050
     private var client: TCPClient
     
@@ -36,7 +36,6 @@ class ServerConnect{
         
         switch self.client.send(string: string) {
         case .success:
-            print("success")
             return true
         case .failure:
             return false
@@ -51,7 +50,6 @@ class ServerConnect{
     func closing() {
         let converter = ConvertData()
         let _ = sendData(string: converter.getSeqData(seq: "500"))
-      //  self.client.close()
     }
 
 }
