@@ -156,7 +156,7 @@ public class LogChartPanel extends JPanel {
             jfreechart = ChartFactory.createStackedBarChart("Global Lounge 출입 횟수", "국가명", "출입횟수", dataset, PlotOrientation.VERTICAL, true, true, true);
         }else if(mode.equals(CHART[2])){
             setDatasetTime();
-            subTitle.setText("시가별");
+            subTitle.setText("시간별");
             jfreechart = ChartFactory.createLineChart("Global Lounge 출입 횟수","시간","출입횟수",dataset,PlotOrientation.VERTICAL,true,true,true);
         }
         setChartUi(mode);

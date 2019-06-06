@@ -34,9 +34,9 @@ public class LogPanel extends JPanel {
 
     private DataAccessObject dao;
     private DefaultTableCellRenderer renderer;
-    private static final Font TEXT_FONT = new Font("고딕", 0, 12);
-    private static final Font TEXT_FONT_HEAD = new Font("고딕", 0, 15);
-    private static final Font TEXT_TIME = new Font("고딕", 0, 30);
+    private static final Font TEXT_FONT = new Font("HY견고딕", 0, 12);
+    private static final Font TEXT_FONT_HEAD = new Font("HY견고딕", 0, 15);
+    private static final Font TEXT_TIME = new Font("HY견고딕", 0, 30);
     private static final String CALNAME[] = {"학번","이름", "성별", "국가","학과","단대", "출입시간"};
     private static final int CAL_SIZE[] = {40, 70,20,60,80,80,100};
     private static final String LABEL[] = {"","학번", "이름", "성별", "국가","학과","단대"};
