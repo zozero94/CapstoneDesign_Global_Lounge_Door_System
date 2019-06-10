@@ -1,8 +1,8 @@
 package view.right;
 
 import control.action_handel.LogChartBtnListener;
-import model.DataAccessObject;
-import model.dto.Data;
+import control.db.Data;
+import control.db.DataAccessObject;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;

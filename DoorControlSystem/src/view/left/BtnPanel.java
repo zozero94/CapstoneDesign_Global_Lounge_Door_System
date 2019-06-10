@@ -1,8 +1,8 @@
 package view.left;
 
 import control.action_handel.ButtonListener;
-import model.DataAccessObject;
-import model.dto.Data;
+import control.db.Data;
+import control.db.DataAccessObject;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;

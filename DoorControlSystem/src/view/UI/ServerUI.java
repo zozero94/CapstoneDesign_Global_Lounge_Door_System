@@ -3,7 +3,7 @@ import control.action_handel.ButtonListener;
 import control.action_handel.LogBtnListener;
 import control.action_handel.LogChartBtnListener;
 import control.action_handel.MouseListener;
-import model.DataAccessObject;
+import control.db.DataAccessObject;
 
 import javax.swing.*;
 import java.awt.event.WindowEvent;

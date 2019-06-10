@@ -1,8 +1,8 @@
-package model;
+package control.db;
 
 
 public class DBConstants {
-    public final static String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+    //public final static String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     public final static String JDBC_URL = "jdbc:mysql://localhost:3306/doorcontrolsystem?characterEncoding=UTF-8&&serverTimezone=UTC";
     public final static String JDBC_ID = "root";
     public final static String JDBC_PASSWORD = "kim_min828049";
@@ -17,9 +17,9 @@ public class DBConstants {
             "select MID(time,12,2) m, count(*) total ,gender from log join studentinfo on studentinfo.studentid = log.studentid group by m, gender;", // mode 5
             "select count(distinct studentid) total from log where time > ? && time < ?;" // mode 6
     };
-
-    public final static String UPDATE_LOGINFLAG = "update studentinfo set loginflag = ? where studentid = ?;";
-    public final static String UPDATE_LOGINFLAG_ALL = "update studentinfo set loginflag = false;";
-
-    public final static String INSERT_LOG = "insert into log (studentid, time) values (?,?);";
+//
+//    public final static String UPDATE_LOGINFLAG = "update studentinfo set loginflag = ? where studentid = ?;";
+//    public final static String UPDATE_LOGINFLAG_ALL = "update studentinfo set loginflag = false;";
+//
+//    public final static String INSERT_LOG = "insert into log (studentid, time) values (?,?);";
 }

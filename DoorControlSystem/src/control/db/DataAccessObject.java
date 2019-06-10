@@ -1,6 +1,5 @@
-package model;
+package control.db;
 
-import model.dto.Data;
 import view.DateCalculator;
 
 import java.sql.*;

@@ -2,8 +2,8 @@ package control.serverReaction.aplication;
 
 import com.google.gson.JsonObject;
 import control.SeqTypeConstants;
+import control.db.DataAccessObject;
 import control.socket.SystemServerSocket;
-import model.DataAccessObject;
 import view.DateCalculator;
 
 public class Qr implements StateAP {

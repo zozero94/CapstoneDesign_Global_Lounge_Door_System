@@ -2,9 +2,9 @@ package view.right;
 
 import control.action_handel.LogBtnListener;
 import control.action_handel.MouseListener;
-import model.DataAccessObject;
-import model.dto.Data;
-import model.dto.Student;
+import control.db.Data;
+import control.db.DataAccessObject;
+import control.db.Student;
 import view.DateCalculator;
 import view.GuiConstant;
 

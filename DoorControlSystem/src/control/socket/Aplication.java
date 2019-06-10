@@ -3,8 +3,8 @@ package control.socket;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import control.SeqTypeConstants;
+import control.db.DataAccessObject;
 import control.serverReaction.aplication.ServerContextAP;
-import model.DataAccessObject;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;

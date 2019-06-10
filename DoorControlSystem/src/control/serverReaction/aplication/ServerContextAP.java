@@ -1,8 +1,8 @@
 package control.serverReaction.aplication;
 
 import com.google.gson.JsonObject;
+import control.db.Data;
 import control.socket.Aplication;
-import model.dto.Data;
 
 public class ServerContextAP {
     private boolean QrFlag;

@@ -1,7 +1,7 @@
 package control.encryption;
 
 import com.google.gson.Gson;
-import model.dto.Student;
+import control.db.Student;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.crypto.BadPaddingException;

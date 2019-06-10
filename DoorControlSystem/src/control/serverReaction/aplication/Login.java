@@ -3,10 +3,10 @@ package control.serverReaction.aplication;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import control.SeqTypeConstants;
+import control.db.DataAccessObject;
+import control.db.Student;
 import control.encryption.RsaManager;
 import control.socket.SystemServerSocket;
-import model.DataAccessObject;
-import model.dto.Student;
 
 public class Login implements StateAP {
     private JsonObject objectReturn;

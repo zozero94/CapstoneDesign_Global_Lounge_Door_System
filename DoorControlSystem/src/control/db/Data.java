@@ -1,4 +1,4 @@
-package model.dto;
+package control.db;
 
 public class Data extends Student {
     private String time;

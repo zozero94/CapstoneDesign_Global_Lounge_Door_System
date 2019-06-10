@@ -2,9 +2,9 @@ package control.serverReaction.raspberrypi;
 
 import com.google.gson.JsonObject;
 import control.SeqTypeConstants;
+import control.db.Data;
+import control.db.DataAccessObject;
 import control.socket.SystemServerSocket;
-import model.DataAccessObject;
-import model.dto.Data;
 import view.DateCalculator;
 import view.GuiConstant;
 import view.right.LogPanel;

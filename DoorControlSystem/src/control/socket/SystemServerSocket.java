@@ -44,11 +44,11 @@ public class SystemServerSocket {
                 inMsg = new BufferedReader(new InputStreamReader((socket.getInputStream())));
 
                 msg = inMsg.readLine();
-                System.out.println(msg);
-
-                object = (JsonObject) parser.parse(msg);
-                newSocket = SocketFactory.getSocket(object, socket, inMsg);
-                if(newSocket != null)   newSocket.start();
+                if(msg!=null){
+                    object = (JsonObject) parser.parse(msg);
+                    newSocket = SocketFactory.getSocket(object, socket, inMsg);
+                    if (newSocket != null) newSocket.start();
+                }
             }
         }catch (Exception e){
             logger.info("SystemServer Exception start()");
@@ -64,14 +64,6 @@ public class SystemServerSocket {
             }
         }
         return qrExistFlag;
-    }
-    public void setQrFlagFalse(String id){
-        for (Aplication client : clients) {
-            if (client.compareStudentId(id)) {
-                client.setQrFlagFalse();
-                break;
-            }
-        }
     }
     public void sendMsg(String studentID){
         for(int i = 0 ; i < clients.size(); i++){
