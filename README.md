@@ -77,4 +77,7 @@
 
 ![패킷 암호화](./img/encrypt_result.PNG)    
  
- ![출입문 프로토타입](./img/door.png)   
+ <hr>  
+ 
+![출입문 프로토타입](./img/door.png)   
+ ### 출입문 프로토 타입
