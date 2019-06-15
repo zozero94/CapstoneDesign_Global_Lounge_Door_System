@@ -1,4 +1,5 @@
-# CapstoneDesign
+﻿# CapstoneDesign  
+[<img src="./img/logo.png" width="150" height="150">](https://youtu.be/JlXVhnjMgEU) ``← 시연 영상``
 
 ## Global_Lounge_Door_System
 <hr/>   
@@ -76,3 +77,4 @@
 
 ![패킷 암호화](./img/encrypt_result.PNG)    
  
+ ![출입문 프로토타입](./img/door.png)   
